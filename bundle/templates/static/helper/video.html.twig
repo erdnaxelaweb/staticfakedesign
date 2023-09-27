@@ -1,0 +1,45 @@
+{# @fake video video #}
+{# @var video \ErdnaxelaWeb\StaticFakeDesign\Value\Video #}
+{% if video %}
+    {% set poster = video.posterSource %}
+    <div>
+        {% if video.image %}
+            {% include 'static/helper/image.html.twig' with {image: video.image} only %}
+        {% endif %}
+        {% if video.isExternalVideo %}
+            {% set source = video.defaultSource %}
+            <iframe
+                    data-src="{{ source.uri }}"
+                    allowfullscreen
+                    allow="autoplay"
+            ></iframe>
+        {% elseif video.hasSource %}
+            <video
+                    {% if isAutoplay is defined and isAutoplay %} autoplay muted loop {% endif %}
+                    controls
+                    crossorigin
+                    playsinline
+                    data-poster="{{ poster ? poster.uri }}">
+                {% for source in video.sources %}
+                    <source src="{{ source.uri }}" type="{{ source.type }}">
+                {% endfor %}
+            </video>
+            {% if isAutoplay is defined and isAutoplay %}
+                <button type="button" class="top-of-page__pause">
+                    <span class="cmnicon cmnicon-pause" aria-hidden="true"></span>
+                    <span class="visually-hidden">Pause</span>
+                </button>
+            {% endif %}
+        {% endif %}
+
+        <div>
+            <h2>{{ video.title }}</h2>
+            <p>
+                {{ video.duration }} min
+            </p>
+            {% if not video.transcript is empty %}
+                {{ video.transcript|raw }}
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

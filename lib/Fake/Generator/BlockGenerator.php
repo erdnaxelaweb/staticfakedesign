@@ -1,0 +1,58 @@
+<?php
+/*
+ * DesignBundle.
+ *
+ * @package   DesignBundle
+ *
+ * @author    florian
+ * @copyright 2018 Novactive
+ * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
+ */
+
+declare( strict_types=1 );
+
+namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
+
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class BlockGenerator extends AbstractContentGenerator
+{
+
+    public function __construct(
+        protected BlockConfigurationManager $blockConfigurationManager,
+        FakerGenerator                $fakerGenerator,
+        ContentFieldGeneratorRegistry $fieldGeneratorRegistry
+    )
+    {
+        parent::__construct( $fakerGenerator, $fieldGeneratorRegistry );
+    }
+
+    public function configureOptions(OptionsResolver $optionResolver): void
+    {
+        parent::configureOptions($optionResolver);
+        $optionResolver->define('identifier')
+            ->required()
+            ->allowedTypes('string')
+            ->info('Identifier of the block to generate. See erdnaxelaweb.static_fake_design.block_definition');
+
+    }
+
+    /**
+     * @throws ConfigurationNotFoundException
+     */
+    public function __invoke(string $type): Block
+    {
+        $configuration = $this->blockConfigurationManager->getConfiguration( $type );
+        return Block::createLazyGhost( function ( Block $instance ) use ( $configuration ) {
+            $instance->__construct(
+                $this->fakerGenerator->sentence(),
+                $this->generateFieldsValue( $configuration['fields'] )
+            );
+        } );
+    }
+}

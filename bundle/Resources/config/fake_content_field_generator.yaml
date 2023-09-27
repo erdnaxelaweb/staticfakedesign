@@ -1,0 +1,106 @@
+parameters:
+    faker.generator.image.variations:
+        large: ['100x100']
+
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\:
+        resource: '../../../lib/Fake/ContentGenerator/**'
+        lazy: true
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry:
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\BlocksFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'blocks'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\BooleanFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'boolean'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ContentFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'content'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\DateFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'date'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\DateTimeFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'datetime'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\EmailFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'email'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FileFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'file'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FloatFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'float'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ImageFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'image'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\IntegerFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'integer'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\LocationFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'location'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\MatrixFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'matrix'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\RichTextFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'richtext'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\SelectionFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'selection'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\StringFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'string'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\TaxonomyEntryFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'taxonomy_entry'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\TextFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'text'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\TimeFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'time'}

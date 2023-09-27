@@ -1,0 +1,28 @@
+<div class="row g-2 border-top m-2">
+    {# @fake var1 breadcrumb #}
+    {# @fake var2 breadcrumb({'count': '5'}) #}
+    {# @fake var3 breadcrumb('5') #}
+    <div class="col-5 ">
+        <div class="border bg-light g-2 p-2">
+            <code class="chroma">
+                &#123;# @fake var breadcrumb #&#125;<br/>
+                &#123;# @fake var breadcrumb(&#123;&#39;count&#39;: &#39;5&#39;&#125;) #&#125;<br/>
+                &#123;# @fake var breadcrumb(&#39;5&#39;) #&#125;<br/>
+                &#123;% import &#39;static/helper/macros.html.twig&#39; as macros %&#125;<br/>
+                &lt;ul&gt;<br/>
+                    &#123;% for item in var %&#125;<br/>
+                        &lt;li&gt;&#123;&#123; macros.render_menu_item(item) &#125;&#125;&lt;/li&gt;<br/>
+                    &#123;% endfor %&#125;<br/>
+                &lt;/ul&gt;
+            </code>
+        </div>
+    </div>
+    <div class="col">
+        {% import 'static/helper/macros.html.twig' as macros %}
+        <ul>
+            {% for item in var3 %}
+                <li>{{ macros.render_menu_item(item) }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

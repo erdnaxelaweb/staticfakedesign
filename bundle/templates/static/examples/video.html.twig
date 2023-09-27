@@ -1,0 +1,28 @@
+<div class="row g-2 border-top m-2">
+    {# @fake var1 video #}
+    {# @fake var2 video({'imageVariationName': 'large'}) #}
+    {# @fake var3 video('large') #}
+    <div class="col-6">
+        <div class="border bg-light g-2 p-2">
+            <code class="chroma">
+                &#123;# @fake var video #&#125;<br/>
+                &#123;# @fake var video({'imageVariationName': 'large'}) #&#125;<br/>
+                &#123;# @fake var video('large') #&#125;<br/>
+                &lt;h1&gt;Title : &#123;&#123; var1title }}&lt;/h1&gt;<br/>
+                &lt;div&gt;Duration : &#123;&#123; var.duration }}&lt;/div&gt;<br/>
+                &lt;div&gt;Caption : &#123;&#123; var.caption }}&lt;/div&gt;<br/>
+                &lt;div&gt;Credits : &#123;&#123; var.credits }}&lt;/div&gt;<br/>
+                &lt;div&gt;Transcript : &#123;&#123; var.transcript }}&lt;/div&gt;<br/>
+                &#123;% include &#39;static/helper/video.html.twig&#39; with &#123;video: var} only %}
+            </code>
+        </div>
+    </div>
+    <div class="col-6">
+        <h1>Title : {{ var1.title }}</h1>
+        <div>Duration : {{ var1.duration }}</div>
+        <div>Caption : {{ var1.caption }}</div>
+        <div>Credits : {{ var1.credits }}</div>
+        <div>Transcript : {{ var1.transcript }}</div>
+        {% include 'static/helper/video.html.twig' with {video: var1} only %}
+    </div>
+</div>

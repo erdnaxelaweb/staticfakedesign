@@ -1,0 +1,81 @@
+parameters:
+    erdnaxelaweb.static_fake_design.generator.image.provider: ~
+    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {category: null, randomize: false, word: null, gray: true, format: 'png'}
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator:
+        factory: ['ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGeneratorFactory', 'createGenerator']
+        arguments:
+            $imageProviderClass: '%erdnaxelaweb.static_fake_design.generator.image.provider%'
+            $imageProviderParameters: '%erdnaxelaweb.static_fake_design.generator.image.provider_parameters%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\:
+        resource: '../../../lib/Fake/Generator/'
+        lazy: true
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator:
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\AudioGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'audio'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'block'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'breadcrumb'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'content'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\CoordinatesGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'coordinates'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\FormGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'image'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'link'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\PagerGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'pager'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'richtext'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\TaxonomyEntryGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'taxonomy_entry'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\VideoGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'video'}

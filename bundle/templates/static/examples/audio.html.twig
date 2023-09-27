@@ -1,0 +1,20 @@
+<div class="row g-2 border-top m-2">
+    {# @fake var1 audio #}
+    {# @fake var2 audio({'imageVariationName': 'large'}) #}
+    {# @fake var3 audio('large') #}
+    <div class="col-6">
+        <div class="border bg-light g-2 p-2">
+            <code class="chroma">
+                &#123;# @fake var audio #&#125;<br/>
+                &#123;# @fake var audio({'imageVariationName': 'large'}) #&#125;<br/>
+                &#123;# @fake var audio('large'}) #&#125;<br/>
+                &lt;h1&gt;Title : &#123;&#123; var.title }}&lt;/h1&gt;<br/>
+                &#123;% include &#39;static/helper/audio.html.twig&#39; with &#123;audio: var} only %}
+            </code>
+        </div>
+    </div>
+    <div class="col-6">
+        <h1>Title : {{ var1.title }}</h1>
+        {% include 'static/helper/audio.html.twig' with {audio: var1} only %}
+    </div>
+</div>

@@ -1,0 +1,41 @@
+{
+    "name":  "erdnaxelaweb/staticfakedesign",
+    "type": "library",
+    "description": "Provides utilities to generate fake data in order to create a static design",
+    "keywords": [],
+    "license": "MIT",
+    "require": {
+        "fakerphp/faker": "^1.23",
+        "friendsofphp/proxy-manager-lts": "^1.0",
+        "symfony/translation": "^5.0",
+        "babdev/pagerfanta-bundle": "^2.0",
+        "knplabs/knp-menu-bundle": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.3",
+        "symplify/easy-coding-standard": "*"
+    },
+    "suggest": {
+        "ext-dom": "*"
+    },
+    "authors": [
+        {
+            "name": "Florian ALEXANDRE"
+        }
+    ],
+    "scripts": {
+        "check-cs": [
+            "ecs"
+        ],
+        "fix-cs": [
+            "ecs --fix"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "ErdnaxelaWeb\\StaticFakeDesignBundle\\": "bundle",
+            "ErdnaxelaWeb\\StaticFakeDesign\\": "lib",
+            "ErdnaxelaWeb\\StaticFakeDesign\\Tests\\": "tests"
+        }
+    }
+}

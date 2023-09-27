@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% include 'static/examples/audio.html.twig' %}
+        {% include 'static/examples/video.html.twig' %}
+        {% include 'static/examples/image.html.twig' %}
+        {% include 'static/examples/breadcrumb.html.twig' %}
+        {% include 'static/examples/coordinates.html.twig' %}
+        {% include 'static/examples/link.html.twig' %}
+
+        <div class="row g-2 border-top m-2">
+            {# @fake var12 richtext #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var richtext #&#125;<br/>
+                    &#123;&#123; var &#125;&#125;
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                {{ dump(var12) }}
+            </div>
+        </div>
+        <div class="row g-2 border-top m-2">
+            {# @fake var131 pager({'type': 'article'}) #}
+            {# @fake var132 pager('article') #}
+            {# @var var132 \PagerFanta\Pagerfanta #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var pager({'type': 'article'}) #&#125;<br/>
+                    &#123;# @fake var pager('article') #&#125;<br/>
+                    &#123;&#123; var.currentPageResults &#125;&#125;<br/>
+                    &#123;&#123; pagerfanta(var) &#125;&#125;
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                <h1>{{ var132.nbResults }} results ({{ var132.maxPerPage }}/page) over {{ var132.nbPages }} pages</h1>
+                <ul>
+                {% for content in var132 %}
+                   <li>{{ content.name }}</li>
+                {% endfor %}
+                </ul>
+                {{ pagerfanta(var132) }}
+            </div>
+        </div>
+        <div class="row g-2 border-top m-2">
+            {# @fake var141 content({'type': 'article'}) #}
+            {# @fake var142 content('article') #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var content({'type': 'article'}) #&#125;<br/>
+                    &#123;# @fake var content('article') #&#125;<br/>
+                    &#123;&#123; var.name &#125;&#125;<br/>
+                    &#123;&#123; var.url &#125;&#125;<br/>
+                    &#123;&#123; var.fields &#125;&#125;
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                {{ dump(var142.name) }}
+                {{ dump(var142.url) }}
+                {{ dump(var142.fields) }}
+            </div>
+        </div>
+        <div class="row g-2 border-top m-2">
+            {# @fake var151 taxonomy_entry({'type': 'tag'}) #}
+            {# @fake var152 taxonomy_entry('tag') #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var taxonomy_entry({'type': 'tag'}) #&#125;<br/>
+                    &#123;# @fake var taxonomy_entry('tag') #&#125;<br/>
+                    &#123;&#123; var.id &#125;&#125;<br/>
+                    &#123;&#123; var.name &#125;&#125;<br/>
+                    &#123;&#123; var.fields &#125;&#125;
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                {{ dump(var152.id) }}
+                {{ dump(var152.name) }}
+                {{ dump(var152.fields) }}
+            </div>
+        </div>
+        <div class="row g-2 border-top m-2">
+            {# @fake var161 block({'type': 'list'}) #}
+            {# @fake var162 block('list') #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var block({'type': 'list'}) #&#125;<br/>
+                    &#123;# @fake var block('list') #&#125;<br/>
+                    &#123;&#123; var.name &#125;&#125;<br/>
+                    &#123;&#123; var.fields }} &#125;&#125;
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                {{ dump(var162.name) }}
+                {{ dump(var162.fields) }}
+            </div>
+        </div>
+        <div class="row g-2 border-top m-2">
+            {# @fake var17 form #}
+            <div class="col-5 ">
+                <div class="border bg-light g-2 p-2">
+                <code class="chroma">
+                    &#123;# @fake var form #&#125;<br/>
+                    &#123;&#123; form(var) &#125;&#125;<br/>
+                </code>
+                    </div>
+            </div>
+            <div class="col">
+                {% form_theme var17 'bootstrap_5_layout.html.twig' %}
+                {{ form(var17) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

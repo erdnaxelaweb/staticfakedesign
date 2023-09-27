@@ -1,0 +1,22 @@
+<div class="row g-2 border-top m-2">
+    {# @fake var1 image({'variationName': 'large'}) #}
+    {# @fake var2 image('large') #}
+    <div class="col-6">
+        <div class="border bg-light g-2 p-2">
+            <code class="chroma">
+                &#123;# @fake var image({'imageVariationName': 'large'}) #&#125;<br/>
+                &#123;# @fake var image('large'}) #&#125;<br/>
+                &lt;h1&gt;Alternative text : &#123;&#123; var.alt }}&lt;/h1&gt;<br/>
+                &lt;h2&gt;Caption : &#123;&#123; var.caption }}&lt;/h2&gt;<br/>
+                &lt;h2&gt;Credits : &#123;&#123; var.credits }}&lt;/h2&gt;<br/>
+                &#123;% include &#39;static/helper/image.html.twig&#39; with &#123;image: var} only %}
+            </code>
+        </div>
+    </div>
+    <div class="col-6">
+        <h1>Alternative text : {{ var2.alt }}</h1>
+        <h2>Caption : {{ var2.caption }}</h2>
+        <h2>Credits : {{ var2.credits }}</h2>
+        {% include 'static/helper/image.html.twig' with {image: var2} only %}
+    </div>
+</div>

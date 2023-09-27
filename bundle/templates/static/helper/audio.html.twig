@@ -1,0 +1,18 @@
+{# @fake audio audio #}
+{# @var audio \ErdnaxelaWeb\StaticFakeDesign\Value\Audio #}
+{% if audio and audio.hasSource %}
+    {% if audio.image %}
+        {% include 'static/helper/image.html.twig' with {image: audio.image} only %}
+    {% endif %}
+    {% if audio.isExternalAudio %}
+        <iframe
+                src="{{ audio.source.uri }}"
+                allowfullscreen
+                allow="autoplay"
+        ></iframe>
+    {% else %}
+        <audio crossorigin playsinline>
+            <source src="{{ audio.source.uri }}" type="{{ audio.source.type }}">
+        </audio>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,51 @@
+parameters:
+    erdnaxelaweb.static_fake_design.image.breakpoints:
+        -
+            suffix: desktop
+            media: '(min-width: 1024px)'
+        -
+            suffix: tablet
+            media: '(min-width: 754px)'
+        -
+            suffix: mobile
+            media: '(min-width: 0)'
+
+    erdnaxelaweb.static_fake_design.image.variations: []
+    erdnaxelaweb.static_fake_design.block_definition: []
+    erdnaxelaweb.static_fake_design.contents_definition: []
+    erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ErdnaxelaWeb\StaticFakeDesignBundle\Controller\StaticController:
+        public: true
+
+    ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Extension: ~
+    ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Loader:
+        decorates: twig.loader
+        arguments:
+            - '@ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Loader.inner'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration:
+        arguments:
+            $breakpoints: '%erdnaxelaweb.static_fake_design.image.breakpoints%'
+            $variations: '%erdnaxelaweb.static_fake_design.image.variations%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager:
+        lazy: true
+        arguments:
+            $definitions: '%erdnaxelaweb.static_fake_design.contents_definition%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager:
+        lazy: true
+        arguments:
+            $definitions: '%erdnaxelaweb.static_fake_design.taxonomy_entry_definition%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager:
+        lazy: true
+        arguments:
+            $definitions: '%erdnaxelaweb.static_fake_design.block_definition%'

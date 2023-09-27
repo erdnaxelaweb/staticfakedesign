@@ -1,0 +1,15 @@
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+{% macro render_menu_item(item) %}
+    {% import _self as macros %}
+    {%- if item.uri is not empty %}
+        <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>{{ item.label }}</a>
+    {%- else %}
+        <span{{ macros.attributes(item.labelAttributes) }}>{{ item.label }}</span>
+    {%- endif %}
+{% endmacro %}

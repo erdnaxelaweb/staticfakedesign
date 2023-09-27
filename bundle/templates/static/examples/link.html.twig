@@ -1,0 +1,26 @@
+<div class="row g-2 border-top m-2">
+    {# @fake var1 link #}
+    {# @fake var2 link({'target': '_blank'}) #}
+    {# @fake var3 link('_blank') #}
+    <div class="col-5 ">
+        <div class="border bg-light g-2 p-2">
+            <code class="chroma">
+                &#123;# @fake link link #&#125;<br/>
+                &#123;# @fake link_blank link(&#123;&#39;target&#39;: &#39;_blank&#39;&#125;) #&#125;<br/>
+                &#123;# @fake link_blank link(&#39;_blank&#39;) #&#125;<br/>
+                &#123;% import &#39;static/helper/macros.html.twig&#39; as macros %&#125;<br/>
+                &lt;ul&gt;<br/>
+                    &lt;li&gt;link : &#123;&#123; macros.render_menu_item(link) &#125;&#125;&lt;/li&gt;<br/>
+                    &lt;li&gt;blank link : &#123;&#123; macros.render_menu_item(link_blank) &#125;&#125;&lt;/li&gt;<br/>
+                &lt;/ul&gt;
+            </code>
+        </div>
+    </div>
+    <div class="col">
+        {% import 'static/helper/macros.html.twig' as macros %}
+        <ul>
+            <li>link : {{ macros.render_menu_item(var1) }}</li>
+            <li>blank link : {{ macros.render_menu_item(var3) }}</li>
+        </ul>
+    </div>
+</div>
