@@ -23,6 +23,23 @@ The available value types are (some type accept parameters) :
 
 [full documentation (coming soon)](/)
 
+## Installation
+
+Require the package with `composer require erdnaxelaweb/staticfakedesign:dev-main` then activate the bundle :
+```injectablephp
+ErdnaxelaWeb\StaticFakeDesignBundle\StaticFakeDesignBundle::class => ['all' => true],
+```
+
+### Routing
+Add the following root to access the examples :
+```yaml
+static:
+    path: /static/{path}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\StaticController::viewAction
+    requirements:
+        path: .*
+```
+
 ## Create your own value generator
 
 coming soon
