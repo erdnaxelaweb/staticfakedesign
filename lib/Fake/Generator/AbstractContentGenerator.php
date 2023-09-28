@@ -16,6 +16,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ContentFieldsCollection;
 
 abstract class AbstractContentGenerator extends AbstractGenerator
 {
@@ -32,9 +33,9 @@ abstract class AbstractContentGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    protected function generateFieldsValue(array $fieldsDefinition): array
+    protected function generateFieldsValue(array $fieldsDefinition): ContentFieldsCollection
     {
-        $fieldsValue = [];
+        $fieldsValue = new ContentFieldsCollection();
         foreach ( $fieldsDefinition as $fieldIdentifier => $fieldDefinition )
         {
             $required = $fieldDefinition['required'] ?? false;
@@ -45,7 +46,7 @@ abstract class AbstractContentGenerator extends AbstractGenerator
                 $this->generateFieldValue( $type, $options ) :
                 null;
 
-            $fieldsValue[$fieldIdentifier] = $fieldValue;
+            $fieldsValue->set($fieldIdentifier, $fieldValue);
         }
         return $fieldsValue;
     }

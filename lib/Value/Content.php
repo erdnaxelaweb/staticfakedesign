@@ -17,7 +17,7 @@ class Content extends AbstractContent
 {
     public function __construct(
          string $name,
-         array  $fields,
+         ContentFieldsCollection  $fields,
          public readonly string $url = "",
          public readonly array  $breadcrumb = []
     )
