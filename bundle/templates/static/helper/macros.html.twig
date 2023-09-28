@@ -5,7 +5,7 @@
         {%- endif -%}
     {%- endfor -%}
 {% endmacro %}
-{% macro render_menu_item(item) %}
+{% macro display_menu_item(item) %}
     {% import _self as macros %}
     {%- if item.uri is not empty %}
         <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>{{ item.label }}</a>

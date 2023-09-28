@@ -11,7 +11,7 @@
                 &#123;% import &#39;static/helper/macros.html.twig&#39; as macros %&#125;<br/>
                 &lt;ul&gt;<br/>
                     &#123;% for item in var %&#125;<br/>
-                        &lt;li&gt;&#123;&#123; macros.render_menu_item(item) &#125;&#125;&lt;/li&gt;<br/>
+                        &lt;li&gt;&#123;&#123; macros.display_menu_item(item) &#125;&#125;&lt;/li&gt;<br/>
                     &#123;% endfor %&#125;<br/>
                 &lt;/ul&gt;
             </code>
@@ -21,7 +21,7 @@
         {% import 'static/helper/macros.html.twig' as macros %}
         <ul>
             {% for item in var3 %}
-                <li>{{ macros.render_menu_item(item) }}</li>
+                <li>{{ macros.display_menu_item(item) }}</li>
             {% endfor %}
         </ul>
     </div>

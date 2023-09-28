@@ -43,8 +43,13 @@
                 <code class="chroma">
                     &#123;# @fake var pager({'type': 'article'}) #&#125;<br/>
                     &#123;# @fake var pager('article') #&#125;<br/>
-                    &#123;&#123; var.currentPageResults &#125;&#125;<br/>
-                    &#123;&#123; pagerfanta(var) &#125;&#125;
+                    &lt;h1&gt;&#123;&#123; var132.nbResults }} results (&#123;&#123; var132.maxPerPage }}/page) over &#123;&#123; var132.nbPages }} pages&lt;/h1&gt;
+                    &lt;ul&gt;
+                        &#123;% for content in var132 %}
+                            &lt;li&gt;&#123;&#123; content.name }}&lt;/li&gt;
+                        &#123;% endfor %}
+                    &lt;/ul&gt;
+                    &#123;&#123; pagerfanta(var132) }}
                 </code>
                     </div>
             </div>
