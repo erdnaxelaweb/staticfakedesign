@@ -11,7 +11,7 @@
 
                 <img loading=lazy
                      alt="{% if image.alt is defined %}{{ image.alt }}{% endif %}"
-                {% for attrname, attrvalue in image.defaultSource.getTagAttributes({class: 'enhancedimage--img'})|filter(attrvalue => attrvalue is not empty) %}{{ attrname }}="{{ attrvalue }}" {% endfor %}>
+                {% for attrname, attrvalue in image.defaultSource.getTagAttributes({class: 'enhancedimage--img'})|filter((attrvalue, attrname) => attrvalue is not empty and attrname != "media") %}{{ attrname }}="{{ attrvalue }}" {% endfor %}>
             {% endif %}
         </picture>
         {% if image and (image.caption or image.credits) %}

@@ -25,7 +25,7 @@ class FakerGeneratorFactory extends BaseFactory
      *
      * @return Generator
      */
-    public static function createGenerator(array $imageProviderParameters = [], ?string $imageProviderClass = null, $locale = self::DEFAULT_LOCALE)
+    public static function createGenerator(array $imageProviderParameters = [], ?string $imageProviderClass = null, string $locale = self::DEFAULT_LOCALE): Generator|FakerGenerator
     {
         $generator = new FakerGenerator($imageProviderParameters);
 

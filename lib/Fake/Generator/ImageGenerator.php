@@ -38,7 +38,7 @@ class ImageGenerator extends AbstractGenerator
 
     }
 
-    public function __invoke(string $variationName): Image
+    public function __invoke(string $variationName, $id = null): Image
     {
         $variationConfig = $this->imageConfiguration->getVariationConfig( $variationName );
 
@@ -55,8 +55,8 @@ class ImageGenerator extends AbstractGenerator
             );
 
             $uris = [
-                $this->fakerGenerator->imagePlaceholder( $width, $height ),
-                $this->fakerGenerator->imagePlaceholder( $width * 2, $height * 2 ) . ' 2x',
+                $this->fakerGenerator->imagePlaceholder( $width, $height, $id ),
+                $this->fakerGenerator->imagePlaceholder( $width * 2, $height * 2, $id ) . ' 2x',
             ];
             $sources[] = new ImageSource(
                 implode( ', ', $uris ),

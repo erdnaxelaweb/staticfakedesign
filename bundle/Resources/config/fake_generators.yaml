@@ -1,6 +1,9 @@
 parameters:
-    erdnaxelaweb.static_fake_design.generator.image.provider: ~
-    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {category: null, randomize: false, word: null, gray: true, format: 'png'}
+#    erdnaxelaweb.static_fake_design.generator.image.provider: ~
+#    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {category: null, randomize: false, word: null, gray: true, format: 'png'}
+
+    erdnaxelaweb.static_fake_design.generator.image.provider: "\\Smknstd\\FakerPicsumImages\\FakerPicsumImagesProvider"
+    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {randomize: false, gray: false}
 
 services:
     _defaults:
