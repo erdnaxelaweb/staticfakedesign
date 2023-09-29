@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
@@ -19,19 +19,20 @@ use Twig\TwigFunction;
 
 class Extension extends AbstractExtension
 {
-
-    /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator $generator
-     */
-    public function __construct( protected ChainGenerator $generator )
-    {
+    public function __construct(
+        protected ChainGenerator $generator
+    ) {
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('generateFake', [$this->generator, 'generateFake'], ['is_safe' => ['html']]),
-            new TwigFunction('generateFakeArray', [$this->generator, 'generateFakeArray'], ['is_safe' => ['html']]),
+            new TwigFunction('generateFake', [$this->generator, 'generateFake'], [
+                'is_safe' => ['html'],
+            ]),
+            new TwigFunction('generateFakeArray', [$this->generator, 'generateFakeArray'], [
+                'is_safe' => ['html'],
+            ]),
         ];
     }
 }

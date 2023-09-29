@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
@@ -21,12 +21,13 @@ class FakerGeneratorFactory extends BaseFactory
     /**
      * Create a new generator
      *
-     * @param string $locale
-     *
      * @return Generator
      */
-    public static function createGenerator(array $imageProviderParameters = [], ?string $imageProviderClass = null, string $locale = self::DEFAULT_LOCALE): Generator|FakerGenerator
-    {
+    public static function createGenerator(
+        array $imageProviderParameters = [],
+        ?string $imageProviderClass = null,
+        string $locale = self::DEFAULT_LOCALE
+    ): Generator|FakerGenerator {
         $generator = new FakerGenerator($imageProviderParameters);
 
         foreach (static::$defaultProviders as $provider) {
@@ -35,7 +36,7 @@ class FakerGeneratorFactory extends BaseFactory
         }
 
         if ($imageProviderClass) {
-            $generator->addProvider(new $imageProviderClass( $generator));
+            $generator->addProvider(new $imageProviderClass($generator));
         }
 
         return $generator;

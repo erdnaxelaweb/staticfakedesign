@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class EmailFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): EmailFieldGenerator
+
+    public static function getGenerator(): EmailFieldGenerator
     {
         return new EmailFieldGenerator(self::getFakerGenerator());
     }

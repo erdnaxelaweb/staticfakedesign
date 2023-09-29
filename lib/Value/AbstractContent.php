@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
@@ -20,14 +20,12 @@ class AbstractContent
     use LazyGhostTrait;
 
     /**
-     * @param string $name
      * @param array $fields
      */
     public function __construct(
-        public readonly string $name = "",
-        public readonly string $type = "",
-        public readonly array  $fields = []
-    )
-    {
+        public readonly string $name,
+        public readonly string $type,
+        public readonly ContentFieldsCollection  $fields
+    ) {
     }
 }

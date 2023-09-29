@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
@@ -19,9 +19,8 @@ class TaxonomyEntry extends AbstractContent
         public readonly int $id,
         string $name,
         string $type,
-        array $fields
-    )
-    {
-        parent::__construct( $name, $type, $fields );
+        ContentFieldsCollection $fields
+    ) {
+        parent::__construct($name, $type, $fields);
     }
 }

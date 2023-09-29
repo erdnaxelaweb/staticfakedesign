@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -20,30 +20,23 @@ use ErdnaxelaWeb\StaticFakeDesign\Value\ContentFieldsCollection;
 
 abstract class AbstractContentGenerator extends AbstractGenerator
 {
-
-    /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator $fakerGenerator
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry $fieldGeneratorRegistry
-     */
     public function __construct(
         FakerGenerator                $fakerGenerator,
         protected ContentFieldGeneratorRegistry $fieldGeneratorRegistry
-    )
-    {
+    ) {
         parent::__construct($fakerGenerator);
     }
 
     protected function generateFieldsValue(array $fieldsDefinition): ContentFieldsCollection
     {
         $fieldsValue = new ContentFieldsCollection();
-        foreach ( $fieldsDefinition as $fieldIdentifier => $fieldDefinition )
-        {
+        foreach ($fieldsDefinition as $fieldIdentifier => $fieldDefinition) {
             $required = $fieldDefinition['required'] ?? false;
             $type = $fieldDefinition['type'];
             $options = $fieldDefinition['options'] ?? [];
 
-            $fieldValue = ( $required || $this->fakerGenerator->boolean() ) ?
-                $this->generateFieldValue( $type, $options ) :
+            $fieldValue = ($required || $this->fakerGenerator->boolean()) ?
+                $this->generateFieldValue($type, $options) :
                 null;
 
             $fieldsValue->set($fieldIdentifier, $fieldValue);
@@ -51,16 +44,13 @@ abstract class AbstractContentGenerator extends AbstractGenerator
         return $fieldsValue;
     }
 
-    protected function generateFieldValue( string $type, array $options )
+    protected function generateFieldValue(string $type, array $options)
     {
-        try
-        {
-            $generator = $this->fieldGeneratorRegistry->getGenerator( $type );
-        }
-        catch ( \InvalidArgumentException $e )
-        {
+        try {
+            $generator = $this->fieldGeneratorRegistry->getGenerator($type);
+        } catch (\InvalidArgumentException $e) {
             return $e->getMessage();
         }
-        return is_callable($generator) ? $generator( ...$options ) : null;
+        return is_callable($generator) ? $generator(...$options) : null;
     }
 }

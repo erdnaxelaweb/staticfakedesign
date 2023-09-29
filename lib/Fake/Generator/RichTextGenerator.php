@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -21,22 +21,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RichTextGenerator extends AbstractGenerator
 {
     public const P_TAG = 'p';
+
     public const A_TAG = 'a';
+
     public const SPAN_TAG = 'span';
+
     public const TABLE_TAG = 'table';
+
     public const THEAD_TAG = 'thead';
+
     public const TBODY_TAG = 'tbody';
+
     public const TR_TAG = 'tr';
+
     public const TD_TAG = 'td';
+
     public const TH_TAG = 'th';
+
     public const UL_TAG = 'ul';
+
     public const LI_TAG = 'li';
+
     public const H_TAG = 'h';
+
     public const B_TAG = 'b';
+
     public const I_TAG = 'i';
+
     public const TITLE_TAG = 'title';
-
-
 
     public function configureOptions(OptionsResolver $optionResolver): void
     {
@@ -44,13 +56,14 @@ class RichTextGenerator extends AbstractGenerator
         $optionResolver->define('maxWidth')
             ->default(10)
             ->allowedTypes('int')
-            ->info('Identifier of the taxonomy entry to generate. See erdnaxelaweb.static_fake_design.taxonomy_entry_definition');
-
+            ->info(
+                'Identifier of the taxonomy entry to generate. See erdnaxelaweb.static_fake_design.taxonomy_entry_definition'
+            );
     }
 
     public function __invoke(int $maxWidth = 10): string
     {
-        if (!class_exists( DOMDocument::class, false)) {
+        if (! class_exists(DOMDocument::class, false)) {
             throw new \RuntimeException('ext-dom is required to use randomHtml.');
         }
 
@@ -59,17 +72,14 @@ class RichTextGenerator extends AbstractGenerator
         $this->addRandomSubTree($body, $maxWidth);
 
         $resultDocument = new DOMDocument();
-        foreach ( $body->childNodes as $childNode )
-        {
+        foreach ($body->childNodes as $childNode) {
             $node = $resultDocument->importNode($childNode, true);
             $resultDocument->appendChild($node);
         }
         return $resultDocument->saveXML();
     }
 
-
-
-    private function addRandomSubTree( DOMElement $root, int $maxWidth)
+    private function addRandomSubTree(DOMElement $root, int $maxWidth)
     {
         $siblings = $this->fakerGenerator->numberBetween(1, $maxWidth);
 
@@ -80,123 +90,142 @@ class RichTextGenerator extends AbstractGenerator
         return $root;
     }
 
-    private function addRandomLeaf( DOMElement $node): void
+    private function addRandomLeaf(DOMElement $node): void
     {
         $rand = $this->fakerGenerator->numberBetween(1, 10);
 
         switch ($rand) {
-        case 1:
-            $this->addRandomP($node);
+            case 1:
+                $this->addRandomP($node);
 
-            break;
+                break;
 
-        case 2:
-            $this->addRandomA($node);
+            case 2:
+                $this->addRandomA($node);
 
-            break;
+                break;
 
-        case 3:
-            $this->addRandomSpan($node);
+            case 3:
+                $this->addRandomSpan($node);
 
-            break;
+                break;
 
-        case 4:
-            $this->addRandomUL($node);
+            case 4:
+                $this->addRandomUL($node);
 
-            break;
+                break;
 
-        case 5:
-            $this->addRandomH($node);
+            case 5:
+                $this->addRandomH($node);
 
-            break;
+                break;
 
-        case 6:
-            $this->addRandomB($node);
+            case 6:
+                $this->addRandomB($node);
 
-            break;
+                break;
 
-        case 7:
-            $this->addRandomI($node);
+            case 7:
+                $this->addRandomI($node);
 
-            break;
+                break;
 
-        case 8:
-            $this->addRandomTable($node);
+            case 8:
+                $this->addRandomTable($node);
 
-            break;
+                break;
 
-        default:
-            $this->addRandomText($node);
+            default:
+                $this->addRandomText($node);
 
-            break;
+                break;
         }
     }
 
-    private function addRandomP( DOMElement $element, $maxLength = 10): void
+    private function addRandomP(DOMElement $element, $maxLength = 10): void
     {
         $node = $element->ownerDocument->createElement(static::P_TAG);
         $node->textContent = $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength));
         $element->appendChild($node);
     }
 
-    private function addRandomText( DOMElement $element, $maxLength = 10): void
+    private function addRandomText(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $element->appendChild($text);
     }
 
-    private function addRandomA( DOMElement $element, $maxLength = 10): void
+    private function addRandomA(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement(static::A_TAG);
         $node->setAttribute('href', $this->fakerGenerator->safeEmailDomain());
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomTitle( DOMElement $element, $maxLength = 10): void
+    private function addRandomTitle(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement(static::TITLE_TAG);
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomH( DOMElement $element, $maxLength = 10): void
+    private function addRandomH(DOMElement $element, $maxLength = 10): void
     {
         $h = static::H_TAG . (string) $this->fakerGenerator->numberBetween(1, 3);
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement($h);
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomB( DOMElement $element, $maxLength = 10): void
+    private function addRandomB(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement(static::B_TAG);
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomI( DOMElement $element, $maxLength = 10): void
+    private function addRandomI(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement(static::I_TAG);
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomSpan( DOMElement $element, $maxLength = 10): void
+    private function addRandomSpan(DOMElement $element, $maxLength = 10): void
     {
-        $text = $element->ownerDocument->createTextNode($this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength)));
+        $text = $element->ownerDocument->createTextNode(
+            $this->fakerGenerator->sentence($this->fakerGenerator->numberBetween(1, $maxLength))
+        );
         $node = $element->ownerDocument->createElement(static::SPAN_TAG);
         $node->appendChild($text);
         $element->appendChild($node);
     }
 
-    private function addRandomTable( DOMElement $element, $maxRows = 10, $maxCols = 6, $maxTitle = 4, $maxLength = 10): void
-    {
+    private function addRandomTable(
+        DOMElement $element,
+        $maxRows = 10,
+        $maxCols = 6,
+        $maxTitle = 4,
+        $maxLength = 10
+    ): void {
         $rows = $this->fakerGenerator->numberBetween(1, $maxRows);
         $cols = $this->fakerGenerator->numberBetween(1, $maxCols);
 
@@ -229,7 +258,7 @@ class RichTextGenerator extends AbstractGenerator
         $element->appendChild($table);
     }
 
-    private function addRandomUL( DOMElement $element, $maxItems = 11, $maxLength = 4): void
+    private function addRandomUL(DOMElement $element, $maxItems = 11, $maxLength = 4): void
     {
         $num = $this->fakerGenerator->numberBetween(1, $maxItems);
         $ul = $element->ownerDocument->createElement(static::UL_TAG);

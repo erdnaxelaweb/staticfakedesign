@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -21,12 +21,12 @@ class RichTextGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(  ): RichTextGenerator
+    public static function getGenerator(): RichTextGenerator
     {
         return new RichTextGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator(  )
+    public function testGenerator()
     {
         $generator = self::getGenerator();
 

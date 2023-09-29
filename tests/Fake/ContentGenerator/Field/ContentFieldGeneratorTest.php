@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -21,10 +21,9 @@ use PHPUnit\Framework\TestCase;
 
 class ContentFieldGeneratorTest extends TestCase
 {
-
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): ContentFieldGenerator
+
+    public static function getGenerator(): ContentFieldGenerator
     {
         return new ContentFieldGenerator(ContentGeneratorTest::getGenerator());
     }
@@ -41,5 +40,4 @@ class ContentFieldGeneratorTest extends TestCase
         self::assertNotEmpty($contents);
         self::assertInstanceOf(Content::class, $contents[0]);
     }
-
 }

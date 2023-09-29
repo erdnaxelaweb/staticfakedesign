@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -20,9 +20,9 @@ use PHPUnit\Framework\TestCase;
 
 class DateFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): DateFieldGenerator
+
+    public static function getGenerator(): DateFieldGenerator
     {
         return new DateFieldGenerator(self::getFakerGenerator());
     }
@@ -32,6 +32,6 @@ class DateFieldGeneratorTest extends TestCase
         $generator = self::getGenerator();
 
         $date = $generator();
-        self::assertInstanceOf( DateTime::class, $date);
+        self::assertInstanceOf(DateTime::class, $date);
     }
 }

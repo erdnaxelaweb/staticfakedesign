@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class TimeFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): TimeFieldGenerator
+
+    public static function getGenerator(): TimeFieldGenerator
     {
         return new TimeFieldGenerator(self::getFakerGenerator());
     }
@@ -33,7 +33,6 @@ class TimeFieldGeneratorTest extends TestCase
         $time = $generator();
         self::assertIsInt($time);
         self::assertGreaterThanOrEqual(0, $time);
-        self::assertLessThanOrEqual(24*60*60, $time);
+        self::assertLessThanOrEqual(24 * 60 * 60, $time);
     }
-
 }

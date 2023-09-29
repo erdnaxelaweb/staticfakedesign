@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class BooleanFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): BooleanFieldGenerator
+
+    public static function getGenerator(): BooleanFieldGenerator
     {
         return new BooleanFieldGenerator(self::getFakerGenerator());
     }
@@ -33,5 +33,4 @@ class BooleanFieldGeneratorTest extends TestCase
         $bool = $generator();
         self::assertIsBool($bool);
     }
-
 }

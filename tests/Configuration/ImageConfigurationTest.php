@@ -9,12 +9,12 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration;
 
-use ErdnaxelaWeb\StaticFakeDesign\Exception\VariationConfigurationNotFoundException;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
+use ErdnaxelaWeb\StaticFakeDesign\Exception\VariationConfigurationNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class ImageConfigurationTest extends TestCase
@@ -25,19 +25,19 @@ class ImageConfigurationTest extends TestCase
             [
                 [
                     'suffix' => 'desktop',
-                    'media' => '(min-width: 1024px)'
+                    'media' => '(min-width: 1024px)',
                 ],
                 [
                     'suffix' => 'tablet',
-                    'media' => '(min-width: 754px)'
+                    'media' => '(min-width: 754px)',
                 ],
                 [
                     'suffix' => 'mobile',
-                    'media' => '(min-width: 0)'
+                    'media' => '(min-width: 0)',
                 ],
             ],
             [
-                'large' => [ [ 200, 200 ], [ 100, 100 ], [ 50, 50 ] ]
+                'large' => [[200, 200], [100, 100], [50, 50]],
             ]
         );
     }
@@ -45,20 +45,20 @@ class ImageConfigurationTest extends TestCase
     public function testGetVariationConfiguration()
     {
         $imageConfiguration = self::getConfiguration();
-        $configuration = $imageConfiguration->getVariationConfig( 'large' );
-        self::assertIsArray( $configuration );
-        self::assertCount( 3, $configuration );
-        self::assertArrayHasKey( 'suffix', $configuration[0] );
-        self::assertArrayHasKey( 'media', $configuration[0] );
-        self::assertArrayHasKey( 'height', $configuration[0] );
-        self::assertArrayHasKey( 'width', $configuration[0] );
+        $configuration = $imageConfiguration->getVariationConfig('large');
+        self::assertIsArray($configuration);
+        self::assertCount(3, $configuration);
+        self::assertArrayHasKey('suffix', $configuration[0]);
+        self::assertArrayHasKey('media', $configuration[0]);
+        self::assertArrayHasKey('height', $configuration[0]);
+        self::assertArrayHasKey('width', $configuration[0]);
     }
 
-    public function testGetVariationConfigurationNotFound(  )
+    public function testGetVariationConfigurationNotFound()
     {
         $imageConfiguration = self::getConfiguration();
 
-        $this->expectException( VariationConfigurationNotFoundException::class);
-        $configuration = $imageConfiguration->getVariationConfig( 'notfound' );
+        $this->expectException(VariationConfigurationNotFoundException::class);
+        $configuration = $imageConfiguration->getVariationConfig('notfound');
     }
 }

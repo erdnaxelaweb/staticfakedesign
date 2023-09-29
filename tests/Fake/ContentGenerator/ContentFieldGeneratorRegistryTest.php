@@ -63,13 +63,14 @@ class ContentFieldGeneratorRegistryTest extends TestCase
         }) extends ContentFieldGeneratorRegistry {
             protected ?ContentFieldGeneratorRegistry $instance = null;
 
-            public function __construct(protected $initializer)
-            {
+            public function __construct(
+                protected $initializer
+            ) {
             }
 
             public function getInstance(): ContentFieldGeneratorRegistry
             {
-                if (!$this->instance) {
+                if (! $this->instance) {
                     $this->instance = ($this->initializer)();
                 }
                 return $this->instance;
@@ -77,7 +78,8 @@ class ContentFieldGeneratorRegistryTest extends TestCase
 
             public function getGenerator(string $type): GeneratorInterface
             {
-                return ($this->getInstance())->getGenerator($type);
+                return ($this->getInstance())
+                    ->getGenerator($type);
             }
         };
     }

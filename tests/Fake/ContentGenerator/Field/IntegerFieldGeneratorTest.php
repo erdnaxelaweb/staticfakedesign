@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class IntegerFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): IntegerFieldGenerator
+
+    public static function getGenerator(): IntegerFieldGenerator
     {
         return new IntegerFieldGenerator(self::getFakerGenerator());
     }
@@ -33,11 +33,9 @@ class IntegerFieldGeneratorTest extends TestCase
         $float = $generator();
         self::assertIsInt($float);
 
-        $float = $generator(10,  50);
+        $float = $generator(10, 50);
         self::assertIsInt($float);
         self::assertGreaterThanOrEqual(10, $float);
         self::assertLessThanOrEqual(50, $float);
     }
-
-
 }

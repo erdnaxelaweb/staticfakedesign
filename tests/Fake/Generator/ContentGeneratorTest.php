@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -24,21 +24,20 @@ class ContentGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(  ): ContentGenerator
+    public static function getGenerator(): ContentGenerator
     {
-            return new ContentGenerator(
-                ContentConfigurationManagerTest::getConfiguration(),
-                BreadcrumbGeneratorTest::getGenerator(),
-                self::getFakerGenerator(),
-                ContentFieldGeneratorRegistryTest::getRegistry()
-            );
+        return new ContentGenerator(
+            ContentConfigurationManagerTest::getConfiguration(),
+            BreadcrumbGeneratorTest::getGenerator(),
+            self::getFakerGenerator(),
+            ContentFieldGeneratorRegistryTest::getRegistry()
+        );
     }
 
-    public function testGenerator(  )
+    public function testGenerator()
     {
         $generator = self::getGenerator();
         $taxonomyEntry = $generator('article');
         self::assertInstanceOf(Content::class, $taxonomyEntry);
     }
-
 }

@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration;
 
@@ -20,7 +20,6 @@ use PHPUnit\Framework\TestCase;
 
 class BlockConfigurationManagerTest extends TestCase
 {
-
     public static function getConfiguration(): BlockConfigurationManager
     {
         return new BlockConfigurationManager(
@@ -30,8 +29,8 @@ class BlockConfigurationManagerTest extends TestCase
                         'title' => [
                             'required' => true,
                             'type' => 'string',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
             ContentFieldGeneratorRegistryTest::getRegistry()
@@ -49,15 +48,15 @@ class BlockConfigurationManagerTest extends TestCase
         self::assertArrayHasKey('type', $configuration['fields']['title']);
         self::assertArrayHasKey('options', $configuration['fields']['title']);
         self::assertEquals('string', $configuration['fields']['title']['type']);
-        self::assertTrue( $configuration['fields']['title']['required'] );
+        self::assertTrue($configuration['fields']['title']['required']);
         self::assertIsArray($configuration['fields']['title']['options']);
     }
 
-    public function testGetConfigurationNotFound(  )
+    public function testGetConfigurationNotFound()
     {
         $configuration = self::getConfiguration();
 
-        $this->expectException( ConfigurationNotFoundException::class);
-        $configuration = $configuration->getConfiguration( 'notfound' );
+        $this->expectException(ConfigurationNotFoundException::class);
+        $configuration = $configuration->getConfiguration('notfound');
     }
 }

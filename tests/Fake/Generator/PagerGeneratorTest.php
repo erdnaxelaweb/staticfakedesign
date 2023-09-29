@@ -25,10 +25,7 @@ class PagerGeneratorTest extends TestCase
 
     public static function getGenerator(): PagerGenerator
     {
-        return new PagerGenerator(
-            ContentGeneratorTest::getGenerator(),
-            self::getFakerGenerator()
-        );
+        return new PagerGenerator(ContentGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
     public function testGenerator()
@@ -41,6 +38,4 @@ class PagerGeneratorTest extends TestCase
         self::assertEquals(5, $pager->getMaxPerPage());
         self::assertEquals(10, $pager->getNbPages());
     }
-
-
 }

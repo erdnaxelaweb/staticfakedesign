@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -24,13 +24,10 @@ class BreadcrumbGeneratorTest extends TestCase
 
     public static function getGenerator()
     {
-        return new BreadcrumbGenerator(
-            LinkGeneratorTest::getGenerator(),
-            self::getFakerGenerator()
-        );
+        return new BreadcrumbGenerator(LinkGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
-    public function testGenerator(  )
+    public function testGenerator()
     {
         $generator = self::getGenerator();
 

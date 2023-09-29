@@ -9,10 +9,9 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator;
-
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 use InvalidArgumentException;
@@ -34,17 +33,14 @@ class ContentFieldGeneratorRegistry
         }
     }
 
-    public function registerGenerator( string $type, GeneratorInterface $generator): void
+    public function registerGenerator(string $type, GeneratorInterface $generator): void
     {
         $this->generators[$type] = $generator;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function getGenerator( string $type ): GeneratorInterface
+    public function getGenerator(string $type): GeneratorInterface
     {
-        if(isset($this->generators[$type])) {
+        if (isset($this->generators[$type])) {
             return $this->generators[$type];
         }
 

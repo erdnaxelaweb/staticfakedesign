@@ -23,17 +23,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContentConfigurationManager
 {
-
     protected array $definitions;
 
-    /**
-     * @param array $definitions
-     */
     public function __construct(
         array                                   $definitions,
         protected ContentFieldGeneratorRegistry $contentFieldGeneratorRegistry
-    )
-    {
+    ) {
         foreach ($definitions as $type => $definition) {
             $this->registerConfiguration($type, $definition);
         }
@@ -60,7 +55,6 @@ class ContentConfigurationManager
             })
             ->allowedTypes('array')
             ->info('Options to pass to the field type generator');
-
     }
 
     protected function configureOptions(OptionsResolver $optionResolver): void
@@ -109,12 +103,9 @@ class ContentConfigurationManager
         $this->definitions[$type] = $definition;
     }
 
-    /**
-     * @throws ConfigurationNotFoundException
-     */
     public function getConfiguration(string $type): array
     {
-        if (!isset($this->definitions[$type])) {
+        if (! isset($this->definitions[$type])) {
             throw new ConfigurationNotFoundException($type);
         }
         $optionResolver = new OptionsResolver();
@@ -141,5 +132,4 @@ class ContentConfigurationManager
             );
         }
     }
-
 }

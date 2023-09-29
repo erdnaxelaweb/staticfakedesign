@@ -22,24 +22,17 @@ class ContentFieldGeneratorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if(! $container->has(ContentFieldGeneratorRegistry::class)) {
-            return ;
+        if (! $container->has(ContentFieldGeneratorRegistry::class)) {
+            return;
         }
 
         $registry = $container->getDefinition(ContentFieldGeneratorRegistry::class);
         $services = $container->findTaggedServiceIds('erdnaxelaweb.static_fake_design.generator.content_field');
         foreach ($services as $id => $attributes) {
             $type = $attributes[0]['type'] ?? null;
-            if($type) {
-                $registry->addMethodCall(
-                    'registerGenerator',
-                    [
-                        $type,
-                        new Reference($id),
-                    ]
-                );
+            if ($type) {
+                $registry->addMethodCall('registerGenerator', [$type, new Reference($id)]);
             }
         }
     }
-
 }

@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -18,11 +18,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MatrixFieldGenerator extends AbstractFieldGenerator
 {
-
     public function __construct(
         protected FakerGenerator $fakerGenerator
-    )
-    {
+    ) {
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -35,18 +33,15 @@ class MatrixFieldGenerator extends AbstractFieldGenerator
         $optionResolver->define('minimumRows')
             ->default(1)
             ->allowedTypes('int');
-
     }
 
-    public function __invoke( array $columns, int $minimumRows = 1 ): array
+    public function __invoke(array $columns, int $minimumRows = 1): array
     {
-        $count = $this->fakerGenerator->numberBetween( $minimumRows, 10 );
+        $count = $this->fakerGenerator->numberBetween($minimumRows, 10);
         $rows = [];
-        for ( $i = 0; $i < $count; $i++ )
-        {
+        for ($i = 0; $i < $count; $i++) {
             $row = [];
-            foreach ( $columns as $column )
-            {
+            foreach ($columns as $column) {
                 $row[$column] = $this->fakerGenerator->word();
             }
             $rows[] = $row;

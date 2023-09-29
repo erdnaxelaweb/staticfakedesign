@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -20,13 +20,11 @@ use PHPUnit\Framework\TestCase;
 
 class RichTextFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
+
     public static function getGenerator(): RichTextFieldGenerator
     {
-        return new RichTextFieldGenerator(
-            RichTextGeneratorTest::getGenerator(),
-        );
+        return new RichTextFieldGenerator(RichTextGeneratorTest::getGenerator());
     }
 
     public function testGenerator()
@@ -34,7 +32,6 @@ class RichTextFieldGeneratorTest extends TestCase
         $generator = self::getGenerator();
 
         $richtext = $generator();
-        self::assertIsString( $richtext );
+        self::assertIsString($richtext);
     }
-
 }

@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Configuration;
 
@@ -17,10 +17,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockConfigurationManager extends ContentConfigurationManager
 {
-    protected function configureOptions( OptionsResolver $optionResolver ): void
+    protected function configureOptions(OptionsResolver $optionResolver): void
     {
-        parent::configureOptions( $optionResolver );
+        parent::configureOptions($optionResolver);
         $optionResolver->remove('parent');
     }
 }
-

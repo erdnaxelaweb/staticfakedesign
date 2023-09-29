@@ -13,9 +13,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LinkGenerator extends AbstractGenerator
 {
-
-    public function __construct(protected FactoryInterface $factory, protected TranslatorInterface $translator, FakerGenerator $fakerGenerator)
-    {
+    public function __construct(
+        protected FactoryInterface $factory,
+        protected TranslatorInterface $translator,
+        FakerGenerator $fakerGenerator
+    ) {
         parent::__construct($fakerGenerator);
     }
 
@@ -25,7 +27,6 @@ class LinkGenerator extends AbstractGenerator
         $optionResolver->define('target')
             ->default(null)
             ->allowedTypes('string', 'null');
-
     }
 
     public function __invoke(?string $target = null): ItemInterface
@@ -37,12 +38,11 @@ class LinkGenerator extends AbstractGenerator
         ];
         if ($target) {
             $options['linkAttributes']['target'] = $target;
-            $options['linkAttributes']['title'] = $this->translator->trans('link.blank', ['%title%' => $name]);
+            $options['linkAttributes']['title'] = $this->translator->trans('link.blank', [
+                '%title%' => $name,
+            ]);
         }
 
-        return $this->factory->createItem(
-            $name,
-            $options
-        );
+        return $this->factory->createItem($name, $options);
     }
 }

@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -20,9 +20,9 @@ use PHPUnit\Framework\TestCase;
 
 class FileFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): FileFieldGenerator
+
+    public static function getGenerator(): FileFieldGenerator
     {
         return new FileFieldGenerator(self::getFakerGenerator());
     }
@@ -34,5 +34,4 @@ class FileFieldGeneratorTest extends TestCase
         $file = $generator();
         self::assertInstanceOf(File::class, $file);
     }
-
 }

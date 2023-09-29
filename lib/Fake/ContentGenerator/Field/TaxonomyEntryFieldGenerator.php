@@ -1,5 +1,6 @@
 <?php
-declare( strict_types=1 );
+
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -8,9 +9,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
 {
-
-    public function __construct( protected TaxonomyEntryGenerator $taxonomyEntryGenerator )
-    {
+    public function __construct(
+        protected TaxonomyEntryGenerator $taxonomyEntryGenerator
+    ) {
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -23,22 +24,18 @@ class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
         $optionResolver->define('max')
             ->default(1)
             ->allowedTypes('int');
-
     }
 
-    /**
-     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException
-     */
-    public function __invoke( string $type, int $max = 1 )
+    public function __invoke(string $type, int $max = 1)
     {
-        if($max === 1){
+        if ($max === 1) {
             return ($this->taxonomyEntryGenerator)($type);
         }
 
         $tags = [];
         $count = rand(1, $max);
         for ($i = 0; $i < $count; ++$i) {
-            $tags[] =  ($this->taxonomyEntryGenerator)($type);
+            $tags[] = ($this->taxonomyEntryGenerator)($type);
         }
 
         return $tags;

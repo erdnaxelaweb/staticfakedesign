@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -30,59 +30,77 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class FormGenerator extends AbstractGenerator
 {
-
     public function __construct(
         protected FormFactoryInterface $formFactory,
         FakerGenerator        $fakerGenerator
-    )
-    {
-        parent::__construct( $fakerGenerator );
+    ) {
+        parent::__construct($fakerGenerator);
     }
 
     public function __invoke()
     {
         $formTypes = [
-            'text' => [ 'type' => TextType::class ],
-            'url' => [ 'type' => UrlType::class ],
+            'text' => [
+                'type' => TextType::class,
+            ],
+            'url' => [
+                'type' => UrlType::class,
+            ],
             'radio' => [
-                'type' => ChoiceType::class, 'options' => [
+                'type' => ChoiceType::class,
+                'options' => [
                     'expanded' => true,
                     'multiple' => false,
-                    'choices' => $this->fakerGenerator->words()
-                ]
+                    'choices' => $this->fakerGenerator->words(),
+                ],
             ],
-            'number' => [ 'type' => NumberType::class ],
-            'textarea' => [ 'type' => TextareaType::class ],
-            'file' => [ 'type' => FileType::class ],
-            'email' => [ 'type' => EmailType::class ],
+            'number' => [
+                'type' => NumberType::class,
+            ],
+            'textarea' => [
+                'type' => TextareaType::class,
+            ],
+            'file' => [
+                'type' => FileType::class,
+            ],
+            'email' => [
+                'type' => EmailType::class,
+            ],
             'dropdown' => [
-                'type' => ChoiceType::class, 'options' => [
-                    'choices' => $this->fakerGenerator->words()
-                ]
+                'type' => ChoiceType::class,
+                'options' => [
+                    'choices' => $this->fakerGenerator->words(),
+                ],
             ],
-            'date' => [ 'type' => DateType::class ],
+            'date' => [
+                'type' => DateType::class,
+            ],
             'checkboxes' => [
-                'type' => ChoiceType::class, 'options' => [
+                'type' => ChoiceType::class,
+                'options' => [
                     'expanded' => true,
                     'multiple' => true,
-                    'choices' => $this->fakerGenerator->words()
-                ]
+                    'choices' => $this->fakerGenerator->words(),
+                ],
             ],
 
-            'checkbox' => [ 'type' => CheckboxType::class ],
-            'button' => [ 'type' => SubmitType::class ],
+            'checkbox' => [
+                'type' => CheckboxType::class,
+            ],
+            'button' => [
+                'type' => SubmitType::class,
+            ],
         ];
 
-
-        $builder = $this->formFactory->createBuilder( FormType::class, null );
-        $formFields = $builder->create( 'fields', FormType::class, [
+        $builder = $this->formFactory->createBuilder(FormType::class, null);
+        $formFields = $builder->create('fields', FormType::class, [
             'compound' => true,
-        ] );
-        foreach ( $formTypes as $formType )
-        {
-            $formFields->add( $this->fakerGenerator->word, ...$formType );
+        ]);
+        foreach ($formTypes as $formType) {
+            $formFields->add($this->fakerGenerator->word, ...$formType);
         }
         $builder->add($formFields);
-        return $builder->getForm()->createView();
+        return $builder->getForm()
+            ->createView();
     }
 }

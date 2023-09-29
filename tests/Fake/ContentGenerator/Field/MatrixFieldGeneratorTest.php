@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -20,7 +20,8 @@ use PHPUnit\Framework\TestCase;
 class MatrixFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
-    public static function getGenerator(  ): MatrixFieldGenerator
+
+    public static function getGenerator(): MatrixFieldGenerator
     {
         return new MatrixFieldGenerator(self::getFakerGenerator());
     }
@@ -38,5 +39,4 @@ class MatrixFieldGeneratorTest extends TestCase
         self::assertArrayHasKey('secondCol', $matrix[0]);
         self::assertIsString($matrix[0]['secondCol']);
     }
-
 }

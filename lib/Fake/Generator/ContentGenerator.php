@@ -9,15 +9,13 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
-
-use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,9 +26,8 @@ class ContentGenerator extends AbstractContentGenerator
         protected BreadcrumbGenerator         $breadcrumbGenerator,
         FakerGenerator                        $fakerGenerator,
         ContentFieldGeneratorRegistry         $fieldGeneratorRegistry,
-    )
-    {
-        parent::__construct( $fakerGenerator, $fieldGeneratorRegistry );
+    ) {
+        parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -40,25 +37,19 @@ class ContentGenerator extends AbstractContentGenerator
             ->required()
             ->allowedTypes('string')
             ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
-
     }
 
-    /**
-     * @throws ConfigurationNotFoundException
-     */
     public function __invoke(string $type): Content
     {
-        $configuration = $this->contentConfigurationManager->getConfiguration( $type);
-        return Content::createLazyGhost(function(Content $instance) use($type, $configuration) {
+        $configuration = $this->contentConfigurationManager->getConfiguration($type);
+        return Content::createLazyGhost(function (Content $instance) use ($type, $configuration) {
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
                 $type,
                 $this->generateFieldsValue($configuration['fields']),
                 $this->fakerGenerator->url(),
-                ( $this->breadcrumbGenerator )(),
+                ($this->breadcrumbGenerator)(),
             );
         });
     }
-
-
 }

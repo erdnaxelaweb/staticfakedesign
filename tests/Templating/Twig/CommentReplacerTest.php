@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Templating\Twig;
 
@@ -27,34 +27,30 @@ class CommentReplacerTest extends TestCase
         return [
             [
                 '{# @fake sentence sentence(2) #}',
-                '{% set sentence = sentence is defined ? sentence : generateFake("sentence", [2]) %}'
+                '{% set sentence = sentence is defined ? sentence : generateFake("sentence", [2]) %}',
             ],
-            [
-                '{# @fake link link #}',
-                '{% set link = link is defined ? link : generateFake("link", []) %}'
-            ],
+            ['{# @fake link link #}', '{% set link = link is defined ? link : generateFake("link", []) %}'],
             [
                 '{# @fake link link({target:"_blank"}) #}',
-                '{% set link = link is defined ? link : generateFake("link", {target:"_blank"}) %}'
+                '{% set link = link is defined ? link : generateFake("link", {target:"_blank"}) %}',
             ],
             [
                 '{# @fake link link({target:"_blank", title:"test"}) #}',
-                '{% set link = link is defined ? link : generateFake("link", {target:"_blank", title:"test"}) %}'
+                '{% set link = link is defined ? link : generateFake("link", {target:"_blank", title:"test"}) %}',
             ],
             [
                 '{# @fake links link({target:"_blank"})[] #}',
-                '{% set links = links is defined ? links : generateFakeArray(null, "link", {target:"_blank"}) %}'
+                '{% set links = links is defined ? links : generateFakeArray(null, "link", {target:"_blank"}) %}',
             ],
             [
                 '{# @fake links link({target:"_blank"})[2] #}',
-                '{% set links = links is defined ? links : generateFakeArray(2, "link", {target:"_blank"}) %}'
+                '{% set links = links is defined ? links : generateFakeArray(2, "link", {target:"_blank"}) %}',
             ],
         ];
     }
 
     /**
      * @dataProvider replaceInStringData
-     * @return void
      */
     public function testReplaceInString(string $string, string $expected)
     {
@@ -74,8 +70,8 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "sentence",
                     "fake_parameters" => '[2]',
                     "is_array" => false,
-                    "array_size" => null
-                ]
+                    "array_size" => null,
+                ],
             ],
             [
                 '{# @fake link link #}',
@@ -85,8 +81,8 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "link",
                     "fake_parameters" => '[]',
                     "is_array" => false,
-                    "array_size" => null
-                ]
+                    "array_size" => null,
+                ],
             ],
             [
                 '{# @fake link link({target:"_blank"}) #}',
@@ -96,8 +92,8 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "link",
                     "fake_parameters" => '{target:"_blank"}',
                     "is_array" => false,
-                    "array_size" => null
-                ]
+                    "array_size" => null,
+                ],
             ],
             [
                 '{# @fake link link({target:"_blank", title:"test"}) #}',
@@ -107,8 +103,8 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "link",
                     "fake_parameters" => '{target:"_blank", title:"test"}',
                     "is_array" => false,
-                    "array_size" => null
-                ]
+                    "array_size" => null,
+                ],
             ],
             [
                 '{# @fake links link({target:"_blank"})[] #}',
@@ -118,8 +114,8 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "link",
                     "fake_parameters" => '{target:"_blank"}',
                     "is_array" => true,
-                    "array_size" => null
-                ]
+                    "array_size" => null,
+                ],
             ],
             [
                 '{# @fake links link({target:"_blank"})[2] #}',
@@ -129,23 +125,21 @@ class CommentReplacerTest extends TestCase
                     "fake_type" => "link",
                     "fake_parameters" => '{target:"_blank"}',
                     "is_array" => true,
-                    "array_size" => 2
-                ]
+                    "array_size" => 2,
+                ],
             ],
         ];
     }
 
     /**
      * @dataProvider matchCommentsData
-     * @return void
      */
-    public function testMatchComments( string $comment, array $expectedResult )
+    public function testMatchComments(string $comment, array $expectedResult)
     {
         $replacer = new CommentReplacer();
-        $comments = $this->invokeMethod( $replacer, "matchComments", [ $comment ] );
-        self::assertIsArray( $comments );
-        self::assertArrayHasKey( 0, $comments );
-        self::assertEquals( $expectedResult, $comments[0] );
+        $comments = $this->invokeMethod($replacer, "matchComments", [$comment]);
+        self::assertIsArray($comments);
+        self::assertArrayHasKey(0, $comments);
+        self::assertEquals($expectedResult, $comments[0]);
     }
-
 }

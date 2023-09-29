@@ -9,12 +9,11 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
@@ -22,14 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockGenerator extends AbstractContentGenerator
 {
-
     public function __construct(
         protected BlockConfigurationManager $blockConfigurationManager,
         FakerGenerator                $fakerGenerator,
         ContentFieldGeneratorRegistry $fieldGeneratorRegistry
-    )
-    {
-        parent::__construct( $fakerGenerator, $fieldGeneratorRegistry );
+    ) {
+        parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -39,21 +36,17 @@ class BlockGenerator extends AbstractContentGenerator
             ->required()
             ->allowedTypes('string')
             ->info('Identifier of the block to generate. See erdnaxelaweb.static_fake_design.block_definition');
-
     }
 
-    /**
-     * @throws ConfigurationNotFoundException
-     */
     public function __invoke(string $type): Block
     {
-        $configuration = $this->blockConfigurationManager->getConfiguration( $type );
-        return Block::createLazyGhost( function ( Block $instance ) use ( $type, $configuration ) {
+        $configuration = $this->blockConfigurationManager->getConfiguration($type);
+        return Block::createLazyGhost(function (Block $instance) use ($type, $configuration) {
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
                 $type,
-                $this->generateFieldsValue( $configuration['fields'] )
+                $this->generateFieldsValue($configuration['fields'])
             );
-        } );
+        });
     }
 }

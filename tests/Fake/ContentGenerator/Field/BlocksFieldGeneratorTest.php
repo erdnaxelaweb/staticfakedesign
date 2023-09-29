@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -21,15 +21,11 @@ use PHPUnit\Framework\TestCase;
 
 class BlocksFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
 
     public static function getGenerator(): BlocksFieldGenerator
     {
-        return new BlocksFieldGenerator(
-            BlockGeneratorTest::getGenerator(),
-            self::getFakerGenerator()
-        );
+        return new BlocksFieldGenerator(BlockGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
     public function testGenerator()
@@ -37,7 +33,7 @@ class BlocksFieldGeneratorTest extends TestCase
         $generator = self::getGenerator();
 
         $block = $generator(['list']);
-        self::assertIsArray( $block);
+        self::assertIsArray($block);
         self::assertNotEmpty($block);
         self::assertInstanceOf(Block::class, $block[0]);
     }

@@ -22,16 +22,17 @@ class TaxonomyEntryConfigurationManagerTest extends TestCase
 {
     public static function getConfiguration(): TaxonomyEntryConfigurationManager
     {
-        return new TaxonomyEntryConfigurationManager([
-            'tag' => [
-                'fields' => [
-                    'title' => [
-                        'required' => true,
-                        'type' => 'string'
-                    ]
-                ]
-            ]
-        ],
+        return new TaxonomyEntryConfigurationManager(
+            [
+                'tag' => [
+                    'fields' => [
+                        'title' => [
+                            'required' => true,
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
             ContentFieldGeneratorRegistryTest::getRegistry()
         );
     }

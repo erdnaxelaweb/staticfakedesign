@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
@@ -24,7 +24,8 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @param \Faker\Generator $fakerGenerator
      */
-    public function __construct( protected FakerGenerator $fakerGenerator )
-    {
+    public function __construct(
+        protected FakerGenerator $fakerGenerator
+    ) {
     }
 }

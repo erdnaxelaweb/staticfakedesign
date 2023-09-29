@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class SelectionFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): SelectionFieldGenerator
+
+    public static function getGenerator(): SelectionFieldGenerator
     {
         return new SelectionFieldGenerator(self::getFakerGenerator());
     }
@@ -43,5 +43,4 @@ class SelectionFieldGeneratorTest extends TestCase
         self::assertNotEmpty($selection);
         self::assertNotEmpty(array_intersect($selection, $options));
     }
-
 }

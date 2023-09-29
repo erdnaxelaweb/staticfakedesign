@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -25,10 +25,7 @@ class AudioGeneratorTest extends TestCase
 
     public static function getGenerator(): AudioGenerator
     {
-        return new AudioGenerator(
-            ImageGeneratorTest::getGenerator(),
-            self::getFakerGenerator()
-        );
+        return new AudioGenerator(ImageGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
     public function testGenerator()
@@ -45,5 +42,4 @@ class AudioGeneratorTest extends TestCase
         self::assertInstanceOf(Image::class, $audio->image);
         self::assertTrue($audio->hasSource());
     }
-
 }

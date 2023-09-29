@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -24,16 +24,16 @@ class TaxonomyEntryGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(  ): TaxonomyEntryGenerator
+    public static function getGenerator(): TaxonomyEntryGenerator
     {
-            return new TaxonomyEntryGenerator(
-                TaxonomyEntryConfigurationManagerTest::getConfiguration(),
-                self::getFakerGenerator(),
-                ContentFieldGeneratorRegistryTest::getRegistry()
-            );
+        return new TaxonomyEntryGenerator(
+            TaxonomyEntryConfigurationManagerTest::getConfiguration(),
+            self::getFakerGenerator(),
+            ContentFieldGeneratorRegistryTest::getRegistry()
+        );
     }
 
-    public function testGenerator(  )
+    public function testGenerator()
     {
         $generator = self::getGenerator();
         $taxonomyEntry = $generator('tag');

@@ -20,7 +20,7 @@ class ContentFieldsCollection extends ArrayCollection
     public function __call(string $name, array $arguments)
     {
         $value = $this->get($name);
-        if(is_callable($value)){
+        if (is_callable($value)) {
             return call_user_func_array($value, $arguments);
         }
     }

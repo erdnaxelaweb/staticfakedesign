@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -25,20 +25,16 @@ class LinkGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(  ): LinkGenerator
+    public static function getGenerator(): LinkGenerator
     {
         $menuFactory = new MenuFactory();
         $translator = new class() implements TranslatorInterface {
             use TranslatorTrait;
         };
-        return new LinkGenerator(
-            $menuFactory,
-            $translator,
-            self::getFakerGenerator()
-        );
+        return new LinkGenerator($menuFactory, $translator, self::getFakerGenerator());
     }
 
-    public function testGenerator(  )
+    public function testGenerator()
     {
         $generator = self::getGenerator();
 
@@ -49,5 +45,4 @@ class LinkGeneratorTest extends TestCase
         self::assertInstanceOf(MenuItem::class, $link);
         self::assertEquals('_blank', $link->getLinkAttribute('target'));
     }
-
 }

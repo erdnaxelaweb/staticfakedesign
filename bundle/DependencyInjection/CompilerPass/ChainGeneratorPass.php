@@ -22,24 +22,17 @@ class ChainGeneratorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if(! $container->has(ChainGenerator::class)) {
-            return ;
+        if (! $container->has(ChainGenerator::class)) {
+            return;
         }
 
         $registry = $container->getDefinition(ChainGenerator::class);
         $services = $container->findTaggedServiceIds('erdnaxelaweb.static_fake_design.generator');
         foreach ($services as $id => $attributes) {
             $type = $attributes[0]['type'] ?? null;
-            if($type) {
-                $registry->addMethodCall(
-                    'registerGenerator',
-                    [
-                        $type,
-                        new Reference($id),
-                    ]
-                );
+            if ($type) {
+                $registry->addMethodCall('registerGenerator', [$type, new Reference($id)]);
             }
         }
     }
-
 }

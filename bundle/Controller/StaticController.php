@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesignBundle\Controller;
 
@@ -17,14 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 
 class StaticController extends TemplateController
 {
-
-    /**
-     * @return void
-     */
-    public function viewAction( string $path )
+    public function viewAction(string $path)
     {
-        return $this->templateAction(
-            sprintf( "static/%s.html.twig", !empty( $path ) ? $path : "index" )
-        );
+        return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
     }
 }

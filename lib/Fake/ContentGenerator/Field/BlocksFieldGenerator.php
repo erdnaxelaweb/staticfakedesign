@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -19,12 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlocksFieldGenerator extends AbstractFieldGenerator
 {
-
     public function __construct(
         protected BlockGenerator $blockGenerator,
         protected FakerGenerator $fakerGenerator
-    )
-    {
+    ) {
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -35,15 +33,11 @@ class BlocksFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('string[]');
     }
 
-    /**
-     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException
-     */
-    public function __invoke( array $allowedTypes): array
+    public function __invoke(array $allowedTypes): array
     {
         $count = $this->fakerGenerator->numberBetween(1, 10);
         $blocks = [];
-        for ( $i = 0; $i < $count; $i++ )
-        {
+        for ($i = 0; $i < $count; $i++) {
             $type = $this->fakerGenerator->randomElement($allowedTypes);
             $blocks[] = ($this->blockGenerator)($type);
         }

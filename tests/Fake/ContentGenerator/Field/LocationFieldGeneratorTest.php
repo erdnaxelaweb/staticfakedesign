@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -21,9 +21,9 @@ use PHPUnit\Framework\TestCase;
 
 class LocationFieldGeneratorTest extends TestCase
 {
-
     use GeneratorTestTrait;
-    public static function getGenerator(  ): LocationFieldGenerator
+
+    public static function getGenerator(): LocationFieldGenerator
     {
         return new LocationFieldGenerator(CoordinatesGeneratorTest::getGenerator());
     }
@@ -35,5 +35,4 @@ class LocationFieldGeneratorTest extends TestCase
         $coordinates = $generator();
         self::assertInstanceOf(Coordinates::class, $coordinates);
     }
-
 }

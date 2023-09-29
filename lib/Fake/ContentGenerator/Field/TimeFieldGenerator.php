@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -17,15 +17,13 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 
 class TimeFieldGenerator extends AbstractFieldGenerator
 {
-
     public function __construct(
         protected FakerGenerator $fakerGenerator
-    )
-    {
+    ) {
     }
 
     public function __invoke(): int
     {
-      return $this->fakerGenerator->numberBetween(0, 24*60*60);
+        return $this->fakerGenerator->numberBetween(0, 24 * 60 * 60);
     }
 }

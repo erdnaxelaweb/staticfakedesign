@@ -9,7 +9,7 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -18,11 +18,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SelectionFieldGenerator extends AbstractFieldGenerator
 {
-
     public function __construct(
         protected FakerGenerator $fakerGenerator
-    )
-    {
+    ) {
     }
 
     public function configureOptions(OptionsResolver $optionResolver): void
@@ -35,12 +33,11 @@ class SelectionFieldGenerator extends AbstractFieldGenerator
         $optionResolver->define('isMultiple')
             ->default(false)
             ->allowedTypes('bool');
-
     }
 
     public function __invoke(array $options, bool $isMultiple = false): array
     {
         $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
-        return $this->fakerGenerator->randomElements($options, $count, false );
+        return $this->fakerGenerator->randomElements($options, $count, false);
     }
 }

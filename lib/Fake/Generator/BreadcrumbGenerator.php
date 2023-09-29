@@ -1,5 +1,6 @@
 <?php
-declare( strict_types=1 );
+
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -9,12 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BreadcrumbGenerator extends AbstractGenerator
 {
-
-    /**
-     * @param LinkGenerator $linkGenerator
-     */
-    public function __construct( protected LinkGenerator $linkGenerator, FakerGenerator $fakerGenerator )
-    {
+    public function __construct(
+        protected LinkGenerator $linkGenerator,
+        FakerGenerator $fakerGenerator
+    ) {
         parent::__construct($fakerGenerator);
     }
 
@@ -24,7 +23,6 @@ class BreadcrumbGenerator extends AbstractGenerator
         $optionResolver->define('count')
             ->default(null)
             ->allowedTypes('int', 'null');
-
     }
 
     public function __invoke(?int $count = null): array
@@ -36,5 +34,4 @@ class BreadcrumbGenerator extends AbstractGenerator
         }
         return $links;
     }
-
 }
