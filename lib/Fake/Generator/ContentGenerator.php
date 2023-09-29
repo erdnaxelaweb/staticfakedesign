@@ -49,9 +49,10 @@ class ContentGenerator extends AbstractContentGenerator
     public function __invoke(string $type): Content
     {
         $configuration = $this->contentConfigurationManager->getConfiguration( $type);
-        return Content::createLazyGhost(function(Content $instance) use($configuration) {
+        return Content::createLazyGhost(function(Content $instance) use($type, $configuration) {
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
+                $type,
                 $this->generateFieldsValue($configuration['fields']),
                 $this->fakerGenerator->url(),
                 ( $this->breadcrumbGenerator )(),

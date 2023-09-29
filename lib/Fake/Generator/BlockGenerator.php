@@ -48,9 +48,10 @@ class BlockGenerator extends AbstractContentGenerator
     public function __invoke(string $type): Block
     {
         $configuration = $this->blockConfigurationManager->getConfiguration( $type );
-        return Block::createLazyGhost( function ( Block $instance ) use ( $configuration ) {
+        return Block::createLazyGhost( function ( Block $instance ) use ( $type, $configuration ) {
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
+                $type,
                 $this->generateFieldsValue( $configuration['fields'] )
             );
         } );

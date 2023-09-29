@@ -18,9 +18,10 @@ class TaxonomyEntry extends AbstractContent
     public function __construct(
         public readonly int $id,
         string $name,
-        ContentFieldsCollection $fields
+        string $type,
+        array $fields
     )
     {
-        parent::__construct( $name, $fields );
+        parent::__construct( $name, $type, $fields );
     }
 }

@@ -49,10 +49,11 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
     public function __invoke(string $type): TaxonomyEntry
     {
         $configuration = $this->taxonomyEntryConfigurationManager->getConfiguration( $type );
-        return TaxonomyEntry::createLazyGhost( function ( TaxonomyEntry $instance ) use ( $configuration ) {
+        return TaxonomyEntry::createLazyGhost( function ( TaxonomyEntry $instance ) use ( $type, $configuration ) {
             $instance->__construct(
                 $this->fakerGenerator->randomNumber(),
                 $this->fakerGenerator->sentence(),
+                $type,
                 $this->generateFieldsValue( $configuration['fields'] )
             );
         } );

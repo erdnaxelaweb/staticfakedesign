@@ -21,11 +21,12 @@ class AbstractContent
 
     /**
      * @param string $name
-     * @param ContentFieldsCollection $fields
+     * @param array $fields
      */
     public function __construct(
         public readonly string $name = "",
-        public readonly ContentFieldsCollection  $fields
+        public readonly string $type = "",
+        public readonly array  $fields = []
     )
     {
     }

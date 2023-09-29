@@ -17,11 +17,12 @@ class Content extends AbstractContent
 {
     public function __construct(
          string $name,
-         ContentFieldsCollection  $fields,
+         string $type,
+         array  $fields,
          public readonly string $url = "",
          public readonly array  $breadcrumb = []
     )
     {
-        parent::__construct( $name, $fields );
+        parent::__construct( $name, $type,$fields );
     }
 }
