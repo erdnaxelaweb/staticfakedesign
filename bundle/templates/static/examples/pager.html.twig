@@ -1,0 +1,75 @@
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Pager</h1>
+        <p>
+            To generate a pager, the following parameter need to be defined : <code>erdnaxelaweb.static_fake_design.pager_definition:
+                []</code>
+        </p>
+        <p>Example for a "articles_list" pager</p>
+        <pre>
+            <code>
+erdnaxelaweb.static_fake_design.pager_definition:
+    articles_list:
+      contentTypes:
+        - article
+      filters:
+        title:
+          field: title
+          type: fulltext
+        selection:
+          field: selection
+          type: checkbox
+      sorts:
+        - title
+        - date
+      maxPerPage: 10
+            </code>
+        </pre>
+        <p>
+            Below is the list of available filters types :
+
+        </p>
+        <ul>
+            <li>fulltext</li>
+            <li>radio</li>
+            <li>dropdown</li>
+            <li>checkbox</li>
+            <li>number</li>
+            <li>number_range</li>
+            <li>date</li>
+            <li>date_range</li>
+            <li>bool</li>
+        </ul>
+        <hr>
+        <h2>Example</h2>
+        {# @fake var131 pager({'type': 'articles_list'}) #}
+        {# @fake var132 pager('articles_list') #}
+        {# @var var132 \PagerFanta\Pagerfanta #}
+        <pre>
+            <code>
+&#123;# @fake var131 pager(&#123;&#39;type&#39;: &#39;articles_list&#39;}) #}
+&#123;# @fake var132 pager(&#39;articles_list&#39;) #}
+
+&#123;% form_theme var.adapter.filters &#39;bootstrap_5_horizontal_layout.html.twig&#39; %}
+&#123;&#123; form(var.adapter.filters) }}
+&lt;p&gt;&lt;b&gt;&#123;&#123; var.nbResults }} results&lt;/b&gt; (&#123;&#123; var.maxPerPage }}/page) over &#123;&#123; var.nbPages }} pages&lt;/p&gt;
+&lt;ul&gt;
+    &#123;% for content in var %}
+        &lt;li&gt;&#123;&#123; content.name }}&lt;/li&gt;
+    &#123;% endfor %}
+&lt;/ul&gt;
+&#123;&#123; pagerfanta(var, &#39;twitter_bootstrap5&#39;) }}
+            </code>
+        </pre>
+        {% form_theme var132.adapter.filters 'bootstrap_5_horizontal_layout.html.twig' %}
+        {{ form(var132.adapter.filters) }}
+        <p><b>{{ var132.nbResults }} results</b> ({{ var132.maxPerPage }}/page) over {{ var132.nbPages }} pages</p>
+        <ul>
+            {% for content in var132 %}
+                <li>{{ content.name }}</li>
+            {% endfor %}
+        </ul>
+        {{ pagerfanta(var132, 'twitter_bootstrap5') }}
+    </article>
+{% endblock %}

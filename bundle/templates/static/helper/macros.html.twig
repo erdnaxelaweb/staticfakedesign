@@ -8,8 +8,8 @@
 {% macro display_menu_item(item) %}
     {% import _self as macros %}
     {%- if item.uri is not empty %}
-        <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>{{ item.label }}</a>
+        <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes|merge({'class': 'nav-link'})) }}>{{ item.label }}</a>
     {%- else %}
-        <span{{ macros.attributes(item.labelAttributes) }}>{{ item.label }}</span>
+        <span{{ macros.attributes(item.labelAttributes|merge({'class': 'nav-link'})) }}>{{ item.label }}</span>
     {%- endif %}
 {% endmacro %}

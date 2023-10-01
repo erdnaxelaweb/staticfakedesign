@@ -1,14 +1,20 @@
-<div class="row g-2 border-top m-2">
-    {# @fake var9 coordinates #}
-    <div class="col-5 ">
-        <div class="border bg-light g-2 p-2">
-            <code class="chroma">
-                &#123;# @fake var coordinates #&#125;<br/>
-                &#123;&#123; var &#125;&#125;
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Coordinates</h1>
+        <h2>Example</h2>
+        {# @fake var coordinates #}
+        <pre>
+            <code>
+&#123;# @fake var coordinates #&#125;
+
+&lt;p&gt;&lt;b&gt;latitude :&lt;/b&gt; &#123;&#123; var.latitude }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;longitude :&lt;/b&gt; &#123;&#123; var.longitude }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;address :&lt;/b&gt; &#123;&#123; var.address }}&lt;/p&gt;
             </code>
-        </div>
-    </div>
-    <div class="col">
-        {{ dump(var9) }}
-    </div>
-</div>
+        </pre>
+        <p><b>latitude :</b> {{ var.latitude }}</p>
+        <p><b>longitude :</b> {{ var.longitude }}</p>
+        <p><b>address :</b> {{ var.address }}</p>
+    </article>
+{% endblock %}

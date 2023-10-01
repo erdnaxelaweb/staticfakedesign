@@ -1,22 +1,53 @@
-<div class="row g-2 border-top m-2">
-    {# @fake var1 image({'variationName': 'large'}) #}
-    {# @fake var2 image('large') #}
-    <div class="col-6">
-        <div class="border bg-light g-2 p-2">
-            <code class="chroma">
-                &#123;# @fake var image({'imageVariationName': 'large'}) #&#125;<br/>
-                &#123;# @fake var image('large'}) #&#125;<br/>
-                &lt;h1&gt;Alternative text : &#123;&#123; var.alt }}&lt;/h1&gt;<br/>
-                &lt;h2&gt;Caption : &#123;&#123; var.caption }}&lt;/h2&gt;<br/>
-                &lt;h2&gt;Credits : &#123;&#123; var.credits }}&lt;/h2&gt;<br/>
-                &#123;% include &#39;static/helper/image.html.twig&#39; with &#123;image: var} only %}
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Image</h1>
+        <p>
+            To generate image variations, the following parameters need to be defines :<br>
+            - <code>erdnaxelaweb.static_fake_design.image.breakpoints: []</code> is used to define a list of breakpoint<br>
+            - <code>erdnaxelaweb.static_fake_design.image.variations: []</code> is used to define the size of the image for each breakpoint
+        </p>
+        <p>Example for a "large" variation</p>
+            <pre>
+                <code>
+erdnaxelaweb.static_fake_design.image.breakpoints:
+    -
+        suffix: desktop
+        media: '(min-width: 1024px)'
+    -
+        suffix: tablet
+        media: '(min-width: 754px)'
+    -
+        suffix: mobile
+        media: '(min-width: 0)'
+
+erdnaxelaweb.static_fake_design.image.variations:
+    large: [ [ 200,200 ], [ 100,100 ], [ 50,50 ] ]
+                </code>
+            </pre>
+        <hr>
+        <h2>Example</h2>
+        {# @fake var1 image({'variationName': 'large'}) #}
+        {# @fake var2 image('large') #}
+        <pre>
+            <code>
+&#123;# @fake var image({'imageVariationName': 'large'}) #&#125;
+&#123;# @fake var image('large'}) #&#125;
+
+&lt;p&gt;&lt;b&gt;Alternative text :&lt;/b&gt; &#123;&#123; var.alt }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Caption :&lt;/b&gt; &#123;&#123; var.caption }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Credits :&lt;/b&gt; &#123;&#123; var.credits }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Image :&lt;/b&gt;
+    &#123;% include &#39;static/helper/image.html.twig&#39; with &#123;image: var} only %}
+&lt;/p&gt;
             </code>
-        </div>
-    </div>
-    <div class="col-6">
-        <h1>Alternative text : {{ var2.alt }}</h1>
-        <h2>Caption : {{ var2.caption }}</h2>
-        <h2>Credits : {{ var2.credits }}</h2>
-        {% include 'static/helper/image.html.twig' with {image: var2} only %}
-    </div>
-</div>
+        </pre>
+        <p><b>Alternative text :</b> {{ var2.alt }}</p>
+        <p><b>Caption :</b> {{ var2.caption }}</p>
+        <p><b>Credits :</b> {{ var2.credits }}</p>
+        <p><b>Image :</b>
+            {% include 'static/helper/image.html.twig' with {image: var2} only %}
+        </p>
+    </article>
+
+{% endblock %}

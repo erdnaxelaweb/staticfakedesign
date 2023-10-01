@@ -1,0 +1,134 @@
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Content</h1>
+        <p>
+            To generate a content, the following parameter need to be defined : <code>erdnaxelaweb.static_fake_design.content_definition:
+                []</code>
+        </p>
+        <p>Example for a "article" content</p>
+        <pre>
+            <code>
+erdnaxelaweb.static_fake_design.content_definition:
+   article:
+      fields:
+        title:
+          required: true # if value is required
+          type: string   # field type
+          value: 'test'  # optional - force a value
+          options: []    # list of options to pass to the generator
+            </code>
+        </pre>
+        <p>
+            Below is the list of available fields types and theirs options :
+        </p>
+        <ul>
+            <li>blocks
+                <ul>
+                    <li>allowedTypes (array of blocks types to generate - see <a href="/static/examples/block">here</a>)
+                    </li>
+                </ul>
+            </li>
+            <li>boolean</li>
+            <li>content
+                <ul>
+                    <li>type : type of content - see <a href="/static/examples/content">here</a></li>
+                    <li>max : optional (default 1) - max number of contents to generate</li>
+                </ul>
+            </li>
+            <li>date</li>
+            <li>datetime</li>
+            <li>email</li>
+            <li>file</li>
+            <li>float
+                <ul>
+                    <li>min : optional</li>
+                    <li>max : optional</li>
+                </ul>
+            </li>
+            <li>form
+                <ul>
+                    <li>fields : optional (default all) - array of field type that compose the form</li>
+                </ul>
+            </li>
+            <li>image</li>
+            <li>integer
+                <ul>
+                    <li>min : optional</li>
+                    <li>max : optional</li>
+                </ul>
+            </li>
+            <li>location</li>
+            <li>matrix
+                <ul>
+                    <li>columns : list of columns identifier to compose the matrix</li>
+                    <li>minimumRows : optional (default 1)</li>
+                </ul>
+            </li>
+            <li>richtext</li>
+            <li>selection
+                <ul>
+                    <li>options : list of options to select from</li>
+                    <li>isMultiple : optional (default false) - if multiple selection can be selected</li>
+                </ul>
+            </li>
+            <li>string
+                <ul>
+                    <li>maxLength: optional (default 255)</li>
+                </ul>
+            </li>
+            <li>taxonomy_entry
+                <ul>
+                    <li>type : type of taxonomy entry - see <a href="/static/examples/taxonomy-entry">here</a></li>
+                    <li>max : max number of entries to generate</li>
+                </ul>
+            </li>
+            <li>text
+                <ul>
+                    <li>max : optional (default 10) - max number of paragraphes to generate</li>
+                </ul>
+            </li>
+            <li>time</li>
+        </ul>
+        <hr>
+        <h2>Example</h2>
+        {# @fake var141 content({'type': 'article'}) #}
+        {# @fake var142 content('article') #}
+        <pre>
+            <code>
+&#123;# @fake var content({'type': 'article'}) #&#125;
+&#123;# @fake var content('article') #&#125;
+&lt;p&gt;&lt;b&gt;Name :&lt;/b&gt; &#123;&#123; var142.name }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Url :&lt;/b&gt; &#123;&#123; var142.url }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Breadcrumb :&lt;/b&gt;&lt;/p&gt;
+&#123;% import &#39;static/helper/macros.html.twig&#39; as macros %}
+&lt;nav aria-label=&quot;breadcrumb&quot;&gt;
+    &lt;ol class=&quot;breadcrumb&quot;&gt;
+        &#123;% for item in var142.breadcrumb %}
+            &lt;li class=&quot;breadcrumb-item active&quot;&gt;&#123;&#123; macros.display_menu_item(item) }}&lt;/li&gt;
+        &#123;% endfor %}
+    &lt;/ol&gt;
+&lt;/nav&gt;
+&lt;p&gt;&lt;b&gt;Fields :&lt;/b&gt;&lt;/p&gt;
+&#123;% for fieldIdentifier, field in var142.fields %}
+    &#123;&#123; fieldIdentifier }} : &#123;&#123; dump(field) }}
+&#123;% endfor %}
+            </code>
+        </pre>
+        <p><b>Name :</b> {{ var142.name }}</p>
+        <p><b>Url :</b> {{ var142.url }}</p>
+        <p><b>Breadcrumb :</b></p>
+        {% import 'static/helper/macros.html.twig' as macros %}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% for item in var142.breadcrumb %}
+                    <li class="breadcrumb-item active">{{ macros.display_menu_item(item) }}</li>
+                {% endfor %}
+            </ol>
+        </nav>
+        <p><b>Fields :</b></p>
+        {% for fieldIdentifier, field in var142.fields %}
+            {{ fieldIdentifier }} : {{ dump(field) }}
+        {% endfor %}
+    </article>
+{% endblock %}

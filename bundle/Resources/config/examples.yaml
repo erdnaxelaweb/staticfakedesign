@@ -1,0 +1,142 @@
+parameters:
+    erdnaxelaweb.static_fake_design.image.variations:
+        large: [ [ 200,200 ], [ 100,100 ], [ 50,50 ] ]
+
+    erdnaxelaweb.static_fake_design.pager_definition:
+        articles_list:
+            contentTypes:
+                - article
+            filters:
+                title:
+                    field: title
+                    type: fulltext
+                selection:
+                    field: selection
+                    type: checkbox
+            sorts:
+                - title
+                - date
+            maxPerPage: 10
+
+    erdnaxelaweb.static_fake_design.block_definition:
+        list:
+            fields:
+                title:
+                    required: true
+                    type: string
+
+    erdnaxelaweb.static_fake_design.content_definition:
+        product:
+            fields:
+                title:
+                    required: true
+                    type: string
+                products:
+                    required: true
+                    type: content
+                    options:
+                        type: product
+                        max: 3
+        article:
+            fields:
+                title:
+                    required: true
+                    type: string
+                summay:
+                    required: true
+                    type: text
+                description:
+                    required: true
+                    type: richtext
+                date:
+                    required: true
+                    type: date
+                datetime:
+                    required: true
+                    type: datetime
+                time:
+                    required: true
+                    type: time
+                boolean:
+                    required: true
+                    type: boolean
+                email:
+                    required: true
+                    type: email
+                integer:
+                    required: true
+                    type: integer
+                float:
+                    required: true
+                    type: float
+                image:
+                    required: true
+                    type: image
+                file:
+                    required: true
+                    type: file
+                location:
+                    required: true
+                    type: location
+                selection:
+                    required: true
+                    type: selection
+                    options:
+                        options:
+                            - option 1
+                            - option 2
+                            - option 3
+                matrix:
+                    required: true
+                    type: matrix
+                    options:
+                        columns:
+                            - column 1
+                            - column 2
+                tag:
+                    required: true
+                    type: taxonomy_entry
+                    options:
+                        type: tag
+                tags:
+                    required: true
+                    type: taxonomy_entry
+                    options:
+                        type: tag
+                        max: 2
+                products:
+                    required: true
+                    type: content
+                    options:
+                        type: product
+                        max: 2
+                blocks:
+                    required: true
+                    type: blocks
+                    options:
+                        allowedTypes:
+                            - list
+                form:
+                    required: true
+                    type: form
+                    options:
+                        fields:
+                            - text
+                            - url
+                            - radio
+                            - number
+                            - textarea
+                            - file
+                            - email
+                            - dropdown
+                            - date
+                            - checkboxes
+                            - checkbox
+                            - button
+
+    erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
+        tag:
+            fields:
+                title:
+                    required: true
+                    type: string

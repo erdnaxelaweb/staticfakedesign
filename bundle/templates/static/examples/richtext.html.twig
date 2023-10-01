@@ -1,0 +1,17 @@
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>RichText</h1>
+        <h2>Example</h2>
+        {# @fake var richtext #}
+        <pre>
+            <code>
+&#123;# @fake var richtext #&#125;
+
+&#123;&#123; var &#125;&#125;
+            </code>
+        </pre>
+        {{ var|raw }}
+
+    </article>
+{% endblock %}

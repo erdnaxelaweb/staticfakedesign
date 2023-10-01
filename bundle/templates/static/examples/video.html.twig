@@ -1,28 +1,36 @@
-<div class="row g-2 border-top m-2">
-    {# @fake var1 video #}
-    {# @fake var2 video({'imageVariationName': 'large'}) #}
-    {# @fake var3 video('large') #}
-    <div class="col-6">
-        <div class="border bg-light g-2 p-2">
-            <code class="chroma">
-                &#123;# @fake var video #&#125;<br/>
-                &#123;# @fake var video({'imageVariationName': 'large'}) #&#125;<br/>
-                &#123;# @fake var video('large') #&#125;<br/>
-                &lt;h1&gt;Title : &#123;&#123; var1title }}&lt;/h1&gt;<br/>
-                &lt;div&gt;Duration : &#123;&#123; var.duration }}&lt;/div&gt;<br/>
-                &lt;div&gt;Caption : &#123;&#123; var.caption }}&lt;/div&gt;<br/>
-                &lt;div&gt;Credits : &#123;&#123; var.credits }}&lt;/div&gt;<br/>
-                &lt;div&gt;Transcript : &#123;&#123; var.transcript }}&lt;/div&gt;<br/>
-                &#123;% include &#39;static/helper/video.html.twig&#39; with &#123;video: var} only %}
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Video</h1>
+        <h2>Example</h2>
+        {# @fake var1 video #}
+        {# @fake var2 video({'imageVariationName': 'large'}) #}
+        {# @fake var3 video('large') #}
+        <pre>
+            <code>
+&#123;# @fake var video #&#125;
+&#123;# @fake var video({'imageVariationName': 'large'}) #&#125;
+&#123;# @fake var video('large') #&#125;
+
+&lt;p&gt;&lt;b&gt;Title :&lt;/b&gt; &#123;&#123; var1.title }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Duration :&lt;/b&gt; &#123;&#123; var1.duration }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Caption :&lt;/b&gt; &#123;&#123; var1.caption }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Credits :&lt;/b&gt; &#123;&#123; var1.credits }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Transcript :&lt;/b&gt; &#123;&#123; var1.transcript }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Video :&lt;/b&gt;
+    &#123;% include &#39;static/helper/video.html.twig&#39; with &#123;video: var1} only %}
+&lt;/p&gt;
             </code>
-        </div>
-    </div>
-    <div class="col-6">
-        <h1>Title : {{ var1.title }}</h1>
-        <div>Duration : {{ var1.duration }}</div>
-        <div>Caption : {{ var1.caption }}</div>
-        <div>Credits : {{ var1.credits }}</div>
-        <div>Transcript : {{ var1.transcript }}</div>
-        {% include 'static/helper/video.html.twig' with {video: var1} only %}
-    </div>
-</div>
+        </pre>
+
+        <p><b>Title :</b> {{ var1.title }}</p>
+        <p><b>Duration :</b> {{ var1.duration }}</p>
+        <p><b>Caption :</b> {{ var1.caption }}</p>
+        <p><b>Credits :</b> {{ var1.credits }}</p>
+        <p><b>Transcript :</b> {{ var1.transcript }}</p>
+        <p><b>Video :</b>
+            {% include 'static/helper/video.html.twig' with {video: var1} only %}
+        </p>
+
+    </article>
+{% endblock %}

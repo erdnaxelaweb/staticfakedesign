@@ -1,28 +1,34 @@
-<div class="row g-2 border-top m-2">
-    {# @fake var1 breadcrumb #}
-    {# @fake var2 breadcrumb({'count': '5'}) #}
-    {# @fake var3 breadcrumb('5') #}
-    <div class="col-5 ">
-        <div class="border bg-light g-2 p-2">
-            <code class="chroma">
-                &#123;# @fake var breadcrumb #&#125;<br/>
-                &#123;# @fake var breadcrumb(&#123;&#39;count&#39;: &#39;5&#39;&#125;) #&#125;<br/>
-                &#123;# @fake var breadcrumb(&#39;5&#39;) #&#125;<br/>
-                &#123;% import &#39;static/helper/macros.html.twig&#39; as macros %&#125;<br/>
-                &lt;ul&gt;<br/>
-                    &#123;% for item in var %&#125;<br/>
-                        &lt;li&gt;&#123;&#123; macros.display_menu_item(item) &#125;&#125;&lt;/li&gt;<br/>
-                    &#123;% endfor %&#125;<br/>
-                &lt;/ul&gt;
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Breadcrumb</h1>
+        <h2>Example</h2>
+        {# @fake var1 breadcrumb #}
+        {# @fake var2 breadcrumb({'count': '5'}) #}
+        {# @fake var3 breadcrumb('5') #}
+        <pre>
+            <code>
+&#123;# @fake var breadcrumb #&#125;
+&#123;# @fake var breadcrumb(&#123;&#39;count&#39;: &#39;5&#39;&#125;) #&#125;
+&#123;# @fake var breadcrumb(&#39;5&#39;) #&#125;
+
+&#123;% import &#39;static/helper/macros.html.twig&#39; as macros %}
+&lt;nav aria-label=&quot;breadcrumb&quot;&gt;
+    &lt;ol class=&quot;breadcrumb&quot;&gt;
+        &#123;% for item in var %}
+            &lt;li class=&quot;breadcrumb-item active&quot;&gt;&#123;&#123; macros.display_menu_item(item) }}&lt;/li&gt;
+        &#123;% endfor %}
+    &lt;/ol&gt;
+&lt;/nav&gt;
             </code>
-        </div>
-    </div>
-    <div class="col">
+        </pre>
         {% import 'static/helper/macros.html.twig' as macros %}
-        <ul>
-            {% for item in var3 %}
-                <li>{{ macros.display_menu_item(item) }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% for item in var3 %}
+                    <li class="breadcrumb-item active">{{ macros.display_menu_item(item) }}</li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </article>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>
+        <h1>Taxonomy entry</h1>
+        <p>
+            To generate a taxonomy entry, the following parameter need to be defined : <code>erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
+                []</code>
+        </p>
+        <p>Example for a "tag" taxonomy entry</p>
+        <pre>
+            <code>
+erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
+   tag:
+      fields:
+        title:
+          required: true # if value is required
+          type: string   # field type
+          value: 'test'  # optional - force a value
+          options: []    # list of options to pass to the generator
+            </code>
+        </pre>
+        <p>
+            See <a href="/static/examples/content">here</a> for the list of available fields types and theirs options.
+        </p>
+        <hr>
+        <h2>Example</h2>
+        {# @fake var141 taxonomy_entry({'type': 'tag'}) #}
+        {# @fake var142 taxonomy_entry('tag') #}
+        <pre>
+            <code>
+&#123;# @fake var taxonomy_entry(&#123;&#39;type&#39;: &#39;tag&#39;}) #}
+&#123;# @fake var taxonomy_entry(&#39;tag&#39;) #}
+&lt;p&gt;&lt;b&gt;Id :&lt;/b&gt; &#123;&#123; var.id }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Name :&lt;/b&gt; &#123;&#123; var.name }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Fields :&lt;/b&gt;&lt;/p&gt;
+&#123;% for fieldIdentifier, field in var.fields %}
+    &#123;&#123; fieldIdentifier }} : &#123;&#123; dump(field) }}
+&#123;% endfor %}
+            </code>
+        </pre>
+        <p><b>Id :</b> {{ var142.id }}</p>
+        <p><b>Name :</b> {{ var142.name }}</p>
+        <p><b>Fields :</b></p>
+        {% for fieldIdentifier, field in var142.fields %}
+            {{ fieldIdentifier }} : {{ dump(field) }}
+        {% endfor %}
+    </article>
+{% endblock %}
