@@ -24,27 +24,27 @@ class PagerConfigurationManager extends AbstractConfigurationManager
         parent::__construct($definitions);
     }
 
-    protected function configureOptions(OptionsResolver $optionResolver): void
+    protected function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $optionResolver->define('contentTypes')
+        $optionsResolver->define('contentTypes')
             ->required()
             ->allowedTypes('string[]');
-        $optionResolver->define('sorts')
+        $optionsResolver->define('sorts')
             ->required()
             ->allowedTypes('string[]');
-        $optionResolver->define('maxPerPage')
+        $optionsResolver->define('maxPerPage')
             ->required()
             ->allowedTypes('int');
-        $optionResolver->define('filters')
+        $optionsResolver->define('filters')
             ->default([])
             ->normalize(function (Options $options, $fieldsDefinitionOptions) {
-                $optionResolver = new OptionsResolver();
-                $this->configureFilterOptions($optionResolver);
+                $optionsResolver = new OptionsResolver();
+                $this->configureFilterOptions($optionsResolver);
                 $filtersDefinition = [];
                 foreach ($fieldsDefinitionOptions as $fieldIdentifier => $fieldDefinitionOptions) {
                     $filtersDefinition[$fieldIdentifier] = $this->resolveOptions(
                         $fieldIdentifier,
-                        $optionResolver,
+                        $optionsResolver,
                         $fieldDefinitionOptions
                     );
                 }
@@ -52,13 +52,13 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             });
     }
 
-    protected function configureFilterOptions(OptionsResolver $optionResolver): void
+    protected function configureFilterOptions(OptionsResolver $optionsResolver): void
     {
-        $optionResolver->define('field')
+        $optionsResolver->define('field')
             ->required()
             ->allowedTypes('string');
 
-        $optionResolver->define('type')
+        $optionsResolver->define('type')
             ->required()
             ->allowedTypes('string')
             ->allowedValues(...array_keys($this->searchFormGenerator->getFormTypes()));

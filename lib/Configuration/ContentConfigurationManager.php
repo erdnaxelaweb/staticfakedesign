@@ -26,54 +26,54 @@ class ContentConfigurationManager extends AbstractConfigurationManager
         parent::__construct($definitions);
     }
 
-    protected function configureFieldOptions(OptionsResolver $optionResolver): void
+    protected function configureFieldOptions(OptionsResolver $optionsResolver): void
     {
-        $optionResolver->define('required')
+        $optionsResolver->define('required')
             ->default(false)
             ->allowedTypes('bool')
             ->info('Tell if field is required or not');
 
-        $optionResolver->define('type')
+        $optionsResolver->define('type')
             ->required()
             ->allowedTypes('string')
             ->info('Field type');
 
-        $optionResolver->define('value')
+        $optionsResolver->define('value')
             ->default(null)
             ->info('Forced value');
 
-        $optionResolver->define('options')
+        $optionsResolver->define('options')
             ->default([])
             ->normalize(function (Options $options, $fieldDefinitionOptions) {
-                $optionResolver = new OptionsResolver();
+                $optionsResolver = new OptionsResolver();
                 $fieldGenerator = $this->contentFieldGeneratorRegistry->getGenerator($options['type']);
-                $fieldGenerator->configureOptions($optionResolver);
-                return $this->resolveOptions($options['type'], $optionResolver, $fieldDefinitionOptions);
+                $fieldGenerator->configureOptions($optionsResolver);
+                return $this->resolveOptions($options['type'], $optionsResolver, $fieldDefinitionOptions);
             })
             ->allowedTypes('array')
             ->info('Options to pass to the field type generator');
     }
 
-    protected function configureOptions(OptionsResolver $optionResolver): void
+    protected function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $optionResolver->define('fields')
+        $optionsResolver->define('fields')
             ->required()
             ->allowedTypes()
             ->normalize(function (Options $options, $fieldsDefinitionOptions) {
-                $optionResolver = new OptionsResolver();
-                $this->configureFieldOptions($optionResolver);
+                $optionsResolver = new OptionsResolver();
+                $this->configureFieldOptions($optionsResolver);
                 $fieldsDefinition = [];
                 foreach ($fieldsDefinitionOptions as $fieldIdentifier => $fieldDefinitionOptions) {
                     $fieldsDefinition[$fieldIdentifier] = $this->resolveOptions(
                         $fieldIdentifier,
-                        $optionResolver,
+                        $optionsResolver,
                         $fieldDefinitionOptions
                     );
                 }
                 return $fieldsDefinition;
             })
             ->info('Array of field definition');
-        $optionResolver->define('parent')
+        $optionsResolver->define('parent')
             ->default([])
             ->allowedTypes('string[]')
             ->info('Array of possible parents type');

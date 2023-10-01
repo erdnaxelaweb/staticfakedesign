@@ -17,9 +17,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyEntryConfigurationManager extends ContentConfigurationManager
 {
-    protected function configureOptions(OptionsResolver $optionResolver): void
+    protected function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->remove('parent');
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->remove('parent');
     }
 }

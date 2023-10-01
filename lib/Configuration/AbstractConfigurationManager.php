@@ -34,7 +34,7 @@ abstract class AbstractConfigurationManager
         }
     }
 
-    abstract protected function configureOptions(OptionsResolver $optionResolver): void;
+    abstract protected function configureOptions(OptionsResolver $optionsResolver): void;
 
     public function registerConfiguration(string $type, array $definition): void
     {
@@ -46,10 +46,10 @@ abstract class AbstractConfigurationManager
         return array_keys($this->configurations);
     }
 
-    protected function resolveOptions(string $identifier, OptionsResolver $optionResolver, array $options)
+    protected function resolveOptions(string $identifier, OptionsResolver $optionsResolver, array $options)
     {
         try {
-            return $optionResolver->resolve($options);
+            return $optionsResolver->resolve($options);
         } catch (UndefinedOptionsException $exception) {
             throw new UndefinedOptionsException(
                 sprintf('[%s] %s', $identifier, $exception->getMessage()),
@@ -76,9 +76,9 @@ abstract class AbstractConfigurationManager
         if (! isset($this->configurations[$type])) {
             throw new ConfigurationNotFoundException($type);
         }
-        $optionResolver = new OptionsResolver();
-        $this->configureOptions($optionResolver);
+        $optionsResolver = new OptionsResolver();
+        $this->configureOptions($optionsResolver);
 
-        return $this->resolveOptions($type, $optionResolver, $this->configurations[$type]);
+        return $this->resolveOptions($type, $optionsResolver, $this->configurations[$type]);
     }
 }
