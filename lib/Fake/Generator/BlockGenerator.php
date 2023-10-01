@@ -46,6 +46,8 @@ class BlockGenerator extends AbstractContentGenerator
                 $this->fakerGenerator->sentence(),
                 $type,
                 $view,
+                $this->fakerGenerator->dateTime(),
+                $this->fakerGenerator->dateTime(),
                 $this->generateFieldsValue($configuration['fields'])
             );
         });

@@ -48,6 +48,8 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
                 $this->fakerGenerator->randomNumber(),
                 $this->fakerGenerator->sentence(),
                 $type,
+                $this->fakerGenerator->dateTime(),
+                $this->fakerGenerator->dateTime(),
                 $this->generateFieldsValue($configuration['fields'])
             );
         });

@@ -46,6 +46,8 @@ class ContentGenerator extends AbstractContentGenerator
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
                 $type,
+                $this->fakerGenerator->dateTime(),
+                $this->fakerGenerator->dateTime(),
                 $this->generateFieldsValue($configuration['fields']),
                 $this->fakerGenerator->url(),
                 ($this->breadcrumbGenerator)(),

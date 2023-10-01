@@ -32,6 +32,8 @@ erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
 &#123;# @fake var taxonomy_entry(&#39;tag&#39;) #}
 &lt;p&gt;&lt;b&gt;Id :&lt;/b&gt; &#123;&#123; var.id }}&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Name :&lt;/b&gt; &#123;&#123; var.name }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Creation date :&lt;/b&gt; &#123;&#123; var.creationDate|format_datetime }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Modification date :&lt;/b&gt; &#123;&#123; var.modificationDate|format_datetime }}&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Fields :&lt;/b&gt;&lt;/p&gt;
 &#123;% for fieldIdentifier, field in var.fields %}
     &#123;&#123; fieldIdentifier }} : &#123;&#123; dump(field) }}
@@ -40,6 +42,9 @@ erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
         </pre>
         <p><b>Id :</b> {{ var142.id }}</p>
         <p><b>Name :</b> {{ var142.name }}</p>
+        <p><b>Type :</b> {{ var142.type }}</p>
+        <p><b>Creation date :</b> {{ var142.creationDate|format_datetime }}</p>
+        <p><b>Modification date :</b> {{ var142.modificationDate|format_datetime }}</p>
         <p><b>Fields :</b></p>
         {% for fieldIdentifier, field in var142.fields %}
             {{ fieldIdentifier }} : {{ dump(field) }}

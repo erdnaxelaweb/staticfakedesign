@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+use DateTime;
 use Symfony\Component\VarExporter\LazyGhostTrait;
 
 class AbstractContent
@@ -25,6 +26,8 @@ class AbstractContent
     public function __construct(
         public readonly string $name,
         public readonly string $type,
+        public readonly DateTime $creationDate,
+        public readonly DateTime $modificationDate,
         public readonly ContentFieldsCollection  $fields
     ) {
     }

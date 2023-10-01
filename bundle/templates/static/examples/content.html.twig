@@ -100,6 +100,8 @@ erdnaxelaweb.static_fake_design.content_definition:
 &#123;# @fake var content('article') #&#125;
 &lt;p&gt;&lt;b&gt;Name :&lt;/b&gt; &#123;&#123; var142.name }}&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Url :&lt;/b&gt; &#123;&#123; var142.url }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Creation date :&lt;/b&gt; &#123;&#123; var.creationDate|format_datetime }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Modification date :&lt;/b&gt; &#123;&#123; var.modificationDate|format_datetime }}&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Breadcrumb :&lt;/b&gt;&lt;/p&gt;
 &#123;% import &#39;static/helper/macros.html.twig&#39; as macros %}
 &lt;nav aria-label=&quot;breadcrumb&quot;&gt;
@@ -117,6 +119,9 @@ erdnaxelaweb.static_fake_design.content_definition:
         </pre>
         <p><b>Name :</b> {{ var142.name }}</p>
         <p><b>Url :</b> {{ var142.url }}</p>
+        <p><b>Type :</b> {{ var142.type }}</p>
+        <p><b>Creation date :</b> {{ var142.creationDate|format_datetime }}</p>
+        <p><b>Modification date :</b> {{ var142.modificationDate|format_datetime }}</p>
         <p><b>Breadcrumb :</b></p>
         {% import 'static/helper/macros.html.twig' as macros %}
         <nav aria-label="breadcrumb">
