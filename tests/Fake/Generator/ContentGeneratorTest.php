@@ -27,7 +27,7 @@ class ContentGeneratorTest extends TestCase
     public static function getGenerator(): ContentGenerator
     {
         return new ContentGenerator(
-            ContentConfigurationManagerTest::getConfiguration(),
+            ContentConfigurationManagerTest::getManager(),
             BreadcrumbGeneratorTest::getGenerator(),
             self::getFakerGenerator(),
             ContentFieldGeneratorRegistryTest::getRegistry()

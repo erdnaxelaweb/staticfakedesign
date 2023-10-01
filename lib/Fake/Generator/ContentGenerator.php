@@ -30,10 +30,10 @@ class ContentGenerator extends AbstractContentGenerator
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('identifier')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('identifier')
             ->required()
             ->allowedTypes('string')
             ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');

@@ -27,7 +27,7 @@ class TaxonomyEntryGeneratorTest extends TestCase
     public static function getGenerator(): TaxonomyEntryGenerator
     {
         return new TaxonomyEntryGenerator(
-            TaxonomyEntryConfigurationManagerTest::getConfiguration(),
+            TaxonomyEntryConfigurationManagerTest::getManager(),
             self::getFakerGenerator(),
             ContentFieldGeneratorRegistryTest::getRegistry()
         );

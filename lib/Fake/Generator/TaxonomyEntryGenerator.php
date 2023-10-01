@@ -29,10 +29,10 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('identifier')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('identifier')
             ->required()
             ->allowedTypes('string')
             ->info(

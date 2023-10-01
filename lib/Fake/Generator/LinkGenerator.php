@@ -21,10 +21,10 @@ class LinkGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('target')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('target')
             ->default(null)
             ->allowedTypes('string', 'null');
     }

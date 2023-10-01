@@ -28,10 +28,10 @@ class AudioGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('imageVariationName')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('imageVariationName')
             ->default(null)
             ->allowedTypes('string', 'null')
             ->info(

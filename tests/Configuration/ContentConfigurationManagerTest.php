@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class ContentConfigurationManagerTest extends TestCase
 {
-    public static function getConfiguration(): ContentConfigurationManager
+    public static function getManager(): ContentConfigurationManager
     {
         return new ContentConfigurationManager(
             [
@@ -91,7 +91,7 @@ class ContentConfigurationManagerTest extends TestCase
 
     public function testGetConfiguration()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
         $configuration = $configuration->getConfiguration('article');
         self::assertIsArray($configuration);
         self::assertArrayHasKey('fields', $configuration);
@@ -108,7 +108,7 @@ class ContentConfigurationManagerTest extends TestCase
 
     public function testGetConfigurationNotFound()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
 
         $this->expectException(ConfigurationNotFoundException::class);
         $configuration = $configuration->getConfiguration('notfound');

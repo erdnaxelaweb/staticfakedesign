@@ -1,6 +1,6 @@
 <?php
 /*
- * DesignBundle.
+ * staticfakedesignbundle.
  *
  * @package   DesignBundle
  *
@@ -9,36 +9,29 @@
  * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 
-class FormGenerator extends AbstractGenerator
+class SearchFormGenerator extends AbstractGenerator
 {
     public function getFormTypes(): array
     {
         return [
-            'text' => [
+            'fulltext' => [
                 'type' => TextType::class,
-            ],
-            'url' => [
-                'type' => UrlType::class,
             ],
             'radio' => [
                 'type' => ChoiceType::class,
@@ -48,28 +41,13 @@ class FormGenerator extends AbstractGenerator
                     'choices' => $this->fakerGenerator->words(),
                 ],
             ],
-            'number' => [
-                'type' => NumberType::class,
-            ],
-            'textarea' => [
-                'type' => TextareaType::class,
-            ],
-            'file' => [
-                'type' => FileType::class,
-            ],
-            'email' => [
-                'type' => EmailType::class,
-            ],
             'dropdown' => [
                 'type' => ChoiceType::class,
                 'options' => [
                     'choices' => $this->fakerGenerator->words(),
                 ],
             ],
-            'date' => [
-                'type' => DateType::class,
-            ],
-            'checkboxes' => [
+            'checkbox' => [
                 'type' => ChoiceType::class,
                 'options' => [
                     'expanded' => true,
@@ -77,12 +55,20 @@ class FormGenerator extends AbstractGenerator
                     'choices' => $this->fakerGenerator->words(),
                 ],
             ],
-
-            'checkbox' => [
-                'type' => CheckboxType::class,
+            'number' => [
+                'type' => NumberType::class,
             ],
-            'button' => [
-                'type' => SubmitType::class,
+            'number_range' => [
+                'type' => RangeType::class,
+            ],
+            'date' => [
+                'type' => DateType::class,
+            ],
+            'date_range' => [
+                'type' => DateIntervalType::class,
+            ],
+            'bool' => [
+                'type' => CheckboxType::class,
             ],
         ];
     }
@@ -94,11 +80,11 @@ class FormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = []): FormView
+    public function __invoke(array $fields = [], array $sorts = []): FormView
     {
         $formTypes = $this->getFormTypes();
         $builder = $this->formFactory->createBuilder(FormType::class, null);
-        $formFields = $builder->create('fields', FormType::class, [
+        $formFields = $builder->create('filters', FormType::class, [
             'compound' => true,
         ]);
         if (empty($fields)) {
@@ -109,6 +95,14 @@ class FormGenerator extends AbstractGenerator
             $formFields->add($this->fakerGenerator->word, ...$formType);
         }
         $builder->add($formFields);
+        if (count($sorts) > 1) {
+            $builder->add('sort', ChoiceType::class, [
+                'choices' => array_flip($sorts),
+            ]);
+        }
+        $builder->add('search', SubmitType::class, [
+            'label' => 'search',
+        ]);
         return $builder->getForm()
             ->createView();
     }

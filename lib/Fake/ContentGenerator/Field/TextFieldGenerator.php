@@ -14,17 +14,17 @@ class TextFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('maxRows')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('max')
             ->default(10)
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $maxRows = 10): string
+    public function __invoke(int $max = 10): string
     {
-        $count = rand(1, $maxRows);
+        $count = rand(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
         return sprintf('<p>%s</p>', implode('<br/>', $paragraphes));

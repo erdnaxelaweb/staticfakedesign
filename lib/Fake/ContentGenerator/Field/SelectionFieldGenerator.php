@@ -23,14 +23,14 @@ class SelectionFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('options')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('options')
             ->required()
             ->allowedTypes('string[]');
 
-        $optionResolver->define('isMultiple')
+        $optionsResolver->define('isMultiple')
             ->default(false)
             ->allowedTypes('bool');
     }

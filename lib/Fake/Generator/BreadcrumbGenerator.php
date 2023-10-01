@@ -17,10 +17,10 @@ class BreadcrumbGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('count')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('count')
             ->default(null)
             ->allowedTypes('int', 'null');
     }

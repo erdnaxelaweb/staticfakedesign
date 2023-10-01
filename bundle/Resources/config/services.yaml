@@ -12,8 +12,9 @@ parameters:
 
     erdnaxelaweb.static_fake_design.image.variations: []
     erdnaxelaweb.static_fake_design.block_definition: []
-    erdnaxelaweb.static_fake_design.contents_definition: []
+    erdnaxelaweb.static_fake_design.content_definition: []
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
+    erdnaxelaweb.static_fake_design.pager_definition: []
 
 services:
     _defaults:
@@ -38,7 +39,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager:
         lazy: true
         arguments:
-            $definitions: '%erdnaxelaweb.static_fake_design.contents_definition%'
+            $definitions: '%erdnaxelaweb.static_fake_design.content_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager:
         lazy: true
@@ -49,3 +50,8 @@ services:
         lazy: true
         arguments:
             $definitions: '%erdnaxelaweb.static_fake_design.block_definition%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager:
+        lazy: true
+        arguments:
+            $definitions: '%erdnaxelaweb.static_fake_design.pager_definition%'

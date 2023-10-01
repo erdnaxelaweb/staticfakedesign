@@ -14,14 +14,14 @@ class ContentFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('type')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
             ->required()
             ->allowedTypes('string');
 
-        $optionResolver->define('max')
+        $optionsResolver->define('max')
             ->default(1)
             ->allowedTypes('int');
     }

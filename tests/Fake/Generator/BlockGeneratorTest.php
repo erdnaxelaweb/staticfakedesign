@@ -27,7 +27,7 @@ class BlockGeneratorTest extends TestCase
     public static function getGenerator(): BlockGenerator
     {
         return new BlockGenerator(
-            BlockConfigurationManagerTest::getConfiguration(),
+            BlockConfigurationManagerTest::getManager(),
             self::getFakerGenerator(),
             ContentFieldGeneratorRegistryTest::getRegistry()
         );
@@ -40,5 +40,12 @@ class BlockGeneratorTest extends TestCase
         self::assertInstanceOf(Block::class, $block);
         self::assertNotNull($block->name);
         self::assertNotEmpty($block->fields);
+        self::assertNotEmpty('default', $block->view);
+
+        $block = $generator('list', 'headline');
+        self::assertInstanceOf(Block::class, $block);
+        self::assertNotNull($block->name);
+        self::assertNotEmpty($block->fields);
+        self::assertNotEmpty('headline', $block->view);
     }
 }

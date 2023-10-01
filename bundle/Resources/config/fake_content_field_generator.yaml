@@ -104,3 +104,8 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'time'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FormFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'form'}

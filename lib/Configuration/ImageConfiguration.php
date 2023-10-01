@@ -27,6 +27,16 @@ class ImageConfiguration
         $this->variations = $variations;
     }
 
+    public function setBreakpoints(array $breakpoints): void
+    {
+        $this->breakpoints = $breakpoints;
+    }
+
+    public function setVariations(array $variations): void
+    {
+        $this->variations = $variations;
+    }
+
     public function getVariationConfig(string $variationName): array
     {
         if (! isset($this->variations[$variationName])) {

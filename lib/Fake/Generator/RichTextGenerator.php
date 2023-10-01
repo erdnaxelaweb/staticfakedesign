@@ -50,10 +50,10 @@ class RichTextGenerator extends AbstractGenerator
 
     public const TITLE_TAG = 'title';
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('maxWidth')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('maxWidth')
             ->default(10)
             ->allowedTypes('int')
             ->info(

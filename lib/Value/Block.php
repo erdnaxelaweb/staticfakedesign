@@ -15,4 +15,12 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 class Block extends AbstractContent
 {
+    public function __construct(
+        string                  $name,
+        string                  $type,
+        public readonly string  $view,
+        ContentFieldsCollection $fields
+    ) {
+        parent::__construct($name, $type, $fields);
+    }
 }

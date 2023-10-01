@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class BlockConfigurationManagerTest extends TestCase
 {
-    public static function getConfiguration(): BlockConfigurationManager
+    public static function getManager(): BlockConfigurationManager
     {
         return new BlockConfigurationManager(
             [
@@ -39,7 +39,7 @@ class BlockConfigurationManagerTest extends TestCase
 
     public function testGetConfiguration()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
         $configuration = $configuration->getConfiguration('list');
         self::assertIsArray($configuration);
         self::assertArrayHasKey('fields', $configuration);
@@ -54,7 +54,7 @@ class BlockConfigurationManagerTest extends TestCase
 
     public function testGetConfigurationNotFound()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
 
         $this->expectException(ConfigurationNotFoundException::class);
         $configuration = $configuration->getConfiguration('notfound');

@@ -23,14 +23,14 @@ class IntegerFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('min')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('min')
             ->default(0)
             ->allowedTypes('int');
 
-        $optionResolver->define('max')
+        $optionsResolver->define('max')
             ->default(PHP_INT_MAX)
             ->allowedTypes('int');
     }

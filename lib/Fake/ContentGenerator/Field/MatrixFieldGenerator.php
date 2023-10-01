@@ -23,14 +23,14 @@ class MatrixFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('columns')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('columns')
             ->required()
             ->allowedTypes('string[]');
 
-        $optionResolver->define('minimumRows')
+        $optionsResolver->define('minimumRows')
             ->default(1)
             ->allowedTypes('int');
     }

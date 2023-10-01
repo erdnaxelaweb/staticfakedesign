@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractGenerator implements GeneratorInterface
 {
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
     }
 

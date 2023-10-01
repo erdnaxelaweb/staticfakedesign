@@ -25,10 +25,10 @@ class BlocksFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('allowedTypes')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('allowedTypes')
             ->required()
             ->allowedTypes('string[]');
     }

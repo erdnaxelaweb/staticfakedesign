@@ -23,14 +23,14 @@ class FloatFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('min')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('min')
             ->default(0)
             ->allowedTypes('int', 'float');
 
-        $optionResolver->define('max')
+        $optionsResolver->define('max')
             ->default(PHP_FLOAT_MAX)
             ->allowedTypes('int', 'float');
     }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
-use Pagerfanta\Adapter\CallbackAdapter;
+use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,43 +15,50 @@ class PagerGenerator extends AbstractGenerator
 {
     public function __construct(
         protected ContentGenerator $contentGenerator,
+        protected SearchFormGenerator $searchFormGenerator,
+        protected PagerConfigurationManager $pagerConfigurationManager,
         FakerGenerator             $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('type')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
             ->required()
             ->allowedTypes('string')
             ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
 
-        $optionResolver->define('maxPerPage')
-            ->default(null)
-            ->allowedTypes('int', 'null');
-
-        $optionResolver->define('pagesCount')
+        $optionsResolver->define('pagesCount')
             ->default(null)
             ->allowedTypes('int', 'null');
     }
 
-    public function __invoke(string $type, ?int $maxPerPage = null, ?int $pagesCount = null): Pagerfanta
+    public function __invoke(string $type, ?int $pagesCount = null): Pagerfanta
     {
-        $maxPerPage = $maxPerPage ?? rand(1, 10);
+        $configuration = $this->pagerConfigurationManager->getConfiguration($type);
+        $sorts = $configuration['sorts'];
+        $filters = $configuration['filters'];
+        $contentTypes = $configuration['contentTypes'];
+        $maxPerPage = $configuration['maxPerPage'];
         $pagesCount = $pagesCount ?? rand(1, 10);
 
-        $adapter = new CallbackAdapter(
+        $adapter = new PagerAdapter(
             static function () use ($maxPerPage, $pagesCount) {
                 return $maxPerPage * $pagesCount;
             },
-            function ($offset, $length) use ($type) {
+            function ($offset, $length) use ($contentTypes) {
                 $contents = [];
                 for ($i = 0; $i < $length; ++$i) {
-                    $contents[] = ($this->contentGenerator)($type);
+                    $contents[] = ($this->contentGenerator)($this->fakerGenerator->randomElement($contentTypes));
                 }
                 return $contents;
+            },
+            function () use ($filters, $sorts) {
+                return ($this->searchFormGenerator)(array_map(function (array $filter) {
+                    return $filter['type'];
+                }, $filters), $sorts);
             }
         );
         $pager = new Pagerfanta($adapter);

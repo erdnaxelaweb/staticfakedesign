@@ -31,13 +31,16 @@ abstract class AbstractContentGenerator extends AbstractGenerator
     {
         $fieldsValue = new ContentFieldsCollection();
         foreach ($fieldsDefinition as $fieldIdentifier => $fieldDefinition) {
+            $fieldValue = $fieldDefinition['value'] ?? null;
             $required = $fieldDefinition['required'] ?? false;
             $type = $fieldDefinition['type'];
             $options = $fieldDefinition['options'] ?? [];
 
-            $fieldValue = ($required || $this->fakerGenerator->boolean()) ?
-                $this->generateFieldValue($type, $options) :
-                null;
+            if (! $fieldValue) {
+                $fieldValue = ($required || $this->fakerGenerator->boolean()) ?
+                    $this->generateFieldValue($type, $options) :
+                    null;
+            }
 
             $fieldsValue->set($fieldIdentifier, $fieldValue);
         }

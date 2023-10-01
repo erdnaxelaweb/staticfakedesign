@@ -13,25 +13,17 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Configuration;
 
-use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ContentConfigurationManager
+class ContentConfigurationManager extends AbstractConfigurationManager
 {
-    protected array $definitions;
-
     public function __construct(
         array                                   $definitions,
         protected ContentFieldGeneratorRegistry $contentFieldGeneratorRegistry
     ) {
-        foreach ($definitions as $type => $definition) {
-            $this->registerConfiguration($type, $definition);
-        }
+        parent::__construct($definitions);
     }
 
     protected function configureFieldOptions(OptionsResolver $optionResolver): void
@@ -40,10 +32,15 @@ class ContentConfigurationManager
             ->default(false)
             ->allowedTypes('bool')
             ->info('Tell if field is required or not');
+
         $optionResolver->define('type')
             ->required()
             ->allowedTypes('string')
             ->info('Field type');
+
+        $optionResolver->define('value')
+            ->default(null)
+            ->info('Forced value');
 
         $optionResolver->define('options')
             ->default([])
@@ -51,7 +48,7 @@ class ContentConfigurationManager
                 $optionResolver = new OptionsResolver();
                 $fieldGenerator = $this->contentFieldGeneratorRegistry->getGenerator($options['type']);
                 $fieldGenerator->configureOptions($optionResolver);
-                return $optionResolver->resolve($fieldDefinitionOptions);
+                return $this->resolveOptions($options['type'], $optionResolver, $fieldDefinitionOptions);
             })
             ->allowedTypes('array')
             ->info('Options to pass to the field type generator');
@@ -67,27 +64,11 @@ class ContentConfigurationManager
                 $this->configureFieldOptions($optionResolver);
                 $fieldsDefinition = [];
                 foreach ($fieldsDefinitionOptions as $fieldIdentifier => $fieldDefinitionOptions) {
-                    try {
-                        $fieldsDefinition[$fieldIdentifier] = $optionResolver->resolve($fieldDefinitionOptions);
-                    } catch (UndefinedOptionsException $exception) {
-                        throw new UndefinedOptionsException(
-                            sprintf('[%s] %s', $fieldIdentifier, $exception->getMessage()),
-                            $exception->getCode(),
-                            $exception
-                        );
-                    } catch (MissingOptionsException $exception) {
-                        throw new MissingOptionsException(
-                            sprintf('[%s] %s', $fieldIdentifier, $exception->getMessage()),
-                            $exception->getCode(),
-                            $exception
-                        );
-                    } catch (InvalidOptionsException $exception) {
-                        throw new InvalidOptionsException(
-                            sprintf('[%s] %s', $fieldIdentifier, $exception->getMessage()),
-                            $exception->getCode(),
-                            $exception
-                        );
-                    }
+                    $fieldsDefinition[$fieldIdentifier] = $this->resolveOptions(
+                        $fieldIdentifier,
+                        $optionResolver,
+                        $fieldDefinitionOptions
+                    );
                 }
                 return $fieldsDefinition;
             })
@@ -96,40 +77,5 @@ class ContentConfigurationManager
             ->default([])
             ->allowedTypes('string[]')
             ->info('Array of possible parents type');
-    }
-
-    public function registerConfiguration(string $type, array $definition): void
-    {
-        $this->definitions[$type] = $definition;
-    }
-
-    public function getConfiguration(string $type): array
-    {
-        if (! isset($this->definitions[$type])) {
-            throw new ConfigurationNotFoundException($type);
-        }
-        $optionResolver = new OptionsResolver();
-        $this->configureOptions($optionResolver);
-        try {
-            return $optionResolver->resolve($this->definitions[$type]);
-        } catch (UndefinedOptionsException $exception) {
-            throw new UndefinedOptionsException(
-                sprintf('[%s] %s', $type, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        } catch (MissingOptionsException $exception) {
-            throw new MissingOptionsException(
-                sprintf('[%s] %s', $type, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        } catch (InvalidOptionsException $exception) {
-            throw new InvalidOptionsException(
-                sprintf('[%s] %s', $type, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        }
     }
 }

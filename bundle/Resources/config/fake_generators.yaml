@@ -53,6 +53,11 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form'}
 
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'search_form'}
+
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator:
         lazy: true
         tags:

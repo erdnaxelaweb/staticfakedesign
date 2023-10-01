@@ -14,11 +14,11 @@ class StringFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
+        parent::configureOptions($optionsResolver);
 
-        $optionResolver->define('maxLength')
+        $optionsResolver->define('maxLength')
             ->default(255)
             ->allowedTypes('int');
     }

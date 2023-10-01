@@ -29,22 +29,23 @@ class BlockGenerator extends AbstractContentGenerator
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
-    public function configureOptions(OptionsResolver $optionResolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        parent::configureOptions($optionResolver);
-        $optionResolver->define('identifier')
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('identifier')
             ->required()
             ->allowedTypes('string')
             ->info('Identifier of the block to generate. See erdnaxelaweb.static_fake_design.block_definition');
     }
 
-    public function __invoke(string $type): Block
+    public function __invoke(string $type, string $view = 'default'): Block
     {
         $configuration = $this->blockConfigurationManager->getConfiguration($type);
-        return Block::createLazyGhost(function (Block $instance) use ($type, $configuration) {
+        return Block::createLazyGhost(function (Block $instance) use ($type, $configuration, $view) {
             $instance->__construct(
                 $this->fakerGenerator->sentence(),
                 $type,
+                $view,
                 $this->generateFieldsValue($configuration['fields'])
             );
         });

@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class TaxonomyEntryConfigurationManagerTest extends TestCase
 {
-    public static function getConfiguration(): TaxonomyEntryConfigurationManager
+    public static function getManager(): TaxonomyEntryConfigurationManager
     {
         return new TaxonomyEntryConfigurationManager(
             [
@@ -39,7 +39,7 @@ class TaxonomyEntryConfigurationManagerTest extends TestCase
 
     public function testGetConfiguration()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
         $configuration = $configuration->getConfiguration('tag');
         self::assertIsArray($configuration);
         self::assertArrayHasKey('fields', $configuration);
@@ -54,7 +54,7 @@ class TaxonomyEntryConfigurationManagerTest extends TestCase
 
     public function testGetConfigurationNotFound()
     {
-        $configuration = self::getConfiguration();
+        $configuration = self::getManager();
 
         $this->expectException(ConfigurationNotFoundException::class);
         $configuration = $configuration->getConfiguration('notfound');
