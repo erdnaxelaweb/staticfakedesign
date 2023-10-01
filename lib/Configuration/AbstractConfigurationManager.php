@@ -41,6 +41,11 @@ abstract class AbstractConfigurationManager
         $this->configurations[$type] = $definition;
     }
 
+    public function getConfigurationsType(): array
+    {
+        return array_keys($this->configurations);
+    }
+
     protected function resolveOptions(string $identifier, OptionsResolver $optionResolver, array $options)
     {
         try {
