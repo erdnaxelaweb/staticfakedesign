@@ -18,6 +18,7 @@ The available value types are (some type accept parameters) :
 - link
 - pager
 - richtext
+- search_form
 - taxonomy_entry
 - video
 
@@ -31,7 +32,7 @@ ErdnaxelaWeb\StaticFakeDesignBundle\StaticFakeDesignBundle::class => ['all' => t
 ```
 
 ### Routing
-Add the following root to access the examples :
+Add the following root to access the examples `/static/examples:
 ```yaml
 static:
     path: /static/{path}
