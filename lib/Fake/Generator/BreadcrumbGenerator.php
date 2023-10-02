@@ -6,6 +6,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Breadcrumb;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BreadcrumbGenerator extends AbstractGenerator
@@ -25,13 +26,13 @@ class BreadcrumbGenerator extends AbstractGenerator
             ->allowedTypes('int', 'null');
     }
 
-    public function __invoke(?int $count = null): array
+    public function __invoke(?int $count = null): Breadcrumb
     {
-        $count = $count ?? $this->fakerGenerator->randomDigitNot(0);
-        $links = [];
-        for ($i = 0; $i < $count; ++$i) {
-            $links[] = ($this->linkGenerator)();
-        }
-        return $links;
+        return Breadcrumb::createLazyGhost(function (Breadcrumb $instance) use ($count) {
+            $count = $count ?? $this->fakerGenerator->randomDigitNot(0);
+            for ($i = 0; $i < $count; ++$i) {
+                $instance->add(($this->linkGenerator)());
+            }
+        });
     }
 }

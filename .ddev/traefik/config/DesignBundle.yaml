@@ -1,0 +1,86 @@
+#ddev-generated
+
+http:
+  routers:
+    
+    
+    DesignBundle-web-80-http:
+      
+      rule: HostRegexp(`designbundle.ddev.site`)
+      
+      service: "DesignBundle-web-80-http"
+      tls: false
+      entrypoints:
+        - http-80
+    
+    
+    DesignBundle-web-8025-http:
+      
+      rule: HostRegexp(`designbundle.ddev.site`)
+      
+      service: "DesignBundle-web-8025-http"
+      tls: false
+      entrypoints:
+        - http-8025
+    
+    
+    
+    
+    
+    
+    DesignBundle-web-80-https:
+      
+      rule: HostRegexp(`designbundle.ddev.site`)
+      
+      service: "DesignBundle-web-80-https"
+      
+      tls: true
+      
+      entrypoints:
+        - http-443
+    
+    
+    DesignBundle-web-8025-https:
+      
+      rule: HostRegexp(`designbundle.ddev.site`)
+      
+      service: "DesignBundle-web-8025-https"
+      
+      tls: true
+      
+      entrypoints:
+        - http-8026
+    
+    
+
+  services:
+    
+    DesignBundle-web-80-http:
+      loadbalancer:
+        servers:
+          - url: http://ddev-DesignBundle-web:80
+    
+    DesignBundle-web-8025-http:
+      loadbalancer:
+        servers:
+          - url: http://ddev-DesignBundle-web:8025
+    
+    DesignBundle-web-80-https:
+    
+      loadbalancer:
+        servers:
+          - url: http://ddev-DesignBundle-web:80
+    
+    DesignBundle-web-8025-https:
+    
+      loadbalancer:
+        servers:
+          - url: http://ddev-DesignBundle-web:8025
+    
+
+
+tls:
+  certificates:
+    - certFile: /mnt/ddev-global-cache/traefik/certs/DesignBundle.crt
+      keyFile: /mnt/ddev-global-cache/traefik/certs/DesignBundle.key
+

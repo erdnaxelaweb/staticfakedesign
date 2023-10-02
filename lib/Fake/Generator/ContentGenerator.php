@@ -50,7 +50,7 @@ class ContentGenerator extends AbstractContentGenerator
                 $this->fakerGenerator->dateTime(),
                 $this->generateFieldsValue($configuration['fields']),
                 $this->fakerGenerator->url(),
-                ($this->breadcrumbGenerator)(),
+                ($this->breadcrumbGenerator)()
             );
         });
     }

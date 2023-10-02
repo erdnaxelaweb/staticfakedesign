@@ -23,8 +23,8 @@ class Content extends AbstractContent
         DateTime $creationDate,
         DateTime $modificationDate,
         ContentFieldsCollection  $fields,
-        public readonly string $url = "",
-        public readonly array  $breadcrumb = []
+        public readonly string $url,
+        public readonly Breadcrumb  $breadcrumb,
     ) {
         parent::__construct($name, $type, $creationDate, $modificationDate, $fields);
     }

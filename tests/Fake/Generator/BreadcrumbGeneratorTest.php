@@ -15,6 +15,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Breadcrumb;
 use Knp\Menu\MenuItem;
 use PHPUnit\Framework\TestCase;
 
@@ -32,12 +33,12 @@ class BreadcrumbGeneratorTest extends TestCase
         $generator = self::getGenerator();
 
         $breadcrumb = $generator();
-        self::assertIsArray($breadcrumb);
+        self::assertInstanceOf(Breadcrumb::class, $breadcrumb);
         self::assertNotEmpty($breadcrumb);
         self::assertInstanceOf(MenuItem::class, $breadcrumb[0]);
 
         $breadcrumb = $generator(5);
-        self::assertIsArray($breadcrumb);
+        self::assertInstanceOf(Breadcrumb::class, $breadcrumb);
         self::assertCount(5, $breadcrumb);
         self::assertInstanceOf(MenuItem::class, $breadcrumb[0]);
     }
