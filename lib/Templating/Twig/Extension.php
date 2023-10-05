@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Debug\NodeVisitor\DebugNodeVisitor;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class Extension extends AbstractExtension
 {
     public function __construct(
-        protected ChainGenerator $generator
+        protected ChainGenerator $generator,
+        protected string $kernelProjectDir
     ) {
     }
 
@@ -34,5 +36,10 @@ class Extension extends AbstractExtension
                 'is_safe' => ['html'],
             ]),
         ];
+    }
+
+    public function getNodeVisitors()
+    {
+        return [new DebugNodeVisitor($this->kernelProjectDir)];
     }
 }
