@@ -5,9 +5,6 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Debug\NodeVisitor;
 use ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Debug\Node\EnterDebugNode;
 use ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Debug\Node\LeaveDebugNode;
 use Twig\Environment;
-use Twig\Node\BlockNode;
-use Twig\Node\BodyNode;
-use Twig\Node\MacroNode;
 use Twig\Node\ModuleNode;
 use Twig\Node\Node;
 use Twig\NodeVisitor\NodeVisitorInterface;
@@ -26,7 +23,7 @@ class DebugNodeVisitor implements NodeVisitorInterface
 
     public function leaveNode(Node $node, Environment $env): ?Node
     {
-        if ( ! $env->isDebug() || !str_contains( $node->getTemplateName(), '.html.twig' ) ) {
+        if (! $env->isDebug() || ! str_contains($node->getTemplateName(), '.html.twig')) {
             return $node;
         }
 
@@ -48,24 +45,6 @@ class DebugNodeVisitor implements NodeVisitorInterface
                         $node->getNode('display_end'),
                     ]
                 )
-            );
-        } elseif ($node instanceof BlockNode) {
-            $node->setNode(
-                'body',
-                new BodyNode([
-                    new EnterDebugNode($this->getTemplatePath($node->getSourceContext()->getPath())),
-                    $node->getNode('body'),
-                    new LeaveDebugNode($this->getTemplatePath($node->getSourceContext()->getPath())),
-                ])
-            );
-        } elseif ($node instanceof MacroNode) {
-            $node->setNode(
-                'body',
-                new BodyNode([
-                    new EnterDebugNode($this->getTemplatePath($node->getSourceContext()->getPath())),
-                    $node->getNode('body'),
-                    new LeaveDebugNode($this->getTemplatePath($node->getSourceContext()->getPath())),
-                ])
             );
         }
 
