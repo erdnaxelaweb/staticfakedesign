@@ -26,7 +26,7 @@ class DebugNodeVisitor implements NodeVisitorInterface
 
     public function leaveNode(Node $node, Environment $env): ?Node
     {
-        if (! $env->isDebug()) {
+        if ( ! $env->isDebug() || !str_contains( $node->getTemplateName(), '.html.twig' ) ) {
             return $node;
         }
 
