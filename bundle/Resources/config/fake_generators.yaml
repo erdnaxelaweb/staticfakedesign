@@ -4,6 +4,7 @@ parameters:
 
     erdnaxelaweb.static_fake_design.generator.image.provider: "\\Smknstd\\FakerPicsumImages\\FakerPicsumImagesProvider"
     erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {randomize: false, gray: false}
+    erdnaxelaweb.static_fake_design.generator.locale: "en_US"
 
 services:
     _defaults:
@@ -16,6 +17,7 @@ services:
         arguments:
             $imageProviderClass: '%erdnaxelaweb.static_fake_design.generator.image.provider%'
             $imageProviderParameters: '%erdnaxelaweb.static_fake_design.generator.image.provider_parameters%'
+            $locale: '%erdnaxelaweb.static_fake_design.generator.locale%'
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\:
         resource: '../../../lib/Fake/Generator/'
