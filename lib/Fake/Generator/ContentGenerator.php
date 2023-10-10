@@ -35,12 +35,15 @@ class ContentGenerator extends AbstractContentGenerator
         parent::configureOptions($optionsResolver);
         $optionsResolver->define('identifier')
             ->required()
-            ->allowedTypes('string')
+            ->allowedTypes('string', 'string[]')
             ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
     }
 
-    public function __invoke(string $type): Content
+    public function __invoke($type): Content
     {
+        if (is_array($type)) {
+            $type = $this->fakerGenerator->randomElement($type);
+        }
         $configuration = $this->contentConfigurationManager->getConfiguration($type);
         return Content::createLazyGhost(function (Content $instance) use ($type, $configuration) {
             $instance->__construct(

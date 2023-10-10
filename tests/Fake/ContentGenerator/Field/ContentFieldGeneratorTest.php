@@ -35,6 +35,9 @@ class ContentFieldGeneratorTest extends TestCase
         $content = $generator('article');
         self::assertInstanceOf(Content::class, $content);
 
+        $content = $generator(['article', 'article']);
+        self::assertInstanceOf(Content::class, $content);
+
         $contents = $generator('article', 5);
         self::assertIsArray($contents);
         self::assertNotEmpty($contents);

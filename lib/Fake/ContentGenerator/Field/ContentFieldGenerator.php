@@ -19,14 +19,14 @@ class ContentFieldGenerator extends AbstractFieldGenerator
         parent::configureOptions($optionsResolver);
         $optionsResolver->define('type')
             ->required()
-            ->allowedTypes('string');
+            ->allowedTypes('string', 'string[]');
 
         $optionsResolver->define('max')
             ->default(1)
             ->allowedTypes('int');
     }
 
-    public function __invoke(string $type, int $max = 1)
+    public function __invoke($type, int $max = 1)
     {
         if ($max === 1) {
             return ($this->contentGenerator)($type);

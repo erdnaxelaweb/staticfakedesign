@@ -37,7 +37,10 @@ class ContentGeneratorTest extends TestCase
     public function testGenerator()
     {
         $generator = self::getGenerator();
-        $taxonomyEntry = $generator('article');
-        self::assertInstanceOf(Content::class, $taxonomyEntry);
+        $content = $generator('article');
+        self::assertInstanceOf(Content::class, $content);
+
+        $content = $generator(['article', 'article']);
+        self::assertInstanceOf(Content::class, $content);
     }
 }

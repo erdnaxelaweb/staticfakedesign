@@ -74,11 +74,19 @@ class ContentConfigurationManagerTest extends TestCase
                                 'max' => 2,
                             ],
                         ],
-                        'products' => [
+                        'product' => [
                             'required' => true,
                             'type' => 'content',
                             'options' => [
                                 'type' => 'product',
+                                'max' => 1,
+                            ],
+                        ],
+                        'products' => [
+                            'required' => true,
+                            'type' => 'content',
+                            'options' => [
+                                'type' => ['product', 'product'],
                                 'max' => 2,
                             ],
                         ],
