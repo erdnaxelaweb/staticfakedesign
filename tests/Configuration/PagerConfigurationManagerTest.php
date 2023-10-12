@@ -34,7 +34,10 @@ class PagerConfigurationManagerTest extends TestCase
                             'type' => 'checkbox',
                         ],
                     ],
-                    'sorts' => ['title', 'date'],
+                    'sorts' => [
+                        'metadata.name' => 'ascending',
+                        'metadata.publish_date' => 'ascending',
+                    ],
                     'maxPerPage' => 5,
                 ],
             ],

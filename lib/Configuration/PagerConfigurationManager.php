@@ -31,7 +31,7 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->allowedTypes('string[]');
         $optionsResolver->define('sorts')
             ->required()
-            ->allowedTypes('string[]');
+            ->allowedTypes('array');
         $optionsResolver->define('maxPerPage')
             ->required()
             ->allowedTypes('int');

@@ -14,8 +14,8 @@ parameters:
                     field: selection
                     type: checkbox
             sorts:
-                - title
-                - date
+                metadata.name: ascending
+                metadata.publish_date: ascending
             maxPerPage: 10
 
     erdnaxelaweb.static_fake_design.block_definition:
