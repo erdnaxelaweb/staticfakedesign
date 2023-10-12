@@ -1,8 +1,13 @@
 <?php
 
-/**
- * @copyright Novactive
- * Date: 18/07/2022
+/*
+ * staticfakedesignbundle.
+ *
+ * @package   DesignBundle
+ *
+ * @author    florian
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
 declare(strict_types=1);

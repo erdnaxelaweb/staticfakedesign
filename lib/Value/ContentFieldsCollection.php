@@ -1,12 +1,12 @@
 <?php
 /*
- * ibexadesignbundle.
+ * staticfakedesignbundle.
  *
- * @package   ibexadesignbundle
+ * @package   DesignBundle
  *
  * @author    florian
- * @copyright 2018 Novactive
- * @license   https://github.com/Novactive/NovaHtmlIntegrationBundle/blob/master/LICENSE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
 declare(strict_types=1);
