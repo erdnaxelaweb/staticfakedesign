@@ -38,13 +38,13 @@ class SearchFormGenerator extends AbstractGenerator
                 'options' => [
                     'expanded' => true,
                     'multiple' => false,
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
             'dropdown' => [
                 'type' => ChoiceType::class,
                 'options' => [
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
             'checkbox' => [
@@ -52,7 +52,7 @@ class SearchFormGenerator extends AbstractGenerator
                 'options' => [
                     'expanded' => true,
                     'multiple' => true,
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
             'number' => [
@@ -92,6 +92,9 @@ class SearchFormGenerator extends AbstractGenerator
         }
         foreach ($fields as $fieldName => $field) {
             $formType = $formTypes[$field];
+            $formType['options'] = ($formType['options'] ?? []) + [
+                'label' => "{$this->fakerGenerator->word} ($field)",
+            ];
             $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);

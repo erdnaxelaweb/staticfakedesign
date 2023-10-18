@@ -45,7 +45,7 @@ class FormGenerator extends AbstractGenerator
                 'options' => [
                     'expanded' => true,
                     'multiple' => false,
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
             'number' => [
@@ -63,7 +63,7 @@ class FormGenerator extends AbstractGenerator
             'dropdown' => [
                 'type' => ChoiceType::class,
                 'options' => [
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
             'date' => [
@@ -74,7 +74,7 @@ class FormGenerator extends AbstractGenerator
                 'options' => [
                     'expanded' => true,
                     'multiple' => true,
-                    'choices' => $this->fakerGenerator->words(),
+                    'choices' => array_flip($this->fakerGenerator->words()),
                 ],
             ],
 
@@ -106,6 +106,9 @@ class FormGenerator extends AbstractGenerator
         }
         foreach ($fields as $fieldName => $field) {
             $formType = $formTypes[$field];
+            $formType['options'] = ($formType['options'] ?? []) + [
+                'label' => "{$this->fakerGenerator->word} ($field)",
+            ];
             $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);
