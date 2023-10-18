@@ -32,5 +32,11 @@ class RichTextGeneratorTest extends TestCase
 
         $richtext = $generator();
         self::assertIsString($richtext);
+
+        $richtext = $generator(1);
+        self::assertIsString($richtext);
+
+        $richtext = $generator(10, ['p']);
+        self::assertIsString($richtext);
     }
 }

@@ -54,6 +54,10 @@ class ContentConfigurationManagerTest extends TestCase
                         'description' => [
                             'required' => true,
                             'type' => 'richtext',
+                            'options' => [
+                                'allowedTags' => ['p'],
+                                'maxWidth' => 1,
+                            ],
                         ],
                         'image' => [
                             'required' => true,

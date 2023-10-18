@@ -50,6 +50,8 @@ class RichTextGenerator extends AbstractGenerator
 
     public const TITLE_TAG = 'title';
 
+    public const ALLOWED_TAGS = ['p', 'a', 'span', 'ul', 'h', 'b', 'i', 'table', 'text'];
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -61,7 +63,7 @@ class RichTextGenerator extends AbstractGenerator
             );
     }
 
-    public function __invoke(int $maxWidth = 10): string
+    public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
     {
         if (! class_exists(DOMDocument::class, false)) {
             throw new \RuntimeException('ext-dom is required to use randomHtml.');
@@ -69,7 +71,7 @@ class RichTextGenerator extends AbstractGenerator
 
         $domDocument = new DOMDocument();
         $body = $domDocument->createElement('body');
-        $this->addRandomSubTree($body, $maxWidth);
+        $this->addRandomSubTree($body, $maxWidth, $allowedTags);
 
         $resultDocument = new DOMDocument();
         foreach ($body->childNodes as $childNode) {
@@ -79,62 +81,63 @@ class RichTextGenerator extends AbstractGenerator
         return $resultDocument->saveXML();
     }
 
-    private function addRandomSubTree(DOMElement $root, int $maxWidth)
+    private function addRandomSubTree(DOMElement $root, int $maxWidth, array $allowedTags = [])
     {
         $siblings = $this->fakerGenerator->numberBetween(1, $maxWidth);
 
         for ($i = 0; $i < $siblings; ++$i) {
-            $this->addRandomLeaf($root);
+            $this->addRandomLeaf($root, $allowedTags);
         }
 
         return $root;
     }
 
-    private function addRandomLeaf(DOMElement $node): void
+    private function addRandomLeaf(DOMElement $node, array $allowedTags = []): void
     {
-        $rand = $this->fakerGenerator->numberBetween(1, 10);
+        $tag = $this->fakerGenerator->randomElement(! empty($allowedTags) ? $allowedTags : self::ALLOWED_TAGS);
 
-        switch ($rand) {
-            case 1:
+        switch ($tag) {
+            case 'p':
                 $this->addRandomP($node);
 
                 break;
 
-            case 2:
+            case 'a':
                 $this->addRandomA($node);
 
                 break;
 
-            case 3:
+            case 'span':
                 $this->addRandomSpan($node);
 
                 break;
 
-            case 4:
+            case 'ul':
                 $this->addRandomUL($node);
 
                 break;
 
-            case 5:
+            case 'h':
                 $this->addRandomH($node);
 
                 break;
 
-            case 6:
+            case 'b':
                 $this->addRandomB($node);
 
                 break;
 
-            case 7:
+            case 'i':
                 $this->addRandomI($node);
 
                 break;
 
-            case 8:
+            case 'table':
                 $this->addRandomTable($node);
 
                 break;
 
+            case 'text':
             default:
                 $this->addRandomText($node);
 
