@@ -36,11 +36,26 @@ class PagerConfigurationManagerTest extends TestCase
                     ],
                     'sorts' => [
                         'aggregate' => [
-                            'metadata.name' => 'ascending',
-                            'metadata.publish_date' => 'ascending',
+                            'type' => 'aggregate',
+                            'sorts' => [
+                                'name' => [
+                                    'type' => 'content.name',
+                                    'direction' => 'ascending',
+                                ],
+                                'date_published' => [
+                                    'type' => 'content.date_published',
+                                    'direction' => 'descending',
+                                ],
+                            ],
                         ],
-                        'metadata.name' => 'ascending',
-                        'metadata.publish_date' => 'ascending',
+                        'name' => [
+                            'type' => 'content.name',
+                            'direction' => 'ascending',
+                        ],
+                        'date_published' => [
+                            'type' => 'content.date_published',
+                            'direction' => 'descending',
+                        ],
                     ],
                     'maxPerPage' => 5,
                 ],

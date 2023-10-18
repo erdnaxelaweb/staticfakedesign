@@ -15,10 +15,20 @@ parameters:
                     formType: checkbox
             sorts:
                 aggregate:
-                    metadata.name: ascending
-                    metadata.publish_date: ascending
-                metadata.name: ascending
-                metadata.publish_date: ascending
+                    type: aggregate
+                    sorts:
+                        name:
+                            type: content.name
+                            direction: ascending
+                        date_published:
+                            type: content.date_published
+                            direction: descending
+                name:
+                    type: content.name
+                    direction: ascending
+                date_published:
+                    type: content.date_published
+                    direction: descending
             maxPerPage: 10
 
     erdnaxelaweb.static_fake_design.block_definition:

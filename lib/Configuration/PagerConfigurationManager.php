@@ -29,27 +29,69 @@ class PagerConfigurationManager extends AbstractConfigurationManager
         $optionsResolver->define('contentTypes')
             ->required()
             ->allowedTypes('string[]');
+
         $optionsResolver->define('sorts')
             ->required()
-            ->allowedTypes('array');
+            ->allowedTypes('array')
+            ->normalize(function (Options $options, $sortsDefinitionOptions) {
+                $optionsResolver = new OptionsResolver();
+                $this->configureSortOptions($optionsResolver);
+                $filtersDefinition = [];
+                foreach ($sortsDefinitionOptions as $sortIdentifier => $sortDefinitionOptions) {
+                    if ($sortDefinitionOptions['type'] === 'aggregate') {
+                        $filtersDefinition[$sortIdentifier] = [
+                            'type' => 'aggregate',
+                            'sorts' => [],
+                        ];
+                        foreach ($sortDefinitionOptions['sorts'] as $aggregateSortIdentifier => $aggregateSortDefinitionOptions) {
+                            $filtersDefinition[$sortIdentifier]['sorts'][$aggregateSortIdentifier] = $this->resolveOptions(
+                                $aggregateSortIdentifier,
+                                $optionsResolver,
+                                $aggregateSortDefinitionOptions
+                            );
+                        }
+                    } else {
+                        $filtersDefinition[$sortIdentifier] = $this->resolveOptions(
+                            $sortIdentifier,
+                            $optionsResolver,
+                            $sortDefinitionOptions
+                        );
+                    }
+                }
+                return $filtersDefinition;
+            });
+
         $optionsResolver->define('maxPerPage')
             ->required()
             ->allowedTypes('int');
+
         $optionsResolver->define('filters')
             ->default([])
-            ->normalize(function (Options $options, $fieldsDefinitionOptions) {
+            ->normalize(function (Options $options, $filtersDefinitionOptions) {
                 $optionsResolver = new OptionsResolver();
                 $this->configureFilterOptions($optionsResolver);
                 $filtersDefinition = [];
-                foreach ($fieldsDefinitionOptions as $fieldIdentifier => $fieldDefinitionOptions) {
+                foreach ($filtersDefinitionOptions as $fieldIdentifier => $filterDefinitionOptions) {
                     $filtersDefinition[$fieldIdentifier] = $this->resolveOptions(
                         $fieldIdentifier,
                         $optionsResolver,
-                        $fieldDefinitionOptions
+                        $filterDefinitionOptions
                     );
                 }
                 return $filtersDefinition;
             });
+    }
+
+    protected function configureSortOptions(OptionsResolver $optionsResolver): void
+    {
+        $optionsResolver->define('direction')
+            ->default('ascending')
+            ->allowedTypes('string')
+            ->allowedValues('ascending', 'descending');
+
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string');
     }
 
     protected function configureFilterOptions(OptionsResolver $optionsResolver): void
