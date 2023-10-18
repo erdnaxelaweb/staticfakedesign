@@ -37,24 +37,34 @@ class PagerConfigurationManagerTest extends TestCase
                     'sorts' => [
                         'aggregate' => [
                             'type' => 'aggregate',
-                            'sorts' => [
-                                'name' => [
-                                    'type' => 'content.name',
-                                    'direction' => 'ascending',
-                                ],
-                                'date_published' => [
-                                    'type' => 'content.date_published',
-                                    'direction' => 'descending',
+                            'options' => [
+                                'sorts' => [
+                                    'name' => [
+                                        'type' => 'content.name',
+                                        'options' => [
+                                            'direction' => 'ascending',
+                                        ],
+                                    ],
+                                    'date_published' => [
+                                        'type' => 'content.date_published',
+                                        'options' => [
+                                            'direction' => 'descending',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
                         'name' => [
                             'type' => 'content.name',
-                            'direction' => 'ascending',
+                            'options' => [
+                                'direction' => 'ascending',
+                            ],
                         ],
                         'date_published' => [
                             'type' => 'content.date_published',
-                            'direction' => 'descending',
+                            'options' => [
+                                'direction' => 'descending',
+                            ],
                         ],
                     ],
                     'maxPerPage' => 5,

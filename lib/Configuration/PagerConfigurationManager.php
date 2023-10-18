@@ -38,25 +38,11 @@ class PagerConfigurationManager extends AbstractConfigurationManager
                 $this->configureSortOptions($optionsResolver);
                 $filtersDefinition = [];
                 foreach ($sortsDefinitionOptions as $sortIdentifier => $sortDefinitionOptions) {
-                    if ($sortDefinitionOptions['type'] === 'aggregate') {
-                        $filtersDefinition[$sortIdentifier] = [
-                            'type' => 'aggregate',
-                            'sorts' => [],
-                        ];
-                        foreach ($sortDefinitionOptions['sorts'] as $aggregateSortIdentifier => $aggregateSortDefinitionOptions) {
-                            $filtersDefinition[$sortIdentifier]['sorts'][$aggregateSortIdentifier] = $this->resolveOptions(
-                                $aggregateSortIdentifier,
-                                $optionsResolver,
-                                $aggregateSortDefinitionOptions
-                            );
-                        }
-                    } else {
-                        $filtersDefinition[$sortIdentifier] = $this->resolveOptions(
-                            $sortIdentifier,
-                            $optionsResolver,
-                            $sortDefinitionOptions
-                        );
-                    }
+                    $filtersDefinition[$sortIdentifier] = $this->resolveOptions(
+                        $sortIdentifier,
+                        $optionsResolver,
+                        $sortDefinitionOptions
+                    );
                 }
                 return $filtersDefinition;
             });
@@ -84,10 +70,9 @@ class PagerConfigurationManager extends AbstractConfigurationManager
 
     protected function configureSortOptions(OptionsResolver $optionsResolver): void
     {
-        $optionsResolver->define('direction')
-            ->default('ascending')
-            ->allowedTypes('string')
-            ->allowedValues('ascending', 'descending');
+        $optionsResolver->define('options')
+            ->default([])
+            ->allowedTypes('array');
 
         $optionsResolver->define('type')
             ->required()
