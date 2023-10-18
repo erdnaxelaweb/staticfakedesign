@@ -27,14 +27,18 @@ class PagerConfigurationManagerTest extends TestCase
                     'filters' => [
                         'title' => [
                             'field' => 'title',
-                            'type' => 'fulltext',
+                            'formType' => 'text',
                         ],
                         'selection' => [
                             'field' => 'selection',
-                            'type' => 'checkbox',
+                            'formType' => 'checkbox',
                         ],
                     ],
                     'sorts' => [
+                        'aggregate' => [
+                            'metadata.name' => 'ascending',
+                            'metadata.publish_date' => 'ascending',
+                        ],
                         'metadata.name' => 'ascending',
                         'metadata.publish_date' => 'ascending',
                     ],
@@ -54,7 +58,7 @@ class PagerConfigurationManagerTest extends TestCase
         self::assertCount(1, $configuration['contentTypes']);
         self::assertArrayHasKey('filters', $configuration);
         self::assertArrayHasKey('sorts', $configuration);
-        self::assertCount(2, $configuration['sorts']);
+        self::assertCount(3, $configuration['sorts']);
         self::assertArrayHasKey('maxPerPage', $configuration);
         self::assertArrayHasKey('maxPerPage', $configuration);
         self::assertEquals(5, $configuration['maxPerPage']);

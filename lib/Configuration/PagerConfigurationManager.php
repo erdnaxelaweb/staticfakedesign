@@ -58,13 +58,9 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->required()
             ->allowedTypes('string');
 
-        $optionsResolver->define('type')
+        $optionsResolver->define('formType')
             ->required()
             ->allowedTypes('string')
             ->allowedValues(...array_keys($this->searchFormGenerator->getFormTypes()));
-
-        $optionsResolver->define('isMultiple')
-            ->default(false)
-            ->allowedTypes('bool');
     }
 }

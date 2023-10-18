@@ -30,7 +30,7 @@ class SearchFormGenerator extends AbstractGenerator
     public function getFormTypes(): array
     {
         return [
-            'fulltext' => [
+            'text' => [
                 'type' => TextType::class,
             ],
             'radio' => [
@@ -100,7 +100,7 @@ class SearchFormGenerator extends AbstractGenerator
         $builder->add($formFields);
         if (count($sorts) > 1) {
             $builder->add('sort', ChoiceType::class, [
-                'choices' => array_flip($sorts),
+                'choices' => array_combine(array_keys($sorts), array_keys($sorts)),
             ]);
         }
         $builder->add('search', SubmitType::class, [

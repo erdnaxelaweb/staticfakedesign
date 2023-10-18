@@ -9,11 +9,14 @@ parameters:
             filters:
                 title:
                     field: title
-                    type: fulltext
+                    formType: text
                 selection:
                     field: selection
-                    type: checkbox
+                    formType: checkbox
             sorts:
+                aggregate:
+                    metadata.name: ascending
+                    metadata.publish_date: ascending
                 metadata.name: ascending
                 metadata.publish_date: ascending
             maxPerPage: 10
