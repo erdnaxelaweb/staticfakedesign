@@ -104,9 +104,9 @@ class FormGenerator extends AbstractGenerator
         if (empty($fields)) {
             $fields = array_keys($formTypes);
         }
-        foreach ($fields as $field) {
+        foreach ($fields as $fieldName => $field) {
             $formType = $formTypes[$field];
-            $formFields->add($this->fakerGenerator->word, ...$formType);
+            $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);
         return $builder->getForm()
