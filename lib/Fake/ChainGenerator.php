@@ -33,6 +33,11 @@ class ChainGenerator
         }
     }
 
+    public function isFakeGenerationEnabled(  ): bool
+    {
+        return $this->enableFakeGeneration;
+    }
+
     public function registerGenerator(string $type, GeneratorInterface $generator): void
     {
         $this->generators[$type] = $generator;
@@ -42,7 +47,7 @@ class ChainGenerator
     {
         $generator = $this->generators[$type] ?? [$this->fakerGenerator, $type];
 
-        return $this->enableFakeGeneration ? call_user_func_array($generator, $parameters) : null;
+        return $this->isFakeGenerationEnabled() ? call_user_func_array($generator, $parameters) : null;
     }
 
     public function generateFakeArray(?int $count, string $type, array $parameters = []): array
