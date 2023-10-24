@@ -25,7 +25,8 @@ class ChainGenerator
      */
     public function __construct(
         protected FakerGenerator $fakerGenerator,
-        iterable                 $generators = []
+        protected bool $enableFakeGeneration,
+        iterable                 $generators = [],
     ) {
         foreach ($generators as $type => $generator) {
             $this->registerGenerator($type, $generator);
@@ -41,7 +42,7 @@ class ChainGenerator
     {
         $generator = $this->generators[$type] ?? [$this->fakerGenerator, $type];
 
-        return call_user_func_array($generator, $parameters);
+        return $this->enableFakeGeneration ? call_user_func_array($generator, $parameters) : null;
     }
 
     public function generateFakeArray(?int $count, string $type, array $parameters = []): array
