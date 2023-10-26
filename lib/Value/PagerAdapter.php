@@ -31,7 +31,7 @@ class PagerAdapter extends CallbackAdapter implements AdapterInterface
         return ($this->filtersCallback)();
     }
 
-    public function getActiveFilters(  ): array
+    public function getActiveFilters(): array
     {
         return ($this->activeFiltersCallback)();
     }

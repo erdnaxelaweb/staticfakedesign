@@ -33,7 +33,7 @@ class ChainGenerator
         }
     }
 
-    public function isFakeGenerationEnabled(  ): bool
+    public function isFakeGenerationEnabled(): bool
     {
         return $this->enableFakeGeneration;
     }

@@ -75,7 +75,7 @@ class PagerGenerator extends AbstractGenerator
                     ($this->linkGenerator)(),
                     ($this->linkGenerator)(),
                     ($this->linkGenerator)(),
-                    ($this->linkGenerator)()
+                    ($this->linkGenerator)(),
                 ];
             }
         );
