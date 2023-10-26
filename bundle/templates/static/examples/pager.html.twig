@@ -48,11 +48,22 @@ erdnaxelaweb.static_fake_design.pager_definition:
         {# @var var132 \PagerFanta\Pagerfanta #}
         <pre>
             <code>
-&#123;# @fake var131 pager(&#123;&#39;type&#39;: &#39;articles_list&#39;}) #}
-&#123;# @fake var132 pager(&#39;articles_list&#39;) #}
+&#123;# @fake var pager(&#123;&#39;type&#39;: &#39;articles_list&#39;}) #}
+&#123;# @fake var pager(&#39;articles_list&#39;) #}
 
 &#123;% form_theme var.adapter.filters &#39;bootstrap_5_horizontal_layout.html.twig&#39; %}
+&#123;% import &#39;static/helper/macros.html.twig&#39; as macros %}
+
 &#123;&#123; form(var.adapter.filters) }}
+
+&#123;% set activeFilters = var.adapter.getActiveFilters %}
+&#123;% if activeFilters %}
+    Active filters :
+    &#123;% for activeFilter in activeFilters %}
+        &#123;&#123; macros.display_menu_item(activeFilter) }}
+    &#123;% endfor %}
+&#123;% endif %}
+
 &lt;p&gt;&lt;b&gt;&#123;&#123; var.nbResults }} results&lt;/b&gt; (&#123;&#123; var.maxPerPage }}/page) over &#123;&#123; var.nbPages }} pages&lt;/p&gt;
 &lt;ul&gt;
     &#123;% for content in var %}
@@ -63,7 +74,15 @@ erdnaxelaweb.static_fake_design.pager_definition:
             </code>
         </pre>
         {% form_theme var132.adapter.filters 'bootstrap_5_horizontal_layout.html.twig' %}
+        {% import 'static/helper/macros.html.twig' as macros %}
         {{ form(var132.adapter.filters) }}
+        {% set activeFilters = var132.adapter.getActiveFilters %}
+        {% if activeFilters %}
+            Active filters :
+            {% for activeFilter in activeFilters %}
+                {{ macros.display_menu_item(activeFilter) }}
+            {% endfor %}
+        {% endif %}
         <p><b>{{ var132.nbResults }} results</b> ({{ var132.maxPerPage }}/page) over {{ var132.nbPages }} pages</p>
         <ul>
             {% for content in var132 %}

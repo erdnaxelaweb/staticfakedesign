@@ -25,6 +25,7 @@ class PagerGenerator extends AbstractGenerator
     public function __construct(
         protected ContentGenerator $contentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
+        protected LinkGenerator $linkGenerator,
         protected PagerConfigurationManager $pagerConfigurationManager,
         FakerGenerator             $fakerGenerator
     ) {
@@ -68,6 +69,14 @@ class PagerGenerator extends AbstractGenerator
                 return ($this->searchFormGenerator)(array_map(function (array $filter) {
                     return $filter['formType'];
                 }, $filters), $sorts);
+            },
+            function () use ($filters, $sorts) {
+                return [
+                    ($this->linkGenerator)(),
+                    ($this->linkGenerator)(),
+                    ($this->linkGenerator)(),
+                    ($this->linkGenerator)()
+                ];
             }
         );
         $pager = new Pagerfanta($adapter);

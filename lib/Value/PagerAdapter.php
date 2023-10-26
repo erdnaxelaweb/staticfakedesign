@@ -20,7 +20,8 @@ class PagerAdapter extends CallbackAdapter implements AdapterInterface
     public function __construct(
         $nbResultsCallable,
         $sliceCallable,
-        protected $filtersCallback
+        protected $filtersCallback,
+        protected $activeFiltersCallback
     ) {
         parent::__construct($nbResultsCallable, $sliceCallable);
     }
@@ -28,5 +29,10 @@ class PagerAdapter extends CallbackAdapter implements AdapterInterface
     public function getFilters(): FormView
     {
         return ($this->filtersCallback)();
+    }
+
+    public function getActiveFilters(  ): array
+    {
+        return ($this->activeFiltersCallback)();
     }
 }
