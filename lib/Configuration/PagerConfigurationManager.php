@@ -81,11 +81,11 @@ class PagerConfigurationManager extends AbstractConfigurationManager
 
     protected function configureFilterOptions(OptionsResolver $optionsResolver): void
     {
-        $optionsResolver->define('field')
-            ->required()
-            ->allowedTypes('string');
+        $optionsResolver->define('options')
+            ->default([])
+            ->allowedTypes('array');
 
-        $optionsResolver->define('formType')
+        $optionsResolver->define('type')
             ->required()
             ->allowedTypes('string')
             ->allowedValues(...array_keys($this->searchFormGenerator->getFormTypes()));

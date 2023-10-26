@@ -91,10 +91,18 @@ class SearchFormGenerator extends AbstractGenerator
             $fields = array_keys($formTypes);
         }
         foreach ($fields as $fieldName => $field) {
+            if (is_array($field)) {
+                ["type" => $field,  "options" => $fieldOptions] = $field;
+            }
+
             $formType = $formTypes[$field];
-            $formType['options'] = ($formType['options'] ?? []) + [
-                'label' => "{$this->fakerGenerator->word} ($field)",
+            $formTypeOptions = ($formType['options'] ?? []) + [
+                'label' => "{$this->fakerGenerator->word} ($fieldName)",
             ];
+            foreach ($formTypeOptions as $formTypeOption => &$formTypeOptionValue) {
+                $formTypeOptionValue = $fieldOptions[$formTypeOption] ?? $formTypeOptionValue;
+            }
+            $formType['options'] = $formTypeOptions;
             $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);

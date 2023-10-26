@@ -66,9 +66,7 @@ class PagerGenerator extends AbstractGenerator
                 return $contents;
             },
             function () use ($filters, $sorts) {
-                return ($this->searchFormGenerator)(array_map(function (array $filter) {
-                    return $filter['formType'];
-                }, $filters), $sorts);
+                return ($this->searchFormGenerator)($filters, $sorts);
             },
             function () use ($filters, $sorts) {
                 return [
