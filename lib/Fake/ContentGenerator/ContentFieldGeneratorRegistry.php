@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FieldGeneratorInterface;
 use InvalidArgumentException;
 
 class ContentFieldGeneratorRegistry
 {
     /**
-     * @var array<GeneratorInterface>
+     * @var array<FieldGeneratorInterface>
      */
     private array $generators = [];
 
     /**
-     * @param iterable<GeneratorInterface> $generators
+     * @param iterable<FieldGeneratorInterface> $generators
      */
     public function __construct(iterable $generators = [])
     {
@@ -33,12 +33,12 @@ class ContentFieldGeneratorRegistry
         }
     }
 
-    public function registerGenerator(string $type, GeneratorInterface $generator): void
+    public function registerGenerator(string $type, FieldGeneratorInterface $generator): void
     {
         $this->generators[$type] = $generator;
     }
 
-    public function getGenerator(string $type): GeneratorInterface
+    public function getGenerator(string $type): FieldGeneratorInterface
     {
         if (isset($this->generators[$type])) {
             return $this->generators[$type];

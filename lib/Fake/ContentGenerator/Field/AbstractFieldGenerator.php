@@ -17,4 +17,8 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 
 abstract class AbstractFieldGenerator extends AbstractGenerator implements FieldGeneratorInterface
 {
+    public function getForcedValue($value)
+    {
+        return $value;
+    }
 }
