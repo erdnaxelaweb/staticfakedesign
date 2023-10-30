@@ -73,9 +73,14 @@ class ContentConfigurationManager extends AbstractConfigurationManager
                 return $fieldsDefinition;
             })
             ->info('Array of field definition');
+
         $optionsResolver->define('parent')
             ->default([])
             ->allowedTypes('string[]')
             ->info('Array of possible parents type');
+
+        $optionsResolver->define('models')
+            ->default([])
+            ->allowedTypes('array');
     }
 }
