@@ -1,0 +1,106 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\:
+        resource: '../../../lib/Fake/Generator/Form'
+        lazy: true
+
+    erdnaxelaweb.static_fake_design.form.field.text.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'text'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\TextType
+
+    erdnaxelaweb.static_fake_design.form.field.url.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'url'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\UrlType
+
+    erdnaxelaweb.static_fake_design.form.field.radio.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\ChoiceFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'radio'}
+        arguments:
+            $expanded: true
+            $multiple: false
+
+    erdnaxelaweb.static_fake_design.form.field.number.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'number'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\NumberType
+
+    erdnaxelaweb.static_fake_design.form.field.textarea.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'textarea'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\TextareaType
+
+    erdnaxelaweb.static_fake_design.form.field.file.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'file'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\FileType
+
+    erdnaxelaweb.static_fake_design.form.field.email.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'email'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\EmailType
+
+    erdnaxelaweb.static_fake_design.form.field.dropdown.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\ChoiceFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'dropdown'}
+
+    erdnaxelaweb.static_fake_design.form.field.date.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'date'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\DateType
+
+    erdnaxelaweb.static_fake_design.form.field.checkboxes.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\ChoiceFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'checkboxes'}
+        arguments:
+            $expanded: true
+            $multiple: true
+
+    erdnaxelaweb.static_fake_design.form.field.checkbox.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'checkbox'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\CheckboxType
+
+    erdnaxelaweb.static_fake_design.form.field.button.generator:
+        lazy: true
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form\GenericFormFieldGenerator
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'button'}
+        arguments:
+            $formType: \Symfony\Component\Form\Extension\Core\Type\SubmitType
+

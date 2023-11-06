@@ -56,8 +56,17 @@ services:
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\FormGenerator:
         lazy: true
+        arguments:
+            $generators: !tagged_iterator { tag: 'erdnaxelaweb.static_fake_design.form.field.generator', index_by: 'type' }
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\FormFieldGenerator:
+        lazy: true
+        arguments:
+            $generators: !tagged_iterator { tag: 'erdnaxelaweb.static_fake_design.form.field.generator', index_by: 'type' }
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form_field'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator:
         lazy: true

@@ -26,6 +26,7 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
         $loader->load('fake_generators.yaml');
+        $loader->load('fake_form_generators.yml');
         $loader->load('fake_content_field_generator.yaml');
     }
 
