@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FieldGeneratorInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\BlocksFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\BooleanFieldGeneratorTest;
@@ -76,7 +77,7 @@ class ContentFieldGeneratorRegistryTest extends TestCase
                 return $this->instance;
             }
 
-            public function getGenerator(string $type): GeneratorInterface
+            public function getGenerator(string $type): FieldGeneratorInterface
             {
                 return ($this->getInstance())
                     ->getGenerator($type);

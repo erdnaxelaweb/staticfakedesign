@@ -8,11 +8,9 @@ parameters:
                 - article
             filters:
                 title:
-                    field: title
-                    formType: text
+                    type: text
                 selection:
-                    field: selection
-                    formType: checkbox
+                    type: checkbox
             sorts:
                 aggregate:
                     type: aggregate

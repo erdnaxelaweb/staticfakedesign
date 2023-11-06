@@ -27,7 +27,7 @@ class ChainGeneratorTest extends TestCase
     {
         $fakerGenerator = self::getFakerGenerator();
         $imageGenerator = ImageGeneratorTest::getGenerator();
-        $generator = new ChainGenerator($fakerGenerator, [
+        $generator = new ChainGenerator($fakerGenerator, true, [
             'image' => $imageGenerator,
         ]);
 

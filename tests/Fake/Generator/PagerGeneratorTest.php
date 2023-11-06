@@ -29,6 +29,7 @@ class PagerGeneratorTest extends TestCase
         return new PagerGenerator(
             ContentGeneratorTest::getGenerator(),
             SearchFormGeneratorTest::getGenerator(),
+            LinkGeneratorTest::getGenerator(),
             PagerConfigurationManagerTest::getManager(),
             self::getFakerGenerator()
         );

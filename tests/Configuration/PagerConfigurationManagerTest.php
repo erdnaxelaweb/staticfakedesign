@@ -26,12 +26,10 @@ class PagerConfigurationManagerTest extends TestCase
                     'contentTypes' => ['article'],
                     'filters' => [
                         'title' => [
-                            'field' => 'title',
-                            'formType' => 'text',
+                            'type' => 'text',
                         ],
                         'selection' => [
-                            'field' => 'selection',
-                            'formType' => 'checkbox',
+                            'type' => 'checkbox',
                         ],
                     ],
                     'sorts' => [
