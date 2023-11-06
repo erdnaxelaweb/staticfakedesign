@@ -37,6 +37,11 @@ class StaticController extends TemplateController
 
     public function viewAction(string $path)
     {
+        return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
+    }
+
+    public function viewExamplesAction(string $path)
+    {
         $exampleParameters = Yaml::parseFile(__DIR__ . '/../Resources/config/examples.yaml');
 
         $this->imageConfiguration->setVariations(
@@ -54,6 +59,7 @@ class StaticController extends TemplateController
         $this->pagerConfigurationManager->registerConfigurations(
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.pager_definition']
         );
-        return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
+
+        return $this->viewAction("examples/$path");
     }
 }
