@@ -65,8 +65,8 @@ class PagerGenerator extends AbstractGenerator
                 }
                 return $contents;
             },
-            function () use ($filters, $sorts) {
-                return ($this->searchFormGenerator)($filters, $sorts);
+            function () use ($filters, $sorts, $type) {
+                return ($this->searchFormGenerator)($filters, $sorts, $type);
             },
             function () use ($filters, $sorts) {
                 return [

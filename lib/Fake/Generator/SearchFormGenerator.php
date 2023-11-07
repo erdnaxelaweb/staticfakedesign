@@ -80,12 +80,15 @@ class SearchFormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = [], array $sorts = []): FormView
+    public function __invoke(array $fields = [], array $sorts = [], ?string $name = null): FormView
     {
         $formTypes = $this->getFormTypes();
-        $builder = $this->formFactory->createBuilder(FormType::class, null);
+        $builder = $name ?
+            $this->formFactory->createNamedBuilder($name, FormType::class, null) :
+            $this->formFactory->createBuilder(FormType::class, null);
         $formFields = $builder->create('filters', FormType::class, [
             'compound' => true,
+            'block_prefix' => 'filters',
         ]);
         if (empty($fields)) {
             $fields = array_keys($formTypes);
@@ -103,12 +106,14 @@ class SearchFormGenerator extends AbstractGenerator
                 $formTypeOptionValue = $fieldOptions[$formTypeOption] ?? $formTypeOptionValue;
             }
             $formType['options'] = $formTypeOptions;
+            $formType['options']['block_prefix'] = $fieldName;
             $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);
         if (count($sorts) > 1) {
             $builder->add('sort', ChoiceType::class, [
                 'choices' => array_combine(array_keys($sorts), array_keys($sorts)),
+                'block_prefix' => 'sort',
             ]);
         }
         $builder->add('search', SubmitType::class, [
