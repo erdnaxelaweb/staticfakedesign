@@ -15,28 +15,28 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class ChoiceFormFieldGenerator extends AbstractFormFieldGenerator
+class ChoiceFormFieldGenerator extends GenericFormFieldGenerator
 {
     public function __construct(
         FormFactoryInterface $formFactory,
-        FakerGenerator $fakerGenerator,
-        protected bool $expanded = false,
-        protected bool $multiple = false,
+        FakerGenerator       $fakerGenerator,
+        string               $formType = ChoiceType::class,
+        array                $formOptions = []
     ) {
-        parent::__construct($formFactory, $fakerGenerator);
+        parent::__construct(
+            $formFactory,
+            $fakerGenerator,
+            $formType,
+            $formOptions
+        );
     }
 
     protected function getFormOptions(): array
     {
-        return [
-            'expanded' => $this->expanded,
-            'multiple' => $this->multiple,
+        return parent::getFormOptions() + [
+            'expanded' => false,
+            'multiple' => false,
             'choices' => array_flip($this->fakerGenerator->words()),
         ];
-    }
-
-    protected function getFormType(): string
-    {
-        return ChoiceType::class;
     }
 }

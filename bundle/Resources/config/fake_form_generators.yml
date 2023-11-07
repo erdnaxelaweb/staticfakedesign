@@ -30,8 +30,9 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'radio'}
         arguments:
-            $expanded: true
-            $multiple: false
+            $formOptions:
+                expanded: true
+                multiple: false
 
     erdnaxelaweb.static_fake_design.form.field.number.generator:
         lazy: true
@@ -85,8 +86,9 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.form.field.generator', type: 'checkboxes'}
         arguments:
-            $expanded: true
-            $multiple: true
+            $formOptions:
+                expanded: true
+                multiple: true
 
     erdnaxelaweb.static_fake_design.form.field.checkbox.generator:
         lazy: true
