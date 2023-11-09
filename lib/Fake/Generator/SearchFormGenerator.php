@@ -106,7 +106,7 @@ class SearchFormGenerator extends AbstractGenerator
                 $formTypeOptionValue = $fieldOptions[$formTypeOption] ?? $formTypeOptionValue;
             }
             $formType['options'] = $formTypeOptions;
-            $formType['options']['block_prefix'] = $fieldName;
+            $formType['options']['block_prefix'] = "filter_$fieldName";
             $formFields->add($fieldName, ...$formType);
         }
         $builder->add($formFields);
