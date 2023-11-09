@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SearchFormGenerator extends AbstractGenerator
 {
@@ -74,6 +75,7 @@ class SearchFormGenerator extends AbstractGenerator
     }
 
     public function __construct(
+        protected RequestStack $requestStack,
         protected FormFactoryInterface $formFactory,
         FakerGenerator        $fakerGenerator
     ) {
@@ -83,9 +85,16 @@ class SearchFormGenerator extends AbstractGenerator
     public function __invoke(array $fields = [], array $sorts = [], ?string $name = null): FormView
     {
         $formTypes = $this->getFormTypes();
+
+        $formOptions = [
+            'csrf_protection' => false,
+            'method' => 'GET',
+        ];
+        $formData = $name ? $this->requestStack->getCurrentRequest()
+            ->get($name) : null;
         $builder = $name ?
-            $this->formFactory->createNamedBuilder($name, FormType::class, null) :
-            $this->formFactory->createBuilder(FormType::class, null);
+            $this->formFactory->createNamedBuilder($name, FormType::class, $formData, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, $formData, $formOptions);
         $formFields = $builder->create('filters', FormType::class, [
             'compound' => true,
             'block_prefix' => 'filters',

@@ -19,6 +19,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class FormGenerator extends AbstractGenerator
 {
@@ -33,6 +34,7 @@ class FormGenerator extends AbstractGenerator
     }
 
     public function __construct(
+        protected RequestStack $requestStack,
         protected FormFactoryInterface $formFactory,
         FakerGenerator        $fakerGenerator,
         iterable                 $generators = []
@@ -44,9 +46,15 @@ class FormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = []): FormView
+    public function __invoke(array $fields = [], ?string $name = null): FormView
     {
-        $builder = $this->formFactory->createBuilder(FormType::class, null);
+        $formOptions = [];
+        $formData = $name ? $this->requestStack->getCurrentRequest()
+            ->get($name) : null;
+        $builder = $name ?
+            $this->formFactory->createNamedBuilder($name, FormType::class, $formData, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, $formData, $formOptions);
+
         $formFields = $builder->create('fields', FormType::class, [
             'compound' => true,
         ]);
