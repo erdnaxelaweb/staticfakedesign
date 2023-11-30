@@ -90,11 +90,10 @@ class SearchFormGenerator extends AbstractGenerator
             'csrf_protection' => false,
             'method' => 'GET',
         ];
-        $formData = $name ? $this->requestStack->getCurrentRequest()
-            ->get($name) : null;
+
         $builder = $name ?
-            $this->formFactory->createNamedBuilder($name, FormType::class, $formData, $formOptions) :
-            $this->formFactory->createBuilder(FormType::class, $formData, $formOptions);
+            $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, null, $formOptions);
         $formFields = $builder->create('filters', FormType::class, [
             'compound' => true,
             'block_prefix' => 'filters',
@@ -128,7 +127,9 @@ class SearchFormGenerator extends AbstractGenerator
         $builder->add('search', SubmitType::class, [
             'label' => 'search',
         ]);
-        return $builder->getForm()
-            ->createView();
+
+        $form = $builder->getForm();
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        return $form->createView();
     }
 }

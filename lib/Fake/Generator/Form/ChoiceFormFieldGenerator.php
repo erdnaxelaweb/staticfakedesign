@@ -14,17 +14,20 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRegistryInterface;
 
 class ChoiceFormFieldGenerator extends GenericFormFieldGenerator
 {
     public function __construct(
         FormFactoryInterface $formFactory,
+        FormRegistryInterface $registry,
         FakerGenerator       $fakerGenerator,
         string               $formType = ChoiceType::class,
         array                $formOptions = []
     ) {
         parent::__construct(
             $formFactory,
+            $registry,
             $fakerGenerator,
             $formType,
             $formOptions

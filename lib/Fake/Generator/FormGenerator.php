@@ -33,6 +33,11 @@ class FormGenerator extends AbstractGenerator
         $this->generators[$type] = $generator;
     }
 
+    public function getFieldsTypes(): array
+    {
+        return array_keys($this->generators);
+    }
+
     public function __construct(
         protected RequestStack $requestStack,
         protected FormFactoryInterface $formFactory,
@@ -49,22 +54,22 @@ class FormGenerator extends AbstractGenerator
     public function __invoke(array $fields = [], ?string $name = null): FormView
     {
         $formOptions = [];
-        $formData = $name ? $this->requestStack->getCurrentRequest()
-            ->get($name) : null;
+
         $builder = $name ?
-            $this->formFactory->createNamedBuilder($name, FormType::class, $formData, $formOptions) :
-            $this->formFactory->createBuilder(FormType::class, $formData, $formOptions);
+            $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, null, $formOptions);
 
         $formFields = $builder->create('fields', FormType::class, [
             'compound' => true,
         ]);
         if (empty($fields)) {
-            $fields = array_keys($this->generators);
+            $fields = $this->getFieldsTypes();
         }
         foreach ($fields as $fieldName => $field) {
-            $generator = $this->generators[$field];
-            $options = [
-                'label' => "{$this->fakerGenerator->word} ($field)",
+            $fieldType = $field['type'];
+            $generator = $this->generators[$fieldType];
+            $options = $field['options'] + [
+                'label' => "{$this->fakerGenerator->word} ($fieldType)",
             ];
             $formFields->add(call_user_func_array($generator, [
                 'name' => $fieldName,
@@ -72,7 +77,8 @@ class FormGenerator extends AbstractGenerator
             ]));
         }
         $builder->add($formFields);
-        return $builder->getForm()
-            ->createView();
+        $form = $builder->getForm();
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        return $form->createView();
     }
 }
