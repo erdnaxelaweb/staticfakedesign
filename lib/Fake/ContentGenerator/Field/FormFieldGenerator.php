@@ -11,9 +11,9 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
+use Closure;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\FormGenerator;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
@@ -89,8 +89,10 @@ class FormFieldGenerator extends AbstractFieldGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = [], ?string $name = null): FormView
+    public function __invoke(array $fields = [], ?string $name = null): Closure
     {
-        return ($this->formGenerator)($fields, $name);
+        return function ($modelData = null) use ($name, $fields) {
+            return ($this->formGenerator)($fields, $name, $modelData);
+        };
     }
 }

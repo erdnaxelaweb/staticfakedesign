@@ -51,19 +51,24 @@ class FormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = [], ?string $name = null): FormView
+    public function __invoke(array $fields = [], ?string $name = null, $data = null): FormView
     {
         $formOptions = [];
 
         $builder = $name ?
-            $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
-            $this->formFactory->createBuilder(FormType::class, null, $formOptions);
+            $this->formFactory->createNamedBuilder($name, FormType::class, $data, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, $data, $formOptions);
 
         $formFields = $builder->create('fields', FormType::class, [
             'compound' => true,
         ]);
         if (empty($fields)) {
-            $fields = $this->getFieldsTypes();
+            $fields = array_map(function (string $type) {
+                return [
+                    'type' => $type,
+                    'options' => [],
+                ];
+            }, $this->getFieldsTypes());
         }
         foreach ($fields as $fieldName => $field) {
             $fieldType = $field['type'];
