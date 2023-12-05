@@ -1,0 +1,24 @@
+{% extends 'static/layout.html.twig' %}
+{% block content %}
+    <article>Form</h1>
+        <h2>Example</h2>
+        {# @fake var1 form #}
+        {# @fake var2 form_field #}
+        <pre>
+            <code>
+&#123;# @fake var audio #&#125;
+&#123;# @fake var audio({'imageVariationName': 'large'}) #&#125;
+&#123;# @fake var audio('large'}) #&#125;
+
+&lt;p&gt;&lt;b&gt;Title :&lt;/b&gt;&#123; var.title }}&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Audio :&lt;/b&gt;
+    &#123;% include &#39;static/helper/audio.html.twig&#39; with &#123;audio: var} only %}
+&lt;/p&gt;
+            </code>
+        </pre>
+
+        {{ form_row(var1) }}
+        <hr>
+        {{ form_row(var2) }}
+    </article>
+{% endblock %}

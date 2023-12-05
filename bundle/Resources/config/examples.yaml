@@ -137,18 +137,30 @@ parameters:
                     type: form
                     options:
                         fields:
-                            - text
-                            - url
-                            - radio
-                            - number
-                            - textarea
-                            - file
-                            - email
-                            - dropdown
-                            - date
-                            - checkboxes
-                            - checkbox
-                            - button
+                            text:
+                                type: text
+                            url:
+                                type: url
+                            radio:
+                                type: radio
+                            number:
+                                type: number
+                            textarea:
+                                type: textarea
+                            file:
+                                type: file
+                            email:
+                                type: email
+                            dropdown:
+                                type: dropdown
+                            date:
+                                type: date
+                            checkboxes:
+                                type: checkboxes
+                            checkbox:
+                                type: checkbox
+                            button:
+                                type: button
 
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
         tag:
