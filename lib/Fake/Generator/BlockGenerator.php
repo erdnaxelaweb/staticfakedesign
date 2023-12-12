@@ -43,12 +43,13 @@ class BlockGenerator extends AbstractContentGenerator
         $configuration = $this->blockConfigurationManager->getConfiguration($type);
         return Block::createLazyGhost(function (Block $instance) use ($type, $configuration, $view) {
             $instance->__construct(
+                $this->fakerGenerator->randomNumber(),
                 $this->fakerGenerator->sentence(),
                 $type,
                 $view,
                 $this->fakerGenerator->dateTime(),
                 $this->fakerGenerator->dateTime(),
-                $this->generateFieldsValue($configuration['fields'])
+                $this->generateFieldsValue($configuration['fields'], $configuration['models'])
             );
         });
     }

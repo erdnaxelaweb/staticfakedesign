@@ -18,13 +18,14 @@ use DateTime;
 class Block extends AbstractContent
 {
     public function __construct(
+        int                     $id,
         string                  $name,
         string                  $type,
         public readonly string  $view,
-        DateTime $creationDate,
-        DateTime $modificationDate,
+        DateTime                $creationDate,
+        DateTime                $modificationDate,
         ContentFieldsCollection $fields
     ) {
-        parent::__construct($name, $type, $creationDate, $modificationDate, $fields);
+        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }
 }

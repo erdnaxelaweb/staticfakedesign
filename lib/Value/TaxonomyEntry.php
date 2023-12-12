@@ -18,13 +18,13 @@ use DateTime;
 class TaxonomyEntry extends AbstractContent
 {
     public function __construct(
-        public readonly int $id,
-        string $name,
-        string $type,
-        DateTime $creationDate,
-        DateTime $modificationDate,
+        int                     $id,
+        string                  $name,
+        string                  $type,
+        DateTime                $creationDate,
+        DateTime                $modificationDate,
         ContentFieldsCollection $fields
     ) {
-        parent::__construct($name, $type, $creationDate, $modificationDate, $fields);
+        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }
 }

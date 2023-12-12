@@ -47,6 +47,7 @@ class ContentGenerator extends AbstractContentGenerator
         $configuration = $this->contentConfigurationManager->getConfiguration($type);
         return Content::createLazyGhost(function (Content $instance) use ($type, $configuration) {
             $instance->__construct(
+                $this->fakerGenerator->randomNumber(),
                 $this->fakerGenerator->sentence(),
                 $type,
                 $this->fakerGenerator->dateTime(),
