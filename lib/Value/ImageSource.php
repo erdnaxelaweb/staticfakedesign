@@ -20,6 +20,7 @@ class ImageSource
         public readonly string           $media,
         public readonly ?int             $width = null,
         public readonly ?int             $height = null,
+        public readonly ?int             $fileSize = null,
         public readonly ?ImageFocusPoint $focusPoint = null,
         public readonly ?string          $mimeType = null,
         public readonly ?string          $variation = null

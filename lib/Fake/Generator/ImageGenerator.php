@@ -66,6 +66,7 @@ class ImageGenerator extends AbstractGenerator
                 $height,
                 null,
                 null,
+                null,
                 $sourceReqs['suffix']
             );
         }
