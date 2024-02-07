@@ -17,6 +17,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Image;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ImageFocusPoint;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ImageSource;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -65,7 +66,7 @@ class ImageGenerator extends AbstractGenerator
                 $width,
                 $height,
                 null,
-                null,
+                new ImageFocusPoint(0, 0),
                 null,
                 $sourceReqs['suffix']
             );

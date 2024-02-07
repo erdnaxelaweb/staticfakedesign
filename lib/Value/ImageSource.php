@@ -31,11 +31,9 @@ class ImageSource
     {
         $this->initiateArrayAttribute($attrs, 'srcset');
         $this->initiateArrayAttribute($attrs, 'class');
-        $attrs['class'][] = 'enhancedimage--img--lazyload';
         if ($this->focusPoint) {
             $attrs['data-focus-x'] = $this->focusPoint->posX;
             $attrs['data-focus-y'] = $this->focusPoint->posY;
-            $attrs['class'][] = 'enhancedimage--focused-img';
         }
         $attrs['srcset'] = $this->uri;
         $attrs['data-width'] = $this->width;
