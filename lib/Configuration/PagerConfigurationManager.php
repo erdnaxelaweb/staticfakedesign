@@ -31,7 +31,7 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->allowedTypes('string[]');
 
         $optionsResolver->define('sorts')
-            ->required()
+            ->default([])
             ->allowedTypes('array')
             ->normalize(function (Options $options, $sortsDefinitionOptions) {
                 $optionsResolver = new OptionsResolver();
