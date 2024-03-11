@@ -1,0 +1,42 @@
+{# @var menu \Knp\Menu\ItemInterface #}
+{# @var item \Knp\Menu\ItemInterface #}
+{% macro display_menu_item(item) %}
+    {% import _self as macros %}
+    {% set has_children = item.children|length > 0 %}
+    {% set url = has_children ? '#' ~ item.name : item.uri %}
+
+    <li class="nav-item" data-path="{{ item.extra('path') }}">
+        <a href="{{ url }}" class="nav-link">
+            <p>
+                {# <i class="nav-icon bi bi-circle"></i> #}
+                {{ item.label }}
+                {% if has_children %}<i class="nav-arrow bi bi-chevron-right"></i>{% endif %}
+            </p>
+        </a>
+        {% if has_children %}
+            <ul class="nav nav-treeview">
+                {% for child in item.children %}
+                        {{ macros.display_menu_item(child) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+{% import _self as macros %}
+
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+        <a href="{{ url('showroom_home') }}" class="brand-link">
+        <span class="brand-text fw-light">Showroom</span>  </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-header">{{ menu.label }}</li>
+                {% for child in menu.children %}
+                        {{ macros.display_menu_item(child) }}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</aside>

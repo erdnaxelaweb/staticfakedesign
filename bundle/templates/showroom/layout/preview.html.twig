@@ -1,0 +1,28 @@
+<html lang="en">
+    <head>
+        <title>{{ page_title|default('preview') }}</title>
+        {% block head %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+        {% endblock %}
+        {% block stylesheets %}
+        {% endblock %}
+        <style id="preview-style">
+            #preview-root {
+                width: 100%;
+                padding: 20px;
+                display: flex;
+                background: #FFFFFF;
+            }
+        </style>
+    </head>
+    <body class="light sb-show-main sb-main-fullscreen {{ body_classes|default() }}">
+        <div class="component-wrapper">
+            {% block body %}{% endblock %}
+        </div>
+
+        <script src="{{ asset('bundles/staticfakedesign/preview-js.js') }}"></script>
+        {% block javascripts %}
+        {% endblock %}
+    </body>
+</html>

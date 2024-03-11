@@ -25,6 +25,7 @@ class ChainGenerator
      */
     public function __construct(
         protected FakerGenerator $fakerGenerator,
+        protected FakeTypeMatcher $fakeTypeMatcher,
         protected bool $enableFakeGeneration,
         iterable                 $generators = [],
     ) {
@@ -58,5 +59,15 @@ class ChainGenerator
             $values[] = $this->generateFake($type, $parameters);
         }
         return $values;
+    }
+
+    public function generateFromTypeExpression(string $typeExpression)
+    {
+        $type = ($this->fakeTypeMatcher)($typeExpression);
+        if ($type['is_array']) {
+            return $this->generateFakeArray($type['array_size'], $type['fake_type'], $type['fake_parameters']);
+        } else {
+            return $this->generateFake($type['fake_type'], $type['fake_parameters']);
+        }
     }
 }

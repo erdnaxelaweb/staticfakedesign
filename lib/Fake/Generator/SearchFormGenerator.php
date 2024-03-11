@@ -64,6 +64,9 @@ class SearchFormGenerator extends AbstractGenerator
             ],
             'date' => [
                 'type' => DateType::class,
+                'options' => [
+                    'widget' => 'single_text',
+                ],
             ],
             'date_range' => [
                 'type' => DateIntervalType::class,

@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
 class StaticFakeDesignExtension extends Extension implements PrependExtensionInterface
 {
@@ -25,6 +26,7 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+        $loader->load('showroom.yaml');
         $loader->load('fake_generators.yaml');
         $loader->load('fake_form_generators.yml');
         $loader->load('fake_content_field_generator.yaml');
@@ -36,10 +38,9 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
             return;
         }
 
-        $path = __DIR__ . '/../templates';
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../Resources/config/prepend/twig.yaml'));
+        $config['paths'] = [__DIR__ . '/../templates'];
 
-        $container->prependExtensionConfig('twig', [
-            'paths' => [$path],
-        ]);
+        $container->prependExtensionConfig('twig', $config);
     }
 }

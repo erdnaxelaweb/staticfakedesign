@@ -1,0 +1,53 @@
+<nav class="app-header navbar navbar-expand bg-body">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item"> <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"> <i class="bi bi-list"></i> </a> </li>
+            <li class="nav-item border-start">
+                <a class="nav-link" href="#" data-showroom-exec="preview-reload">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </a>
+            </li>
+            <li class="nav-item border-start">
+                <span class="nav-link">Breakpoints:</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-exec="breakpoint-desktop">
+                    <i class="bi bi-display"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-exec="breakpoint-tablet">
+                    <i class="bi bi-tablet-landscape"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-exec="breakpoint-mobile">
+                    <i class="bi bi-phone"></i>
+                </a>
+            </li>
+            <li class="nav-item border-start">
+                <span class="nav-link">Zoom:</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-preview-exec="zoom-in">
+                    <i class="bi bi-zoom-in"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-preview-exec="zoom-out">
+                    <i class="bi bi-zoom-out"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-showroom-preview-exec="zoom-reset">
+                    reset
+                </a>
+            </li>
+            <li class="nav-item border-start">
+                <a class="nav-link" href="{{ url('showroom_preview', {'path': path}) }}" target="_blank">
+                    ouvrir dans un nouvel onglet
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

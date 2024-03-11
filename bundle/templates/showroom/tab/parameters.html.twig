@@ -1,0 +1,21 @@
+{# @var component \ErdnaxelaWeb\StaticFakeDesign\Showroom\Component #}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for parameter in component.parameters %}
+        <tr class="align-middle">
+            <td>{{ parameter.name }}</td>
+            <td>{{ parameter.label }}</td>
+            <td>{{ parameter.type }}</td>
+            <td>{{ (parameter.required ? 'true': 'false')|trans }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

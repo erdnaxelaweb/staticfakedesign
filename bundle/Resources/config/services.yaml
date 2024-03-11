@@ -3,12 +3,15 @@ parameters:
         -
             suffix: desktop
             media: '(min-width: 1024px)'
+            previewSize: '100%'
         -
             suffix: tablet
             media: '(min-width: 754px)'
+            previewSize: '1024px'
         -
             suffix: mobile
             media: '(min-width: 0)'
+            previewSize: '754px'
 
     erdnaxelaweb.static_fake_design.image.variations: []
     erdnaxelaweb.static_fake_design.block_definition: []
@@ -25,9 +28,15 @@ services:
     ErdnaxelaWeb\StaticFakeDesignBundle\Controller\StaticController:
         public: true
 
+    ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController:
+        public: true
+
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Extension:
         arguments:
             $kernelProjectDir: '%kernel.project_dir%'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $componentBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentBuilder'
+            $generator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
 
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Loader:
         decorates: twig.loader
