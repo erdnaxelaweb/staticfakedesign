@@ -23,13 +23,18 @@ class Renderer
     ) {
     }
 
-    public function getTwigFunctions()
+    protected function getDisplayFunctions(): array
     {
-        $functions = [
+        return [
             'display_component' => [$this, 'displayComponent'],
             'display_menu_item' => [$this, 'displayMenuItem'],
             'display_active_filter' => [$this, 'displayActiveFilter'],
         ];
+    }
+
+    public function getTwigFunctions(): array
+    {
+        $functions = $this->getDisplayFunctions();
 
         $twigFunctions = [];
         foreach ($functions as $functionName => $functionCallback) {
