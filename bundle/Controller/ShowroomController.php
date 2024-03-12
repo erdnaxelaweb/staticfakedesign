@@ -31,7 +31,7 @@ class ShowroomController extends AbstractController
 
     public function view(string $path = null): Response
     {
-        $component = $this->componentFinder->getComponentFromPath($path);
+        $component = $path ? $this->componentFinder->getComponentFromPath($path) : null;
         return $this->render('@StaticFakeDesign/showroom/index.html.twig', [
             'path' => $path,
             'component' => $component,

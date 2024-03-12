@@ -24,10 +24,7 @@ class ComponentFinder
     ) {
     }
 
-    /**
-     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Component[]
-     */
-    public function findComponents(): array
+    protected function getFinder(): Finder
     {
         $finder = new Finder();
 
@@ -36,11 +33,20 @@ class ComponentFinder
             ->name('*.html.twig')
             ->files();
 
+        return $finder;
+    }
+
+    /**
+     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Component[]
+     */
+    public function findComponents(): array
+    {
+        $finder = $this->getFinder();
         $components = [];
         foreach ($finder as $file) {
             $component = $this->getComponentFromTemplatePath($file->getRelativePathname());
             if ($component) {
-                $components[rtrim($file->getRelativePathname(), '.html.twig')] = $component;
+                $components[substr($file->getRelativePathname(), 0, -10)] = $component;
             }
         }
         return $components;
