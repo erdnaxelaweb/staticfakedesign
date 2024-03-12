@@ -1,0 +1,15 @@
+showroom_home:
+    path: /showroom
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::view
+
+showroom:
+    path: /showroom/{path}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::view
+    requirements:
+        path: .*
+
+showroom_preview:
+    path: /showroom-preview/{path}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::preview
+    requirements:
+        path: .*
