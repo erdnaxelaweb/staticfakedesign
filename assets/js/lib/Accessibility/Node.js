@@ -54,7 +54,7 @@ export const Node = (node) => {
 <li>
   <span class="border-bottom d-flex">
     <strong class="me-auto">${node.target[0]}</strong>
-    <input class="highlight-toggle" type="checkbox" value="${node.target[0]}">
+    <input class="highlight-toggle" type="checkbox" value='${node.target[0]}'>
   </span>
   <div>
     ${rules.map((rule, index) => Rule(rule).outerHTML)}
