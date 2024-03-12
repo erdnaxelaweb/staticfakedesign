@@ -7,6 +7,8 @@
         {% endblock %}
         {% block stylesheets %}
         {% endblock %}
+        {% block head_scripts %}
+        {% endblock %}
         <style id="preview-style">
             #preview-root {
                 width: 100%;
@@ -22,7 +24,7 @@
         </div>
 
         <script src="{{ asset('bundles/staticfakedesign/preview-js.js') }}"></script>
-        {% block javascripts %}
+        {% block footer_scripts %}
         {% endblock %}
     </body>
 </html>
