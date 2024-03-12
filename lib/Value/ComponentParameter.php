@@ -14,8 +14,10 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 class ComponentParameter
 {
     public function __construct(
-        public string $name,
-        public array $options = [],
+        protected readonly string $name,
+        protected readonly string $label,
+        protected readonly bool $required,
+        protected readonly ComponentParameterType $type,
     ) {
     }
 
@@ -24,18 +26,18 @@ class ComponentParameter
         return $this->name;
     }
 
-    public function getType()
+    public function getLabel(): string
     {
-        return $this->options['type'];
+        return $this->label;
     }
 
-    public function getLabel()
+    public function isRequired(): bool
     {
-        return $this->options['label'];
+        return $this->required;
     }
 
-    public function getRequired()
+    public function getType(): ComponentParameterType
     {
-        return $this->options['required'];
+        return $this->type;
     }
 }

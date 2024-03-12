@@ -9,7 +9,7 @@
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Showroom;
+namespace ErdnaxelaWeb\StaticFakeDesign\Component;
 
 use ErdnaxelaWeb\StaticFakeDesign\Value\Component;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter;
@@ -19,6 +19,11 @@ use Twig\Template;
 
 class ComponentBuilder
 {
+    public function __construct(
+        protected ComponentParameterTypeParser $componentParameterTypeParser
+    ) {
+    }
+
     public function fromArray(array $rawParameters, Template $template): Component
     {
         $optionsResolver = new OptionsResolver();
@@ -50,12 +55,20 @@ class ComponentBuilder
                             'type' => $parameterOptions,
                         ];
                     }
+
                     $parameterOptionsResolver = new OptionsResolver();
                     $this->configureComponentParameterOptionOptions($parameterOptionsResolver);
+                    $parameterOptions = $parameterOptionsResolver->resolve($parameterOptions);
+
+                    $parameterOptions['type'] = $this->componentParameterTypeParser->fromString(
+                        $parameterOptions['type']
+                    );
 
                     $parameters[$parameterName] = new ComponentParameter(
                         $parameterName,
-                        $parameterOptionsResolver->resolve($parameterOptions)
+                        $parameterOptions['label'],
+                        $parameterOptions['required'],
+                        $parameterOptions['type']
                     );
                 }
                 return $parameters;

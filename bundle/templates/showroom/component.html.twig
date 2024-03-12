@@ -6,7 +6,7 @@
     <main class="app-main">
         {% if component %}
             <div id="preview-canvas" class="canvas border-start border-end text-center">
-                <iframe src="{{ url('showroom_preview', {'path': path}) }}" frameborder="0" width="100%" height="500px"></iframe>
+                <iframe src="{{ url('showroom_component_preview', {'path': path}) }}" frameborder="0" width="100%" height="500px"></iframe>
             </div>
 
             {% set tabs = {

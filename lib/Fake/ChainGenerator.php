@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
+use ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameterType;
+
 class ChainGenerator
 {
     /**
@@ -24,10 +26,9 @@ class ChainGenerator
      * @param iterable<GeneratorInterface> $generators
      */
     public function __construct(
-        protected FakerGenerator $fakerGenerator,
-        protected FakeTypeMatcher $fakeTypeMatcher,
-        protected bool $enableFakeGeneration,
-        iterable                 $generators = [],
+        protected FakerGenerator               $fakerGenerator,
+        protected bool                         $enableFakeGeneration,
+        iterable                               $generators = [],
     ) {
         foreach ($generators as $type => $generator) {
             $this->registerGenerator($type, $generator);
@@ -61,13 +62,12 @@ class ChainGenerator
         return $values;
     }
 
-    public function generateFromTypeExpression(string $typeExpression)
+    public function generateFromTypeExpression(ComponentParameterType $type)
     {
-        $type = ($this->fakeTypeMatcher)($typeExpression);
-        if ($type['is_array']) {
-            return $this->generateFakeArray($type['array_size'], $type['fake_type'], $type['fake_parameters']);
+        if ($type->isArray()) {
+            return $this->generateFakeArray($type->getArraySize(), $type->getType(), $type->getParameters());
         } else {
-            return $this->generateFake($type['fake_type'], $type['fake_parameters']);
+            return $this->generateFake($type->getType(), $type->getParameters());
         }
     }
 }

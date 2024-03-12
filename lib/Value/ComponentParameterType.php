@@ -11,49 +11,44 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 class ComponentParameterType
 {
     public function __construct(
-        public string $name,
-        public array $options = [],
+        protected readonly string $expression,
+        protected readonly string $type,
+        protected readonly array  $parameters,
+        protected readonly bool   $isArray,
+        protected readonly ?int   $arraySize,
     ) {
     }
 
-    public function getName(): string
+    public function getExpression(): string
     {
-        return $this->name;
+        return $this->expression;
     }
 
-    public function getType()
+    public function getType(): string
     {
-        return $this->options['type'];
+        return $this->type;
     }
 
-    public function getLabel()
+    public function getParameters(): array
     {
-        return $this->options['label'];
+        return $this->parameters;
     }
 
-    public function getRequired()
+    public function isArray(): bool
     {
-        return $this->options['required'];
+        return $this->isArray;
     }
 
-    public static function resolveOptions(array $options): array
+    public function getArraySize(): ?int
     {
-        $optionsResolver = new OptionsResolver();
-        $optionsResolver->define('type')
-            ->required()
-            ->allowedTypes('string', 'array');
-        $optionsResolver->define('label')
-            ->required()
-            ->allowedTypes('string');
-        $optionsResolver->define('required')
-            ->default(true)
-            ->allowedTypes('boolean');
+        return $this->arraySize;
+    }
 
-        return $optionsResolver->resolve($options);
+    public function __toString(): string
+    {
+        return $this->expression;
     }
 }

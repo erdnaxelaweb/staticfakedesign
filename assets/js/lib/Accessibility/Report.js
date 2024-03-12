@@ -12,7 +12,7 @@ import {createElFromTemplate} from "../Utils";
 import {Result} from "./Result";
 
 export const Report = (results) => {
-  const resultsMap = new Map();
+  let resultsMap = new Map();
 
   for (const pass of results.passes) {
     const result = {
@@ -45,8 +45,16 @@ export const Report = (results) => {
     }
   }
 
+  resultsMap.forEach((result) => {
+    result.total = result.passes.length + result.fails.length
+    result.progress = Math.floor(result.passes.length / result.total * 100)
+  })
+
+  resultsMap = new Map([...resultsMap.entries()].sort(([ak, av], [bk, bv]) => {
+    return av.progress - bv.progress;
+  }))
   const report = createElFromTemplate(`<div class="accordion accordion-flush" id="accessibility-results"></div>`)
-  const resultsIds = [...resultsMap.keys()].sort()
+  const resultsIds = [...resultsMap.keys()]
   for (const resultsId of resultsIds) {
     const reportItem = Result(resultsMap.get(resultsId));
     report.appendChild(reportItem)

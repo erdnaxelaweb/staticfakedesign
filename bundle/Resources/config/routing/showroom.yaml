@@ -1,15 +1,21 @@
 showroom_home:
     path: /showroom
-    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::view
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController::view
 
-showroom:
-    path: /showroom/{path}
-    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::view
+showroom_component:
+    path: /showroom/component/{path}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController::view
     requirements:
         path: .*
 
-showroom_preview:
-    path: /showroom-preview/{path}
-    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController::preview
+showroom_component_preview:
+    path: /showroom/component-preview/{path}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController::preview
+    requirements:
+        path: .*
+
+showroom_definition:
+    path: /showroom/definition/{definitionType}/{type}
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\DefinitionController::view
     requirements:
         path: .*

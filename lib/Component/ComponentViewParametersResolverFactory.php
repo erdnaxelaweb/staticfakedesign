@@ -9,7 +9,7 @@
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Showroom;
+namespace ErdnaxelaWeb\StaticFakeDesign\Component;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Component;
@@ -26,9 +26,9 @@ class ComponentViewParametersResolverFactory
     public function __invoke(Component $component): OptionsResolver
     {
         $optionResolver = new OptionsResolver();
-        foreach ($component->parameters as $parameter) {
+        foreach ($component->getParameters() as $parameter) {
             $configurator = $optionResolver->define($parameter->getName());
-            if ($parameter->getRequired()) {
+            if ($parameter->isRequired()) {
                 $configurator->default(function (Options $options) use ($parameter) {
                     return $this->fakeGenerator->generateFromTypeExpression($parameter->getType());
                 });

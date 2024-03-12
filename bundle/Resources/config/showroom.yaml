@@ -3,35 +3,61 @@ parameters:
     erdnaxelaweb.static_fake_design.showroom.preview_layout: '@@StaticFakeDesign/showroom/layout/preview.html.twig'
 
 services:
-    ErdnaxelaWeb\StaticFakeDesignBundle\Controller\ShowroomController:
+    ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController:
         public: true
         arguments:
-            $sidebarMenuFactory: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu\SidebarMenuFactory'
-            $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentFinder'
-            $componentViewParametersResolverFactory: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentViewParametersResolverFactory'
+            $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
             $showroomHelper: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'
-            $previewLayout: '%erdnaxelaweb.static_fake_design.showroom.preview_layout%'
+            $twig: '@twig'
         calls:
             - ['setContainer', ['@service_container']]
 
-    ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentFinder:
+    ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\SidebarController:
+        public: true
+        arguments:
+            $sidebarMenuBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu\SidebarMenuBuilder'
+        calls:
+            - ['setContainer', ['@service_container']]
+
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder:
         arguments:
             $twig: '@twig'
             $baseDir: '%erdnaxelaweb.static_fake_design.showroom.base_dir%'
 
-    ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu\SidebarMenuFactory:
+    ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu\SidebarMenuBuilder:
         arguments:
             $factory: '@knp_menu.factory'
-            $router: '@router.default'
-            $storiesFinder: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentFinder'
+            $eventDispatcher: '@event_dispatcher'
 
-    ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentViewParametersResolverFactory:
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentViewParametersResolverFactory:
         arguments:
             $fakeGenerator: '@erdnaxelaweb.static_fake_design.generator'
 
-    ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentBuilder:
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParameterTypeParser:
+
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentBuilder:
+        arguments:
+            $componentParameterTypeParser: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParameterTypeParser'
 
     ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper:
         arguments:
             $imageConfiguration: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration'
             $previewLayout: '%erdnaxelaweb.static_fake_design.showroom.preview_layout%'
+            $renderTemplate: '%erdnaxelaweb.static_fake_design.render_template%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber\DefinitionSidebarMenu:
+        arguments:
+            $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
+            $contentConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager'
+            $pagerConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager'
+            $taxonomyEntryConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager'
+            $router: '@router.default'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber\ComponentSidebarMenu:
+        arguments:
+            $router: '@router.default'
+            $storiesFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
+        tags:
+            - { name: kernel.event_subscriber }

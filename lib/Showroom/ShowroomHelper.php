@@ -19,7 +19,8 @@ class ShowroomHelper
 
     public function __construct(
         protected ImageConfiguration $imageConfiguration,
-        protected string $previewLayout
+        protected string $previewLayout,
+        protected string $renderTemplate
     ) {
     }
 
@@ -41,5 +42,10 @@ class ShowroomHelper
     public function getPreviewLayout(): string
     {
         return $this->previewLayout;
+    }
+
+    public function getRenderTemplate(): string
+    {
+        return $this->renderTemplate;
     }
 }

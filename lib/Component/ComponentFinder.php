@@ -9,7 +9,7 @@
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Showroom;
+namespace ErdnaxelaWeb\StaticFakeDesign\Component;
 
 use ErdnaxelaWeb\StaticFakeDesign\Value\Component;
 use Symfony\Component\Finder\Finder;

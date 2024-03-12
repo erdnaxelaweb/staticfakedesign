@@ -18,7 +18,7 @@
             }
         </style>
     </head>
-    <body class="light sb-show-main sb-main-fullscreen {{ body_classes|default() }}">
+    <body class="{{ body_classes|default() }}">
         <div class="component-wrapper">
             {% block body %}{% endblock %}
         </div>

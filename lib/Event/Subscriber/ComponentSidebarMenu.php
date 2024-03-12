@@ -9,27 +9,37 @@
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu;
+namespace ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber;
 
-use ErdnaxelaWeb\StaticFakeDesign\Showroom\ComponentFinder;
-use Knp\Menu\FactoryInterface;
+use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder;
+use ErdnaxelaWeb\StaticFakeDesign\Event\ConfigureMenuEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class SidebarMenuFactory
+class ComponentSidebarMenu implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            ConfigureMenuEvent::SHOWROOM_MENU_SIDEBAR => ['buildMenu', 0],
+        ];
+    }
+
     public function __construct(
-        protected FactoryInterface $factory,
-        protected ComponentFinder  $storiesFinder,
-        protected RouterInterface  $router
+        protected ComponentFinder $storiesFinder,
+        protected RouterInterface $router
     ) {
     }
 
-    public function buildMenu(): \Knp\Menu\ItemInterface
+    public function buildMenu(ConfigureMenuEvent $event): void
     {
+        $factory = $event->getFactory();
+        $menu = $event->getMenu();
+
         $stories = $this->storiesFinder->findComponents();
 
         $menuItems = [];
-        $root = $this->factory->createItem('sidebar.root', [
+        $root = $menu->addChild('components.root', [
             'extras' => [
                 'translation_domain' => 'menu',
             ],
@@ -43,29 +53,26 @@ class SidebarMenuFactory
                 $path[] = $dirName;
                 $dirPath = implode('/', $path);
                 if (! isset($menuItems[$dirPath])) {
-                    $menuItem = $this->factory->createItem($dirPath, [
+                    $menuItems[$dirPath] = $parent->addChild($dirPath, [
                         'label' => $dirName,
                         'extras' => [
                             'path' => $dirPath,
+                            'icon' => 'folder',
                         ],
                     ]);
-                    $parent->addChild($menuItem);
-                    $menuItems[$dirPath] = $menuItem;
                 }
                 $parent = $menuItems[$dirPath];
             }
-            $menuItem = $this->factory->createItem($templateName, [
-                'uri' => $this->router->generate('showroom', [
+            $parent->addChild($templateName, [
+                'uri' => $this->router->generate('showroom_component', [
                     'path' => $storyPath,
                 ]),
-                'label' => $story->name,
+                'label' => $story->getName(),
                 'extras' => [
                     'path' => $storyPath,
+                    'icon' => 'box',
                 ],
             ]);
-            $parent->addChild($menuItem);
         }
-
-        return $root;
     }
 }

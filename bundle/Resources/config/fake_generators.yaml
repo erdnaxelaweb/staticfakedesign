@@ -21,10 +21,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator:
         arguments:
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
-            $fakeTypeMatcher: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakeTypeMatcher'
             $enableFakeGeneration: '%erdnaxelaweb.static_fake_design.enable_fake_generation%'
-
-    ErdnaxelaWeb\StaticFakeDesign\Fake\FakeTypeMatcher:
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\AudioGenerator:
         lazy: true
