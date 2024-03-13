@@ -1,0 +1,23 @@
+{% extends showroom.isPreviewActive ? showroom.previewLayout : 'layout_base.html.twig' %}
+
+{% block body %}
+
+    {% block header %}
+        <div>
+            Header
+        </div>
+    {% endblock %}
+
+    {% block content %}
+        <div>
+            content
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        <div>
+            footer
+        </div>
+    {% endblock %}
+
+{% endblock %}

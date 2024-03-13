@@ -11,7 +11,6 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
-use ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper;
 use Knp\Menu\ItemInterface;
 use Twig\Environment;
 use Twig\TwigFunction;
@@ -19,7 +18,7 @@ use Twig\TwigFunction;
 class Renderer
 {
     public function __construct(
-        protected ShowroomHelper $showroomHelper,
+        protected string $renderTemplate,
     ) {
     }
 
@@ -29,6 +28,7 @@ class Renderer
             'display_component' => [$this, 'displayComponent'],
             'display_menu_item' => [$this, 'displayMenuItem'],
             'display_active_filter' => [$this, 'displayActiveFilter'],
+            'display_content' => [$this, 'displayContent'],
         ];
     }
 
@@ -63,11 +63,29 @@ class Renderer
         ]);
     }
 
+    public function displayContent(
+        Environment $environment,
+        string      $template,
+        $content,
+        array       $parameters = [],
+        ?string     $viewType = null,
+        bool $isEsi = false
+    ): string {
+        return $this->render($environment, 'display_content', [
+            'template' => $template,
+            'content' => $content,
+            'parameters' => $parameters,
+            'viewType' => $viewType,
+            'isEsi' => $isEsi,
+        ]);
+    }
+
     public function displayComponent(
         Environment $environment,
         string      $template,
         array       $parameters = [],
-        ?string     $controllerAction = null
+        ?string     $controllerAction = null,
+        bool $isEsi = false
     ): string {
         return $this->render($environment, 'display_component', [
             'template' => $template,
@@ -79,8 +97,8 @@ class Renderer
     protected function render(Environment $environment, string $blockName, array $parameters = []): string
     {
         $renderTemplate = $environment->loadTemplate(
-            $environment->getTemplateClass($this->showroomHelper->getRenderTemplate()),
-            $this->showroomHelper->getRenderTemplate()
+            $environment->getTemplateClass($this->renderTemplate),
+            $this->renderTemplate
         );
         $context = $environment->mergeGlobals($parameters);
         return $renderTemplate->renderBlock($blockName, $context);

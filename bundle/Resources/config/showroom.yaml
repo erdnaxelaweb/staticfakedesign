@@ -43,7 +43,6 @@ services:
         arguments:
             $imageConfiguration: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration'
             $previewLayout: '%erdnaxelaweb.static_fake_design.showroom.preview_layout%'
-            $renderTemplate: '%erdnaxelaweb.static_fake_design.render_template%'
 
     ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber\DefinitionSidebarMenu:
         arguments:

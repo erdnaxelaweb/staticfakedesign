@@ -18,7 +18,7 @@ parameters:
     erdnaxelaweb.static_fake_design.content_definition: []
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
     erdnaxelaweb.static_fake_design.pager_definition: []
-    erdnaxelaweb.static_fake_design.render_template: '@@StaticFakeDesign/static/render.html.twig'
+    erdnaxelaweb.static_fake_design.display_functions_render_template: '@@StaticFakeDesign/static/render.html.twig'
 
 services:
     _defaults:
@@ -31,7 +31,7 @@ services:
 
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Renderer:
         arguments:
-            $showroomHelper: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'
+            $renderTemplate: '%erdnaxelaweb.static_fake_design.display_functions_render_template%'
 
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Extension:
         arguments:

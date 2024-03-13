@@ -48,7 +48,6 @@ class ChainGenerator
     public function generateFake(string $type, array $parameters = [])
     {
         $generator = $this->generators[$type] ?? [$this->fakerGenerator, $type];
-
         return $this->isFakeGenerationEnabled() ? call_user_func_array($generator, $parameters) : null;
     }
 

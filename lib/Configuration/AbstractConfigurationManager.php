@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurationManager
 {
-    protected array $configurations;
+    protected array $configurations = [];
 
     public function __construct(
         array                                   $definitions
