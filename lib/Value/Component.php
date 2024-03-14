@@ -22,6 +22,7 @@ class Component
         protected readonly Template $template,
         protected readonly string $name,
         protected readonly string $description = '',
+        protected readonly string $specifications = '',
         protected readonly array $parameters = []
     ) {
     }

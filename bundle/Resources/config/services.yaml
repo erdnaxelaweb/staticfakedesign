@@ -70,3 +70,7 @@ services:
         lazy: true
         arguments:
             $definitions: '%erdnaxelaweb.static_fake_design.pager_definition%'
+
+    ErdnaxelaWeb\StaticFakeDesignBundle\Command\CreateComponentCommand:
+        arguments:
+            $filesystem: '@filesystem'
