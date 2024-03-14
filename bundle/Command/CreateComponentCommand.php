@@ -22,9 +22,10 @@ class CreateComponentCommand extends Command
 {
     protected static $defaultName = 'static_fake_design:component:create';
 
-    public function __construct(protected Filesystem $filesystem)
-    {
-        parent::__construct(  );
+    public function __construct(
+        protected Filesystem $filesystem
+    ) {
+        parent::__construct();
     }
 
     protected function configure()
@@ -33,21 +34,23 @@ class CreateComponentCommand extends Command
         $this->addArgument('name', InputArgument::REQUIRED, 'Name of the component');
     }
 
-    protected function execute( InputInterface $input, OutputInterface $output )
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
         $path = $input->getArgument('path');
         $name = $input->getArgument('name');
         $content = sprintf(
-"{%% component {
+            "{%% component {
     name: '%s',
     description: '',
     specifications: '',
     parameters: {
     }
 } %%}
-", $name);
+",
+            $name
+        );
 
         $this->filesystem->dumpFile($path, $content);
         return Command::SUCCESS;

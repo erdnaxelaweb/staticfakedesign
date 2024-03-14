@@ -45,6 +45,10 @@ class ComponentBuilder
             ->default('')
             ->allowedTypes('string');
 
+        $optionsResolver->define('specifications')
+            ->default('')
+            ->allowedTypes('string');
+
         $optionsResolver->define('parameters')
             ->default([])
             ->allowedTypes('array')

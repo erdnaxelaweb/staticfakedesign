@@ -18,7 +18,7 @@ parameters:
     erdnaxelaweb.static_fake_design.content_definition: []
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
     erdnaxelaweb.static_fake_design.pager_definition: []
-    erdnaxelaweb.static_fake_design.display_functions_render_template: '@@StaticFakeDesign/static/render.html.twig'
+    erdnaxelaweb.static_fake_design.display_functions_render_template: '@@StaticFakeDesign/static/display_functions.html.twig'
 
 services:
     _defaults:
