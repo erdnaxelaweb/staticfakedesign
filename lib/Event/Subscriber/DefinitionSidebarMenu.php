@@ -43,11 +43,7 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
     {
         $menu = $event->getMenu();
 
-        $root = $menu->addChild('definitions.root', [
-            'extras' => [
-                'translation_domain' => 'showroom',
-            ],
-        ]);
+        $root = $menu->addChild('sidebar.definitions.root');
 
         $this->addDefinitions('content', $this->contentConfigurationManager, $root);
         $this->addDefinitions('taxonomy', $this->taxonomyEntryConfigurationManager, $root);
@@ -64,9 +60,8 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
         if (empty($types)) {
             return;
         }
-        $root = $menu->addChild(sprintf('definitions.%s', $definitionType), [
+        $root = $menu->addChild(sprintf('sidebar.definitions.%s', $definitionType), [
             'extras' => [
-                'translation_domain' => 'menu',
                 'icon' => 'folder',
             ],
         ]);

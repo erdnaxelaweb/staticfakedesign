@@ -8,11 +8,11 @@
     {% set url = has_children ? '#' ~ item.name : item.uri %}
     {% set icon = item.extra('icon') %}
 
-    <li class="nav-item" data-path="{{ item.extra('path') }}">
+    <li class="nav-item ps-2" data-path="{{ item.extra('path') }}">
         <a href="{{ url }}" class="nav-link">
             {% if icon %}<i class="nav-icon bi bi-{{ icon }}"></i>{% endif %}
             <p>
-                {{ item.label }}
+                {{ item.label|trans }}
                 {% if has_children %}<i class="nav-arrow bi bi-chevron-right"></i>{% endif %}
             </p>
         </a>
@@ -36,7 +36,7 @@
         <nav class="mt-2">
             {% for root in menu.children %}
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                    <li class="nav-header">{{ root.label }}</li>
+                    <li class="nav-header">{{ root.label|trans }}</li>
                     {% for child in root.children %}
                             {{ macros.display_menu_item(child) }}
                     {% endfor %}

@@ -1,3 +1,9 @@
 tab.doc.title: Documentation
 tab.parameters.title: Paramètres (%count%)
 tab.accessibility.title: Accéssibilité
+sidebar.components.root: Composants
+sidebar.definitions.root: Definitions
+sidebar.definitions.content: Contenu
+sidebar.definitions.taxonomy: Taxonomie
+sidebar.definitions.block: Bloc
+sidebar.definitions.pager: Pager

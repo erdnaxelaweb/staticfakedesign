@@ -18,7 +18,7 @@ class SidebarMenuBuilder extends AbstractMenuBuilder
 {
     public function buildMenu(array $options = []): ItemInterface
     {
-        $menu = $this->createMenuItem('root');
+        $menu = $this->createMenuItem('sidebar.root');
 
         $this->dispatchMenuEvent(
             ConfigureMenuEvent::SHOWROOM_MENU_SIDEBAR,
