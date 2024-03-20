@@ -73,7 +73,8 @@ class ComponentBuilder
                         $parameterOptions['label'],
                         $parameterOptions['required'],
                         $parameterOptions['type'],
-                        $parameterOptions['defaultValue']
+                        array_key_exists('default', $parameterOptions),
+                        $parameterOptions['default'] ?? null
                     );
                 }
                 return $parameters;
@@ -84,17 +85,29 @@ class ComponentBuilder
     {
         $optionsResolver->define('type')
             ->required()
-            ->allowedTypes('string', 'array');
+            ->default(function (Options $options) {
+                if (! isset($options['default'])) {
+                    return null;
+                }
+
+                return gettype($options['default']);
+            })
+            ->allowedTypes('string');
 
         $optionsResolver->define('label')
             ->default('')
             ->allowedTypes('string');
 
-        $optionsResolver->define('required')
-            ->default(true)
-            ->allowedTypes('boolean');
+        $optionsResolver->define('default');
 
-        $optionsResolver->define('defaultValue')
-            ->default(null);
+        $optionsResolver->define('required')
+            ->default(function (Options $options) {
+                if (! isset($options['default'])) {
+                    return true;
+                }
+
+                return false;
+            })
+            ->allowedTypes('boolean');
     }
 }

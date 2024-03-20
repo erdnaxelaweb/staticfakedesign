@@ -57,15 +57,14 @@ class Extension extends AbstractExtension
 
     public function setContext(array &$context, ?Component $component): void
     {
-        //        if (! $component) {
-        //            return;
-        //        }
-        //        foreach ($component->getParameters() as $parameter) {
-        //            $required = ($parameter->isRequired() || $this->fakerGenerator->boolean());
-        //            if (! isset($context[$parameter->getName()]) && $required) {
-        //                $context[$parameter->getName()] = $parameter->getDefaultValue() ?? $this->generator->generateFromTypeExpression($parameter->getType());
-        //            }
-        //        }
+        if (! $component) {
+            return;
+        }
+        foreach ($component->getParameters() as $parameter) {
+            if (! isset($context[$parameter->getName()]) && $parameter->hasDefaultValue()) {
+                $context[$parameter->getName()] = $parameter->getDefaultValue();
+            }
+        }
     }
 
     public function getNodeVisitors(): array

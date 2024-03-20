@@ -16,7 +16,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Value\Component;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ComponentViewParametersResolverFactory
+class ComponentContextResolverFactory
 {
     public function __construct(
         protected ChainGenerator $fakeGenerator
@@ -28,7 +28,9 @@ class ComponentViewParametersResolverFactory
         $optionResolver = new OptionsResolver();
         foreach ($component->getParameters() as $parameter) {
             $configurator = $optionResolver->define($parameter->getName());
-            if ($parameter->isRequired()) {
+            if ($parameter->hasDefaultValue()) {
+                $configurator->default($parameter->getDefaultValue());
+            } elseif ($parameter->isRequired()) {
                 $configurator->default(function (Options $options) use ($parameter) {
                     return $this->fakeGenerator->generateFromTypeExpression($parameter->getType());
                 });

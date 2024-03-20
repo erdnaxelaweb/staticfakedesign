@@ -8,8 +8,7 @@ services:
         arguments:
             $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
             $showroomHelper: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'
-            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
-            $generator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
+            $componentContextResolverFactory: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentContextResolverFactory'
             $twig: '@twig'
         calls:
             - ['setContainer', ['@service_container']]
@@ -31,7 +30,7 @@ services:
             $factory: '@knp_menu.factory'
             $eventDispatcher: '@event_dispatcher'
 
-    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentViewParametersResolverFactory:
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentContextResolverFactory:
         arguments:
             $fakeGenerator: '@erdnaxelaweb.static_fake_design.generator'
 

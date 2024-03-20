@@ -44,4 +44,14 @@ class FakerGenerator extends BaseGenerator
         }
         return $this->__call('imageUrl', $parameters);
     }
+
+    public function smallString(int $maxLength = 100): string
+    {
+        return $this->text($maxLength);
+    }
+
+    public function string(int $maxLength = 255): string
+    {
+        return $this->text($maxLength);
+    }
 }
