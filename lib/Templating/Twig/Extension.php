@@ -61,7 +61,7 @@ class Extension extends AbstractExtension
             return;
         }
         foreach ($component->getParameters() as $parameter) {
-            if (! isset($context[$parameter->getName()]) && $parameter->hasDefaultValue()) {
+            if (! isset($context[$parameter->getName()]) && ! $parameter->isRequired() && $parameter->hasDefaultValue()) {
                 $context[$parameter->getName()] = $parameter->getDefaultValue();
             }
         }
