@@ -29,7 +29,7 @@ class ComponentParameterTypeParser
             $matches[1],
             json_decode($fakeParameters, true, 512, JSON_THROW_ON_ERROR),
             isset($matches[3]),
-            ! empty($matches[3]) ?? null,
+            !empty($matches[3]) ? $matches[3] : null,
         );
     }
 }
