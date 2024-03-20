@@ -45,7 +45,7 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
 
         $root = $menu->addChild('definitions.root', [
             'extras' => [
-                'translation_domain' => 'menu',
+                'translation_domain' => 'showroom',
             ],
         ]);
 

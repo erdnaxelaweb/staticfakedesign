@@ -8,6 +8,8 @@ services:
         arguments:
             $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
             $showroomHelper: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $generator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
             $twig: '@twig'
         calls:
             - ['setContainer', ['@service_container']]

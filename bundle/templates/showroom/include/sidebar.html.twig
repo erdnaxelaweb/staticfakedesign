@@ -1,5 +1,7 @@
 {# @var menu \Knp\Menu\ItemInterface #}
 {# @var item \Knp\Menu\ItemInterface #}
+{% trans_default_domain 'showroom' %}
+
 {% macro display_menu_item(item) %}
     {% import _self as macros %}
     {% set has_children = item.children|length > 0 %}

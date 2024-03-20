@@ -12,6 +12,8 @@
 namespace ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom;
 
 use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,8 @@ class ComponentController extends AbstractController
     public function __construct(
         protected ComponentFinder                        $componentFinder,
         protected ShowroomHelper                         $showroomHelper,
+        protected ChainGenerator   $generator,
+        protected FakerGenerator   $fakerGenerator,
         protected Environment $twig
     ) {
     }
@@ -46,13 +50,23 @@ class ComponentController extends AbstractController
             'page_title' => $component->getName(),
         ];
 
+        $context = [];
+        foreach ($component->getParameters() as $parameter) {
+            $required = ($parameter->isRequired() || $this->fakerGenerator->boolean());
+            if ($required) {
+                $context[$parameter->getName()] = $parameter->getDefaultValue() ?? $this->generator->generateFromTypeExpression(
+                    $parameter->getType()
+                );
+            }
+        }
         if ($isFullTemplate) {
             $templatePath = $component->getTemplate()
                 ->getTemplateName();
+            $templateParameters = array_merge($templateParameters, $context);
         } else {
             $templatePath = '@StaticFakeDesign/showroom/component-preview.html.twig';
             $templateParameters['templatePath'] = $component->getTemplate()->getTemplateName();
-            $templateParameters['templateParameters'] = [];
+            $templateParameters['templateParameters'] = $context;
         }
 
         return $this->render($templatePath, $templateParameters);

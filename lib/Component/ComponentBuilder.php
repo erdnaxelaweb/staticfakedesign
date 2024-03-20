@@ -72,7 +72,8 @@ class ComponentBuilder
                         $parameterName,
                         $parameterOptions['label'],
                         $parameterOptions['required'],
-                        $parameterOptions['type']
+                        $parameterOptions['type'],
+                        $parameterOptions['defaultValue']
                     );
                 }
                 return $parameters;
@@ -92,5 +93,8 @@ class ComponentBuilder
         $optionsResolver->define('required')
             ->default(true)
             ->allowedTypes('boolean');
+
+        $optionsResolver->define('defaultValue')
+            ->default(null);
     }
 }

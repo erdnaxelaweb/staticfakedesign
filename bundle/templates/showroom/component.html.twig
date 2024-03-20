@@ -1,6 +1,8 @@
 {% extends '@StaticFakeDesign/showroom/layout/default.html.twig' %}
 
 {# @var component \ErdnaxelaWeb\StaticFakeDesign\Showroom\Component #}
+{% trans_default_domain 'showroom' %}
+
 {% block content %}
     {% include '@StaticFakeDesign/showroom/include/toolbar.html.twig' %}
     <main class="app-main">
@@ -12,7 +14,7 @@
             {% set tabs = {
                 'doc': 'tab.doc.title' |trans|desc('Documentation'),
                 'parameters': 'tab.parameters.title' |trans({'%count%': component.parameters|length})|desc('Parameters (%count%)'),
-                'accessibility': 'tab.accessibility.title' |trans|desc('Accessibilité'),
+                'accessibility': 'tab.accessibility.title' |trans|desc('Accessibility'),
             } %}
             <div>
                 <ul class="nav nav-tabs">

@@ -39,9 +39,9 @@ class ComponentSidebarMenu implements EventSubscriberInterface
         $stories = $this->storiesFinder->findComponents();
 
         $menuItems = [];
-        $root = $menu->addChild('components.root', [
+        $root = $menu->addChild(/** @Desc('Components') */ 'components.root', [
             'extras' => [
-                'translation_domain' => 'menu',
+                'translation_domain' => 'showroom',
             ],
         ]);
         foreach ($stories as $storyPath => $story) {

@@ -18,6 +18,7 @@ class ComponentParameter
         protected readonly string $label,
         protected readonly bool $required,
         protected readonly ComponentParameterType $type,
+        protected readonly mixed $defaultValue
     ) {
     }
 
@@ -39,5 +40,10 @@ class ComponentParameter
     public function getType(): ComponentParameterType
     {
         return $this->type;
+    }
+
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 }

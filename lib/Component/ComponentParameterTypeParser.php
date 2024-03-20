@@ -23,12 +23,13 @@ class ComponentParameterTypeParser
         if ($fakeParameters === null || ! str_starts_with($fakeParameters, "{")) {
             $fakeParameters = sprintf('[%s]', $fakeParameters);
         }
+
         return new ComponentParameterType(
             $typeExpression,
             $matches[1],
             json_decode($fakeParameters, true, 512, JSON_THROW_ON_ERROR),
             isset($matches[3]),
-            $matches[3] ?? null,
+            ! empty($matches[3]) ?? null,
         );
     }
 }
