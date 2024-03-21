@@ -8,32 +8,40 @@
     <main class="app-main">
         {% if component %}
             <div id="preview-canvas" class="canvas border-start border-end text-center">
-                <iframe src="{{ url('showroom_component_preview', {'path': path}) }}" frameborder="0" width="100%" height="500px"></iframe>
+                <iframe name="preview-canvas-iframe" data-src="{{ previewUrl }}" frameborder="0" width="100%" height="500px"></iframe>
             </div>
 
             {% set tabs = {
-                'doc': 'tab.doc.title' |trans|desc('Documentation'),
-                'parameters': 'tab.parameters.title' |trans({'%count%': component.parameters|length})|desc('Parameters (%count%)'),
-                'accessibility': 'tab.accessibility.title' |trans|desc('Accessibility'),
+                'doc': {
+                    label: 'tab.doc.title' |trans|desc('Documentation'),
+                    parameters: {component: component, templateName: templateName}
+                },
+                'parameters': {
+                    label: 'tab.parameters.title' |trans({'%count%': component.parameters|length})|desc('Parameters (%count%)') ,
+                    parameters: {component: component, parametersForm: parametersForm, previewUrl: previewUrl}
+                },
+                'accessibility': {
+                    label: 'tab.accessibility.title' |trans|desc('Accessibility'),
+                    parameters: {component: component}
+                },
             } %}
             <div>
                 <ul class="nav nav-tabs">
-                    {% for tab,tabTitle in tabs %}
+                    {% for tabId,tab in tabs %}
                         <li class="nav-item">
-                            <button class="nav-link{{ loop.first ? ' active' }}" id="home-{{ tab }}"
-                                    data-bs-toggle="tab" data-bs-target="#tab-content-{{ tab }}" type="button" role="tab" aria-controls="tab-content-{{ tab }}"
+                            <button class="nav-link{{ loop.first ? ' active' }}" id="home-{{ tabId }}"
+                                    data-bs-toggle="tab" data-bs-target="#tab-content-{{ tabId }}" type="button" role="tab" aria-controls="tab-content-{{ tabId }}"
                                     {% if loop.first %} aria-selected="true"{% endif %}
                             >
-                                {{ tabTitle }}
+                                {{ tab.label }}
                             </button>
                         </li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content" id="nav-tabContent">
-
-                    {% for tab,tabTitle in tabs %}
-                        <div class="tab-pane fade show{{ loop.first ? ' active' }}" id="tab-content-{{ tab }}" role="tabpanel" aria-labelledby="tab-{{ tab }}">
-                            {% include '@StaticFakeDesign/showroom/tab/'~ tab ~'.html.twig' with {component: component} only %}
+                    {% for tabId,tab in tabs %}
+                        <div class="tab-pane fade show{{ loop.first ? ' active' }}" id="tab-content-{{ tabId }}" role="tabpanel" aria-labelledby="tab-{{ tabId }}">
+                            {% include '@StaticFakeDesign/showroom/tab/'~ tabId ~'.html.twig' with tab.parameters only %}
                         </div>
                     {% endfor %}
                 </div>

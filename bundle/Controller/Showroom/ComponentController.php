@@ -13,9 +13,12 @@ namespace ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom;
 
 use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentContextResolverFactory;
 use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder;
+use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParametersFormFactory;
 use ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Template;
 
@@ -25,20 +28,30 @@ class ComponentController extends AbstractController
         protected ComponentFinder                 $componentFinder,
         protected ShowroomHelper                  $showroomHelper,
         protected ComponentContextResolverFactory $componentContextResolverFactory,
-        protected Environment                     $twig
+        protected ComponentParametersFormFactory $componentParametersFormFactory,
+        protected Environment                     $twig,
+        protected RouterInterface $router
     ) {
     }
 
     public function view(string $path = null): Response
     {
         $component = $path ? $this->componentFinder->getComponentFromPath($path) : null;
+        $parametersForm = ($this->componentParametersFormFactory)($component);
+        $previewUrl = $this->router->generate('showroom_component_preview', [
+            'path' => $path,
+        ]);
         return $this->render('@StaticFakeDesign/showroom/component.html.twig', [
             'path' => $path,
+            'previewUrl' => $previewUrl,
             'component' => $component,
+            'templateName' => $component->getTemplate()
+                ->getTemplateName(),
+            'parametersForm' => $parametersForm->createView(),
         ]);
     }
 
-    public function preview(string $path, array $parameters = []): Response
+    public function preview(string $path, Request $request): Response
     {
         $component = $this->componentFinder->getComponentFromPath($path);
         $isFullTemplate = $this->isFullTemplate($component->getTemplate());
@@ -48,8 +61,10 @@ class ComponentController extends AbstractController
             'page_title' => $component->getName(),
         ];
 
-        $context = ($this->componentContextResolverFactory)($component)
-            ->resolve($parameters);
+        $parametersForm = ($this->componentParametersFormFactory)($component);
+        $parametersForm->handleRequest($request);
+
+        $context = $parametersForm->getData();
         if ($isFullTemplate) {
             $templatePath = $component->getTemplate()
                 ->getTemplateName();

@@ -11,7 +11,7 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-class ComponentParameter
+class ComponentParameter implements \JsonSerializable
 {
     public function __construct(
         protected readonly string $name,
@@ -30,7 +30,7 @@ class ComponentParameter
 
     public function getLabel(): string
     {
-        return $this->label;
+        return $this->label ?? $this->name;
     }
 
     public function isRequired(): bool
@@ -49,6 +49,11 @@ class ComponentParameter
     }
 
     public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    public function jsonSerialize(): mixed
     {
         return $this->defaultValue;
     }

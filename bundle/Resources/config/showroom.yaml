@@ -9,7 +9,9 @@ services:
             $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
             $showroomHelper: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'
             $componentContextResolverFactory: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentContextResolverFactory'
+            $componentParametersFormFactory: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParametersFormFactory'
             $twig: '@twig'
+            $router: '@router.default'
         calls:
             - ['setContainer', ['@service_container']]
 
@@ -61,3 +63,8 @@ services:
             $storiesFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
         tags:
             - { name: kernel.event_subscriber }
+
+    ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParametersFormFactory:
+        arguments:
+            $componentContextResolverFactory: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentContextResolverFactory'
+            $formFactory: '@form.factory'

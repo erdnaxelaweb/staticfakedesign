@@ -11,6 +11,7 @@
 import {Showroom} from "./lib/Showroom";
 import {Toolbar} from "./lib/Plugins/Showroom/Toolbar";
 import {Accessibility} from "./lib/Plugins/Showroom/Accessibility";
+import {ParametersForm} from "./lib/Plugins/Showroom/ParametersForm";
 
 // Loads the prismjs package
 require('prismjs');
@@ -33,6 +34,7 @@ loader.load(id => {
 ((global, doc) => {
   const showroom = global.showroom = new Showroom(doc)
 
+  showroom.registerPlugin(ParametersForm.name, new ParametersForm())
   showroom.registerPlugin(Toolbar.name, new Toolbar())
   showroom.registerPlugin(Accessibility.name, new Accessibility())
 

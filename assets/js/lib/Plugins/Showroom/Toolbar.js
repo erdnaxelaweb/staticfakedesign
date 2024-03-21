@@ -23,15 +23,8 @@ export class Toolbar extends Plugin {
   init(app) {
     super.init(app);
 
-    for (const breakpoint of breakpoints) {
-      app.registerCommand('breakpoint-'+breakpoint.suffix, () => {
-        app.previewIframe.width = breakpoint.previewSize;
-      })
-    }
-
-    app.registerCommand('preview-reload', () => {
-      app.previewIframe.src = app.previewIframe.src;
-    })
+    this.#registerBreakpoints(app)
+    this.#registerReload(app)
 
     const button = document.querySelectorAll(SELECTOR_DATA_EXEC)
     button.forEach(btn => {
@@ -57,6 +50,45 @@ export class Toolbar extends Plugin {
         app.getPreview().executeCommand(target.dataset.showroomPreviewExec)
       })
     })
+  }
+
+  #registerReload(app) {
+    const reloadPreview = () => {
+      app.previewIframe.contentWindow.location.reload(true)
+    }
+
+    window.addEventListener("keydown", (e)=> {
+      e = e || window.event;
+      if (e.ctrlKey) {
+        var c = e.which || e.keyCode;
+        if (c === 82) {
+          e.preventDefault();
+          e.stopPropagation();
+          reloadPreview()
+        }
+      }
+    });
+
+    app.registerCommand('preview-reload', () => {
+      reloadPreview()
+    })
+  }
+
+  #registerBreakpoints(app) {
+    const switchBreakpoint = (breakpoint) => {
+      app.previewIframe.width = breakpoint.previewSize;
+      app.setState('breakpoint', breakpoint.suffix)
+    }
+
+    const activeBreakpoint = app.getState('breakpoint')
+    for (const breakpoint of breakpoints) {
+      app.registerCommand('breakpoint-'+breakpoint.suffix, () => {
+        switchBreakpoint(breakpoint)
+      })
+      if(activeBreakpoint === breakpoint.suffix) {
+        switchBreakpoint(breakpoint)
+      }
+    }
   }
 }
 

@@ -1,8 +1,14 @@
-{# @var component \ErdnaxelaWeb\StaticFakeDesign\Showroom\Component #}
+{# @var component \ErdnaxelaWeb\StaticFakeDesign\Value\Component #}
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <h1 class="mb-0">{{ component.name }}</h1>
+            <pre>
+                <code class="lang-twig">
+                    &#123;&#123; display_component('{{ templateName }}', {{ component.parameters|json_encode }}) &#125;&#125;
+                </code>
+            </pre>
+
             <p>{{ component.description|raw }}</p>
         </div>
     </div>

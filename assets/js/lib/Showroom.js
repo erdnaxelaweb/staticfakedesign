@@ -28,6 +28,13 @@ export class Showroom extends App {
   }
 
   /**
+   * @param {URL} url
+   */
+  setPreviewUrl(url) {
+    this.previewIframe.src = url;
+  }
+
+  /**
    *
    * @returns {ShowroomPreview}
    */
