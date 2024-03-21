@@ -1,6 +1,6 @@
 showroom_home:
     path: /showroom
-    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController::view
+    controller: ErdnaxelaWeb\StaticFakeDesignBundle\Controller\Showroom\ComponentController::viewHome
 
 showroom_component:
     path: /showroom/component/{path}

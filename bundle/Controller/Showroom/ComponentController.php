@@ -34,6 +34,11 @@ class ComponentController extends AbstractController
     ) {
     }
 
+    public function viewHome(): Response
+    {
+        return $this->render('@StaticFakeDesign/showroom/component-home.html.twig', []);
+    }
+
     public function view(string $path = null): Response
     {
         $component = $path ? $this->componentFinder->getComponentFromPath($path) : null;
