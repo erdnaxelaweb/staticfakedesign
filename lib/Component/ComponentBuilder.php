@@ -24,18 +24,23 @@ class ComponentBuilder
     ) {
     }
 
+    protected function instanciate(array $componentArgs): Component
+    {
+        return new Component(...$componentArgs);
+    }
+
     public function fromArray(array $rawParameters, Template $template): Component
     {
         $optionsResolver = new OptionsResolver();
-        $this->configureComponentOptions($optionsResolver);
+        $this->configureComponentOptions($optionsResolver, $template);
 
         $componentArgs = $optionsResolver->resolve($rawParameters);
         $componentArgs['template'] = $template;
 
-        return new Component(...$componentArgs);
+        return $this->instanciate($componentArgs);
     }
 
-    protected function configureComponentOptions(OptionsResolver $optionsResolver): void
+    protected function configureComponentOptions(OptionsResolver $optionsResolver, Template $template): void
     {
         $optionsResolver->define('name')
             ->required()
@@ -48,6 +53,16 @@ class ComponentBuilder
         $optionsResolver->define('specifications')
             ->default('')
             ->allowedTypes('string');
+
+        $optionsResolver->define('type')
+            ->default(function (Options $options) use ($template) {
+                if (preg_match('#content/([^/]+)/#', $template->getTemplateName())) {
+                    return 'content';
+                }
+                return 'default';
+            })
+            ->allowedTypes('string')
+            ->allowedValues('default', 'content');
 
         $optionsResolver->define('parameters')
             ->default([])

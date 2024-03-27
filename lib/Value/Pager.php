@@ -16,17 +16,20 @@ use Symfony\Component\Form\FormView;
 
 class Pager extends Pagerfanta
 {
-    public function __construct( PagerAdapter $adapter )
+    public function __construct(PagerAdapter $adapter)
     {
-        parent::__construct( $adapter );
+        parent::__construct($adapter);
     }
 
-    public function getActiveFilters(  ): array
+    public function getActiveFilters(): array
     {
-        return $this->getAdapter()->getActiveFilters();
+        return $this->getAdapter()
+            ->getActiveFilters();
     }
-    public function getFilters(  ): FormView
+
+    public function getFilters(): FormView
     {
-        return $this->getAdapter()->getFilters();
+        return $this->getAdapter()
+            ->getFilters();
     }
 }

@@ -21,6 +21,7 @@ class Component
     public function __construct(
         protected readonly Template $template,
         protected readonly string $name,
+        protected readonly string $type = 'default',
         protected readonly string $description = '',
         protected readonly string $specifications = '',
         protected readonly array $parameters = []
@@ -45,5 +46,16 @@ class Component
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getTemplateName(): string
+    {
+        return $this->getTemplate()
+            ->getTemplateName();
     }
 }

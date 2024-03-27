@@ -5,7 +5,8 @@
             <h1 class="mb-0">{{ component.name }}</h1>
             <pre>
                 <code class="lang-twig">
-                    &#123;&#123; display_component('{{ templateName }}', {{ component.parameters|json_encode }}) &#125;&#125;
+                    {% set displayFunction = component.type == 'content' ? 'display_content' : 'display_component' %}
+                    &#123;&#123; {{ displayFunction }}('{{ templateName }}', {{ component.parameters|json_encode }}) &#125;&#125;
                 </code>
             </pre>
 

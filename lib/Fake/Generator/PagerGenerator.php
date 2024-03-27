@@ -18,7 +18,6 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
-use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PagerGenerator extends AbstractGenerator
