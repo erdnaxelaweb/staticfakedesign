@@ -16,6 +16,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,7 +46,7 @@ class PagerGenerator extends AbstractGenerator
             ->allowedTypes('int', 'null');
     }
 
-    public function __invoke(string $type, ?int $pagesCount = null): Pagerfanta
+    public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
         $configuration = $this->pagerConfigurationManager->getConfiguration($type);
         $sorts = $configuration['sorts'];
@@ -77,7 +78,7 @@ class PagerGenerator extends AbstractGenerator
                 ];
             }
         );
-        $pager = new Pagerfanta($adapter);
+        $pager = new Pager($adapter);
         $pager->setMaxPerPage($maxPerPage);
 
         return $pager;
