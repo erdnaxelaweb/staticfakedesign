@@ -50,8 +50,7 @@ class ComponentController extends AbstractController
             'path' => $path,
             'previewUrl' => $previewUrl,
             'component' => $component,
-            'templateName' => $component->getTemplate()
-                ->getTemplateName(),
+            'templateName' => $component->getTemplateName(),
             'parametersForm' => $parametersForm->createView(),
         ]);
     }
