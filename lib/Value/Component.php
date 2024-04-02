@@ -17,6 +17,7 @@ class Component
 {
     /**
      * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[] $parameters
+     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[] $properties
      */
     public function __construct(
         protected readonly Template $template,
@@ -24,6 +25,7 @@ class Component
         protected readonly string $type = 'default',
         protected readonly string $description = '',
         protected readonly string $specifications = '',
+        protected readonly array $properties = [],
         protected readonly array $parameters = []
     ) {
     }
@@ -43,9 +45,20 @@ class Component
         return $this->description;
     }
 
+    /**
+     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[]
+     */
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[]
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 
     public function getType(): string

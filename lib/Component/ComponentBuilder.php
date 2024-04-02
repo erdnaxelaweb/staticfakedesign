@@ -64,36 +64,43 @@ class ComponentBuilder
             ->allowedTypes('string')
             ->allowedValues('default', 'content');
 
+        $parametersNormalizer = function (Options $options, $parameters) {
+            foreach ($parameters as $parameterName => $parameterOptions) {
+                if (is_string($parameterOptions)) {
+                    $parameterOptions = [
+                        'type' => $parameterOptions,
+                    ];
+                }
+
+                $parameterOptionsResolver = new OptionsResolver();
+                $this->configureComponentParameterOptionOptions($parameterOptionsResolver);
+                $parameterOptions = $parameterOptionsResolver->resolve($parameterOptions);
+
+                $parameterOptions['type'] = $this->componentParameterTypeParser->fromString(
+                    $parameterOptions['type']
+                );
+
+                $parameters[$parameterName] = new ComponentParameter(
+                    $parameterName,
+                    $parameterOptions['label'],
+                    $parameterOptions['required'],
+                    $parameterOptions['type'],
+                    array_key_exists('default', $parameterOptions),
+                    $parameterOptions['default'] ?? null
+                );
+            }
+            return $parameters;
+        };
+
         $optionsResolver->define('parameters')
             ->default([])
             ->allowedTypes('array')
-            ->normalize(function (Options $options, $parameters) {
-                foreach ($parameters as $parameterName => $parameterOptions) {
-                    if (is_string($parameterOptions)) {
-                        $parameterOptions = [
-                            'type' => $parameterOptions,
-                        ];
-                    }
+            ->normalize($parametersNormalizer);
 
-                    $parameterOptionsResolver = new OptionsResolver();
-                    $this->configureComponentParameterOptionOptions($parameterOptionsResolver);
-                    $parameterOptions = $parameterOptionsResolver->resolve($parameterOptions);
-
-                    $parameterOptions['type'] = $this->componentParameterTypeParser->fromString(
-                        $parameterOptions['type']
-                    );
-
-                    $parameters[$parameterName] = new ComponentParameter(
-                        $parameterName,
-                        $parameterOptions['label'],
-                        $parameterOptions['required'],
-                        $parameterOptions['type'],
-                        array_key_exists('default', $parameterOptions),
-                        $parameterOptions['default'] ?? null
-                    );
-                }
-                return $parameters;
-            });
+        $optionsResolver->define('properties')
+            ->default([])
+            ->allowedTypes('array')
+            ->normalize($parametersNormalizer);
     }
 
     protected function configureComponentParameterOptionOptions(OptionsResolver $optionsResolver): void

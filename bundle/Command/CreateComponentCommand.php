@@ -45,6 +45,8 @@ class CreateComponentCommand extends Command
     name: '%s',
     description: '',
     specifications: '',
+    properties: {
+    },
     parameters: {
     }
 } %%}

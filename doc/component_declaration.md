@@ -9,19 +9,24 @@ You can then use the "showroom" to view each declared components.
     name: 'Component name',
     specifications: 'Optionnal link to the component specification',
     description: 'Optionnal component description',
+    properties: [],
     parameters: []
 } %}
 ```
 
-## Component parameters
+## Component parameters/properties
 
-It's possible to add parameters to a component.
+It's possible to add parameters/properties to a component.
 
 When displayed in the "showroom", you will be able to see the differents parameters for the component and even interact with them (depending on the parameter type).
-A value (random or default value) will also be generated for each required parameters.
- 
-There is two way to declare a component parameter :
+A value (random or default value) will also be generated for each required parameters and each properties (required or not).
+
+There is two way to declare a component parameter/property :
 ```twig
+    properties: {
+        <identifier>: '<value type>'
+        title: 'sentence'
+    },
     parameters: {
         <identifier>: '<value type>'
         title: 'sentence'
@@ -29,7 +34,7 @@ There is two way to declare a component parameter :
 ```
 
 ```twig
-    parameters: {
+    properties: {
         <identifier>: {
             label: 'Optionnal parameter label',
             type: '<value type>',
@@ -43,6 +48,16 @@ There is two way to declare a component parameter :
             required: 'false',
             default: true
         },
+    },
+    parameters: {
+        <identifier>: {
+            label: 'Optionnal parameter label',
+            type: '<value type>',
+            required: <true|false>,
+            default: '<default value>'
+        }
+        
+        ...
     }
 ```
 
