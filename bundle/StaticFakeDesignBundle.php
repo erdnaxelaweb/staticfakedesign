@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesignBundle;
 
+use ErdnaxelaWeb\StaticFakeDesignBundle\DependencyInjection\CompilerPass\BlockFieldGeneratorPass;
 use ErdnaxelaWeb\StaticFakeDesignBundle\DependencyInjection\CompilerPass\ChainGeneratorPass;
 use ErdnaxelaWeb\StaticFakeDesignBundle\DependencyInjection\CompilerPass\ContentFieldGeneratorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,6 +26,7 @@ class StaticFakeDesignBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new ContentFieldGeneratorPass());
+        $container->addCompilerPass(new BlockFieldGeneratorPass());
         $container->addCompilerPass(new ChainGeneratorPass());
     }
 }

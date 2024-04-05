@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use DateTime;
+use Symfony\Component\VarExporter\LazyGhostTrait;
 
-class Block extends AbstractContent
+class Block
 {
+    use LazyGhostTrait;
+
     public function __construct(
-        int                     $id,
-        string                  $name,
-        string                  $type,
+        public readonly int                     $id,
+        public readonly string                  $name,
+        public readonly string                  $type,
         public readonly string  $view,
-        DateTime                $creationDate,
-        DateTime                $modificationDate,
-        ContentFieldsCollection $fields
+        public readonly BlockAttributesCollection $attributes
     ) {
-        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }
 }

@@ -15,6 +15,7 @@ parameters:
 
     erdnaxelaweb.static_fake_design.image.variations: []
     erdnaxelaweb.static_fake_design.block_definition: []
+    erdnaxelaweb.static_fake_design.block_layout_definition: []
     erdnaxelaweb.static_fake_design.content_definition: []
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
     erdnaxelaweb.static_fake_design.pager_definition: []
@@ -32,6 +33,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Renderer:
         arguments:
             $renderTemplate: '%erdnaxelaweb.static_fake_design.display_functions_render_template%'
+            $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
 
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Extension:
         arguments:
@@ -54,17 +56,25 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager:
         lazy: true
         arguments:
+            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
             $definitions: '%erdnaxelaweb.static_fake_design.content_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager:
         lazy: true
         arguments:
+            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
             $definitions: '%erdnaxelaweb.static_fake_design.taxonomy_entry_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager:
         lazy: true
         arguments:
+            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.block_field_registry'
             $definitions: '%erdnaxelaweb.static_fake_design.block_definition%'
+
+    ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager:
+        lazy: true
+        arguments:
+            $definitions: '%erdnaxelaweb.static_fake_design.block_layout_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager:
         lazy: true

@@ -30,3 +30,9 @@
     {% set template = template|replace({'%type%': content.type}) %}
     {% include template with {content: content}|merge(parameters|default({})) only %}
 {% endblock %}
+
+
+{% block display_block %}
+    {# @var content \ErdnaxelaWeb\StaticFakeDesign\Value\Content #}
+    {% include template with {block: block} only %}
+{% endblock %}

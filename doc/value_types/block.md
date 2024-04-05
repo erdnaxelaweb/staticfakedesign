@@ -1,79 +1,58 @@
 # Content
 
-Generate an instance of `\ErdnaxelaWeb\StaticFakeDesign\Value\Content` composed of the following properties :
+Generate an instance of `\ErdnaxelaWeb\StaticFakeDesign\Value\Block` composed of the following properties :
 
 - id (int)
 - name (string)
 - type (string)
-- creationDate (DateTime)
-- modificationDate (DateTime)
-- fields (array)
-- url (string)
-- breadcrumb ([\ErdnaxelaWeb\StaticFakeDesign\Value\Breadcrumb](breadcrumb.md))
+- view (string)
+- attributes (array)
 
 ## Parameters
 - type (string|string[])
+- view (string|null)
 
 When an array is passed in the `type` parameter, a random value within the array will be selected
 
 ## Examples
 ```twig
-content({"type": "article"})
-content("article")
-content({"type": ["article", "press_release"]})
-content(["article", "press_release"])
+block({"type": "article", "view": "default"})
+block("article", "default")
+block({"type": ["article", "press_release"], "view": "default"})
+block(["article", "press_release"], "default")
 ```
 
-# Content definition
+# Block definition
 
-To generate a content, the following parameter need to be defined :
+To generate a block, the following parameter need to be defined :
 
 ```yaml
-erdnaxelaweb.static_fake_design.content_definition:
-    <content type>:
+erdnaxelaweb.static_fake_design.block_definition:
+    <block type>:
         models: []
-        fields:
-            <field identifier>:
+        views:
+            <view identifier>: <template path>
+        attributes:
+            <attribute identifier>:
                 required: <true|false>
                 type: <field type>
                 value: <optional forced value>
                 options: []
 ```
-
 ##  List of available fields types and theirs options
-- blocks - [see here](block.md)
-    - layout
-    - allowedTypes (array of blocks types to generate)
 - boolean
 - content
     - type : type of content - [see here](content.md)
     - max : optional (default 1) - max number of contents to generate
-- date
-- datetime
-- email
-- file
-- float
-    - min : optional
-    - max : optional
-- form
-    - fields : optional (default all) - array of field type that compose the form
-- image
 - integer
     - min : optional
     - max : optional
-- location
-- matrix
-    - columns : list of columns identifier to compose the matrix
-    - minimumRows : optional (default 1)
 - richtext
 - selection
     - options : list of options to select from
     - isMultiple : optional (default false) - if multiple selection can be selected
 - string
     - maxLength: optional (default 255)
-- taxonomy_entry
-    - type : type of taxonomy entry - [see here](taxonomy_entry.md)
-    - max : max number of entries to generate
 - text
     - max : optional (default 10) - max number of paragraphes to generate
 - time
@@ -88,7 +67,7 @@ When generating a content, a random provided model will be used to determine the
 
 Example :
 ```yaml
-erdnaxelaweb.static_fake_design.content_definition:
+erdnaxelaweb.static_fake_design.block_definition:
     element:
         models:
             -
@@ -103,7 +82,7 @@ erdnaxelaweb.static_fake_design.content_definition:
             -
                 name: 'Earth'
                 logo: 'earth_icon'
-        fields:
+        attributes:
             name:
                 required: true
                 type: string
@@ -113,4 +92,16 @@ erdnaxelaweb.static_fake_design.content_definition:
             description:
                 required: true
                 type: text
+```
+
+# Layout definition
+
+To use the content "blocks" field type you also need to define the following parameter :
+
+```yaml
+erdnaxelaweb.static_fake_design.block_layout_definition:
+    <layout identifier>:
+        template: <template path>
+        zones:
+            - <zone identifier>
 ```

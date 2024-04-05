@@ -39,74 +39,43 @@ erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
 ```
 
 ##  List of available fields types and theirs options
-<ul>
-    <li>blocks
-        <ul>
-            <li>allowedTypes (array of blocks types to generate - see <a href="/static/examples/block">here</a>)
-            </li>
-        </ul>
-    </li>
-    <li>boolean</li>
-    <li>content
-        <ul>
-            <li>type : type of content - see <a href="/static/examples/content">here</a></li>
-            <li>max : optional (default 1) - max number of contents to generate</li>
-        </ul>
-    </li>
-    <li>date</li>
-    <li>datetime</li>
-    <li>email</li>
-    <li>file</li>
-    <li>float
-        <ul>
-            <li>min : optional</li>
-            <li>max : optional</li>
-        </ul>
-    </li>
-    <li>form
-        <ul>
-            <li>fields : optional (default all) - array of field type that compose the form</li>
-        </ul>
-    </li>
-    <li>image</li>
-    <li>integer
-        <ul>
-            <li>min : optional</li>
-            <li>max : optional</li>
-        </ul>
-    </li>
-    <li>location</li>
-    <li>matrix
-        <ul>
-            <li>columns : list of columns identifier to compose the matrix</li>
-            <li>minimumRows : optional (default 1)</li>
-        </ul>
-    </li>
-    <li>richtext</li>
-    <li>selection
-        <ul>
-            <li>options : list of options to select from</li>
-            <li>isMultiple : optional (default false) - if multiple selection can be selected</li>
-        </ul>
-    </li>
-    <li>string
-        <ul>
-            <li>maxLength: optional (default 255)</li>
-        </ul>
-    </li>
-    <li>taxonomy_entry
-        <ul>
-            <li>type : type of taxonomy entry - see <a href="/static/examples/taxonomy-entry">here</a></li>
-            <li>max : max number of entries to generate</li>
-        </ul>
-    </li>
-    <li>text
-        <ul>
-            <li>max : optional (default 10) - max number of paragraphes to generate</li>
-        </ul>
-    </li>
-    <li>time</li>
-</ul>
+- blocks - [see here](block.md)
+    - layout
+    - allowedTypes (array of blocks types to generate)
+- boolean
+- content
+    - type : type of content - [see here](content.md)
+    - max : optional (default 1) - max number of contents to generate
+- date
+- datetime
+- email
+- file
+- float
+    - min : optional
+    - max : optional
+- form
+    - fields : optional (default all) - array of field type that compose the form
+- image
+- integer
+    - min : optional
+    - max : optional
+- location
+- matrix
+    - columns : list of columns identifier to compose the matrix
+    - minimumRows : optional (default 1)
+- richtext
+- selection
+    - options : list of options to select from
+    - isMultiple : optional (default false) - if multiple selection can be selected
+- string
+    - maxLength: optional (default 255)
+- taxonomy_entry
+    - type : type of taxonomy entry - [see here](taxonomy_entry.md)
+    - max : max number of entries to generate
+- text
+    - max : optional (default 10) - max number of paragraphes to generate
+- time
+- url
 
 ## Models
 

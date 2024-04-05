@@ -11,6 +11,8 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use Knp\Menu\ItemInterface;
 use Twig\Environment;
 use Twig\TwigFunction;
@@ -19,6 +21,7 @@ class Renderer
 {
     public function __construct(
         protected string $renderTemplate,
+        protected BlockConfigurationManager $blockConfigurationManager
     ) {
     }
 
@@ -29,6 +32,7 @@ class Renderer
             'display_menu_item' => [$this, 'displayMenuItem'],
             'display_active_filter' => [$this, 'displayActiveFilter'],
             'display_content' => [$this, 'displayContent'],
+            'display_block' => [$this, 'displayBlock'],
         ];
     }
 
@@ -91,6 +95,20 @@ class Renderer
             'template' => $template,
             'parameters' => $parameters,
             'controllerAction' => $controllerAction,
+        ]);
+    }
+
+    public function displayBlock(Environment $environment, $block, bool $isEsi = true): string
+    {
+        $template = null;
+        if ($block instanceof Block) {
+            $blockConfiguration = $this->blockConfigurationManager->getConfiguration($block->type);
+            $template = $blockConfiguration['views'][$block->view];
+        }
+        return $this->render($environment, 'display_block', [
+            'template' => $template,
+            'block' => $block,
+            'isEsi' => $isEsi,
         ]);
     }
 

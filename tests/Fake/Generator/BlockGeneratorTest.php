@@ -39,13 +39,13 @@ class BlockGeneratorTest extends TestCase
         $block = $generator('list');
         self::assertInstanceOf(Block::class, $block);
         self::assertNotNull($block->name);
-        self::assertNotEmpty($block->fields);
+        self::assertNotEmpty($block->attributes);
         self::assertNotEmpty('default', $block->view);
 
         $block = $generator('list', 'headline');
         self::assertInstanceOf(Block::class, $block);
         self::assertNotNull($block->name);
-        self::assertNotEmpty($block->fields);
+        self::assertNotEmpty($block->attributes);
         self::assertNotEmpty('headline', $block->view);
     }
 }
