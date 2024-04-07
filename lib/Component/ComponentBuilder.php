@@ -56,13 +56,16 @@ class ComponentBuilder
 
         $optionsResolver->define('type')
             ->default(function (Options $options) use ($template) {
+                if (preg_match('#landing_page/block/#', $template->getTemplateName())) {
+                    return 'block';
+                }
                 if (preg_match('#content/([^/]+)/#', $template->getTemplateName())) {
                     return 'content';
                 }
                 return 'default';
             })
             ->allowedTypes('string')
-            ->allowedValues('default', 'content');
+            ->allowedValues('default', 'content', 'block');
 
         $parametersNormalizer = function (Options $options, $parameters) {
             foreach ($parameters as $parameterName => $parameterOptions) {

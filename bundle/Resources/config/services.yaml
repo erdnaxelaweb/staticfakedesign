@@ -56,19 +56,19 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager:
         lazy: true
         arguments:
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
             $definitions: '%erdnaxelaweb.static_fake_design.content_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager:
         lazy: true
         arguments:
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
             $definitions: '%erdnaxelaweb.static_fake_design.taxonomy_entry_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager:
         lazy: true
         arguments:
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.block_field_registry'
+            $attributeGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry'
             $definitions: '%erdnaxelaweb.static_fake_design.block_definition%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager:

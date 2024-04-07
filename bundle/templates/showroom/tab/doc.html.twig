@@ -5,8 +5,16 @@
             <h1 class="mb-0">{{ component.name }}</h1>
             <pre>
                 <code class="lang-twig">
-                    {% set displayFunction = component.type == 'content' ? 'display_content' : 'display_component' %}
-                    &#123;&#123; {{ displayFunction }}('{{ templateName }}', {{ component.parameters|json_encode }}) &#125;&#125;
+                    {% if component.type == 'block' %}
+                        &#123;&#123; display_block(&lt;block&gt;, &lt;is ESI&gt;) &#125;&#125;
+                        &#123;&#123; display_block(block) &#125;&#125;
+                    {% elseif component.type == 'content' %}
+                        &#123;&#123; display_content(&lt;template name&gt;, &lt;content&gt;, &lt;parameters&gt;, &lt;is ESI&gt;, &lt;view type&gt;) &#125;&#125;
+                        &#123;&#123; display_content('{{ templateName }}', content, {{ component.parameters|json_encode }}) &#125;&#125;
+                    {% else %}
+                        &#123;&#123; display_component(&lt;template name&gt;, &lt;parameters&gt;, &lt;controller action&gt;, &lt;is ESI&gt;) &#125;&#125;
+                        &#123;&#123; display_component('{{ templateName }}', {{ component.parameters|json_encode }}) &#125;&#125;
+                    {% endif %}
                 </code>
             </pre>
 

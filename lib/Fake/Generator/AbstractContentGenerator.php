@@ -29,16 +29,11 @@ abstract class AbstractContentGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    protected function getCollection(): FieldsCollection
-    {
-        return new ContentFieldsCollection();
-    }
-
     protected function generateFieldsValue(array $fieldsDefinition, array $models = []): FieldsCollection
     {
         $model = $this->fakerGenerator->randomElement($models);
 
-        $fieldsValue = $this->getCollection();
+        $fieldsValue = new ContentFieldsCollection();
         foreach ($fieldsDefinition as $fieldIdentifier => $fieldDefinition) {
             $fieldValue = $fieldDefinition['value'] ?? ($model[$fieldIdentifier] ?? null);
             $required = $fieldDefinition['required'] ?? false;

@@ -13,11 +13,7 @@ services:
         resource: '../../../lib/Fake/ContentGenerator/**'
         lazy: true
 
-    erdnaxelaweb.static_fake_design.generator.content_field_registry:
-        class: ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry
-
-    erdnaxelaweb.static_fake_design.generator.block_field_registry:
-        class: ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry:
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\BlocksFieldGenerator:
         lazy: true
@@ -28,13 +24,11 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'boolean'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'boolean'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ContentFieldGenerator:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'content'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'content'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\DateFieldGenerator:
         lazy: true
@@ -70,7 +64,6 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'integer'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'integer'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\LocationFieldGenerator:
         lazy: true
@@ -86,24 +79,16 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'richtext'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'richtext'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\SelectionFieldGenerator:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'selection'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'selection'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\StringFieldGenerator:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'string'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'string'}
-
-    erdnaxelaweb.static_fake_design.generator.block_field.url:
-        class: ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\StringFieldGenerator
-        tags:
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'url'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\TaxonomyEntryFieldGenerator:
         lazy: true
@@ -114,7 +99,6 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'text'}
-            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'text'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\TimeFieldGenerator:
         lazy: true

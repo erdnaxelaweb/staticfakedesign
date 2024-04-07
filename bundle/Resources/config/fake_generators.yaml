@@ -36,7 +36,7 @@ services:
         arguments:
             $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.block_field_registry'
+            $attributeGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'block'}
 
@@ -54,7 +54,7 @@ services:
             $breadcrumbGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator'
             $contentConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'content'}
 
@@ -131,7 +131,7 @@ services:
         lazy: true
         arguments:
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
-            $fieldGeneratorRegistry: '@erdnaxelaweb.static_fake_design.generator.content_field_registry'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
             $taxonomyEntryConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'taxonomy_entry'}

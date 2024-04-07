@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Configuration;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +21,7 @@ class BlockConfigurationManager extends AbstractConfigurationManager
 {
     public function __construct(
         array                                   $definitions,
-        protected FieldGeneratorRegistry $fieldGeneratorRegistry
+        protected AttributeGeneratorRegistry $attributeGeneratorRegistry
     ) {
         parent::__construct($definitions);
     }
@@ -46,8 +46,8 @@ class BlockConfigurationManager extends AbstractConfigurationManager
             ->default([])
             ->normalize(function (Options $options, $fieldDefinitionOptions) {
                 $optionsResolver = new OptionsResolver();
-                $fieldGenerator = $this->fieldGeneratorRegistry->getGenerator($options['type']);
-                $fieldGenerator->configureOptions($optionsResolver);
+                $attributeGenerator = $this->attributeGeneratorRegistry->getGenerator($options['type']);
+                $attributeGenerator->configureOptions($optionsResolver);
                 return $this->resolveOptions($options['type'], $optionsResolver, $fieldDefinitionOptions);
             })
             ->allowedTypes('array')

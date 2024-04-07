@@ -30,6 +30,7 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
         $loader->load('fake_generators.yaml');
         $loader->load('fake_form_generators.yml');
         $loader->load('fake_content_field_generator.yaml');
+        $loader->load('fake_block_attribute_generator.yaml');
     }
 
     public function prepend(ContainerBuilder $container): void

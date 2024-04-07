@@ -72,9 +72,13 @@ class Renderer
         string      $template,
         $content,
         array       $parameters = [],
-        ?string     $viewType = null,
-        bool $isEsi = false
+        bool $isEsi = false,
+        ?string     $viewType = null
     ): string {
+        if (! $viewType && preg_match('#content/([^/]+)/#', $template, $matches)) {
+            $viewType = $matches[1];
+        }
+
         return $this->render($environment, 'display_content', [
             'template' => $template,
             'content' => $content,

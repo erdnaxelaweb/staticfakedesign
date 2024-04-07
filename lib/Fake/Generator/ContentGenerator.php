@@ -24,8 +24,8 @@ class ContentGenerator extends AbstractContentGenerator
     public function __construct(
         protected ContentConfigurationManager $contentConfigurationManager,
         protected BreadcrumbGenerator         $breadcrumbGenerator,
-        FakerGenerator                        $fakerGenerator,
         FieldGeneratorRegistry                $fieldGeneratorRegistry,
+        FakerGenerator                        $fakerGenerator,
     ) {
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
