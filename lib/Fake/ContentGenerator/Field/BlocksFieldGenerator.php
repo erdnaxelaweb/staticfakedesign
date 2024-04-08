@@ -51,7 +51,8 @@ class BlocksFieldGenerator extends AbstractFieldGenerator
             ];
             for ($i = 0; $i < $count; $i++) {
                 $type = $this->fakerGenerator->randomElement($allowedTypes);
-                $zones[$zone]['blocks'][] = ($this->blockGenerator)($type);
+                [$blockType, $blockView] = explode('/', $type) + [null, null];
+                $zones[$zone]['blocks'][] = ($this->blockGenerator)($blockType, $blockView);
             }
         }
 
