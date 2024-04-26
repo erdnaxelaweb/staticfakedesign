@@ -11,12 +11,13 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+use Pagerfanta\Adapter\AdapterInterface;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormView;
 
 class Pager extends Pagerfanta
 {
-    public function __construct(PagerAdapter $adapter)
+    public function __construct(AdapterInterface $adapter)
     {
         parent::__construct($adapter);
     }
