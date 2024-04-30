@@ -52,6 +52,7 @@ class PagerGenerator extends AbstractGenerator
         $filters = $configuration['filters'];
         $contentTypes = $configuration['contentTypes'];
         $maxPerPage = $configuration['maxPerPage'];
+        $headlineCount = $configuration['headlineCount'];
         $pagesCount = $pagesCount ?? rand(1, 10);
 
         $adapter = new PagerAdapter(
@@ -79,6 +80,7 @@ class PagerGenerator extends AbstractGenerator
         );
         $pager = new Pager($adapter);
         $pager->setMaxPerPage($maxPerPage);
+        $pager->setHeadlineCount($headlineCount);
 
         return $pager;
     }

@@ -7,6 +7,7 @@ Generate an instance of `\ErdnaxelaWeb\StaticFakeDesign\Value\Pager` composed of
 - maxPerPage (int)
 - currentPage (int)
 - nbResults (int)
+- getHeadlineResults ([\ErdnaxelaWeb\StaticFakeDesign\Value\Content](content.md)[])
 - currentPageResults ([\ErdnaxelaWeb\StaticFakeDesign\Value\Content](content.md)[])
 
 ## Parameters
@@ -30,6 +31,7 @@ erdnaxelaweb.static_fake_design.pager_definition:
             <filter identifier>:
                 type: <filter type>
                 options: []
+        headlineCount: <number of results in headline>
         maxPerPage: <number of results per page>
         sorts: 
             <sort identifier>:

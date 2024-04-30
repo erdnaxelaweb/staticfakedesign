@@ -51,6 +51,10 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->required()
             ->allowedTypes('int');
 
+        $optionsResolver->define('headlineCount')
+            ->default(0)
+            ->allowedTypes('int');
+
         $optionsResolver->define('filters')
             ->default([])
             ->normalize(function (Options $options, $filtersDefinitionOptions) {
