@@ -112,6 +112,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\PagerGenerator:
         lazy: true
         arguments:
+            $requestStack: '@request_stack'
             $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
