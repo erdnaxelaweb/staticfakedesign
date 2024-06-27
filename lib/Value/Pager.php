@@ -22,14 +22,14 @@ use Pagerfanta\Exception\NotIntegerException;
 use Pagerfanta\Exception\NotIntegerMaxPerPageException;
 use Pagerfanta\Exception\OutOfBoundsException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
-use Pagerfanta\Pagerfanta;
+use Pagerfanta\PagerfantaInterface;
 use Symfony\Component\Form\FormView;
 
 /**
  * @template T
  * @implements \IteratorAggregate<T>
  */
-class Pager extends Pagerfanta
+class Pager implements \Countable, \IteratorAggregate, \JsonSerializable, PagerfantaInterface
 {
     /**
      * @var AdapterInterface
@@ -137,7 +137,7 @@ class Pager extends Pagerfanta
      */
     public function setMaxPerPage($maxPerPage)
     {
-        $this->maxPerPage = $this->filterMaxPerPage($maxPerPage);
+        $this->maxPerPage = $maxPerPage === 0 ? $maxPerPage : $this->filterMaxPerPage($maxPerPage);
         $this->resetForMaxPerPageChange();
 
         return $this;
@@ -418,7 +418,11 @@ class Pager extends Pagerfanta
 
     private function calculateNbPages(): int
     {
-        return (int) ceil(($this->getNbResults() - $this->headlineCount) / $this->getMaxPerPage());
+        $maxPerPage = $this->getMaxPerPage();
+        if ($maxPerPage === 0) {
+            return 0;
+        }
+        return (int) ceil(($this->getNbResults() - $this->headlineCount) / $maxPerPage);
     }
 
     private function minimumNbPages(): int

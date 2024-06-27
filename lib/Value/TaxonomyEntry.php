@@ -9,7 +9,7 @@
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
@@ -27,8 +27,7 @@ class TaxonomyEntry extends AbstractContent
         public readonly string         $identifier,
         public readonly int            $level = 0,
         public readonly ?TaxonomyEntry $parent = null,
-    )
-    {
-        parent::__construct( $id, $name, $type, $creationDate, $modificationDate, $fields );
+    ) {
+        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }
 }

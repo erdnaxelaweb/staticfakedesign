@@ -49,7 +49,8 @@ class PagerGenerator extends AbstractGenerator
 
     public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
-        $currentPage = (int) $this->requestStack->getCurrentRequest()->query->get('page', 1);
+        $currentPage = (int) $this->requestStack->getCurrentRequest()
+            ->query->get('page', 1);
         $configuration = $this->pagerConfigurationManager->getConfiguration($type);
         $sorts = $configuration['sorts'];
         $filters = $configuration['filters'];
