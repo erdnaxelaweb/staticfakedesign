@@ -30,6 +30,9 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->required()
             ->allowedTypes('string[]');
 
+        $optionsResolver->define('excludedContentTypes')
+            ->allowedTypes('string[]');
+
         $optionsResolver->define('sorts')
             ->required()
             ->allowedTypes('array')
