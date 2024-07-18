@@ -61,7 +61,7 @@ class ImageGenerator extends AbstractGenerator
                 $this->fakerGenerator->imagePlaceholder($width * 2, $height * 2, $id) . ' 2x',
             ];
             $sources[] = new ImageSource(
-                implode(', ', $uris),
+                $uris,
                 $sourceReqs['media'],
                 $width,
                 $height,

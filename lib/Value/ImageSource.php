@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+/**
+ * @property-read string uri
+ */
 class ImageSource
 {
     public function __construct(
-        public readonly string           $uri,
+        public readonly array           $uris,
         public readonly string           $media,
         public readonly ?int             $width = null,
         public readonly ?int             $height = null,
@@ -25,6 +28,11 @@ class ImageSource
         public readonly ?string          $mimeType = null,
         public readonly ?string          $variation = null
     ) {
+    }
+
+    public function getUri(  ): string
+    {
+        return implode(', ', $this->uris);
     }
 
     public function getTagAttributes(array $attrs = []): array
@@ -37,7 +45,7 @@ class ImageSource
             $attrs['data-focus-y'] = $this->focusPoint->posY;
             $attrs['class'][] = 'enhancedimage--focused-img';
         }
-        $attrs['srcset'] = $this->uri;
+        $attrs['srcset'] = $this->getUri();
         $attrs['data-width'] = $this->width;
         $attrs['data-height'] = $this->height;
         $attrs['data-variation'] = $this->variation;
