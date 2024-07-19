@@ -74,12 +74,18 @@ class PagerGenerator extends AbstractGenerator
                 return ($this->searchFormGenerator)($filters, $sorts, $type);
             },
             function () use ($filters, $sorts) {
-                return [
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                ];
+                $count = $this->fakerGenerator->numberBetween(0,10);
+                $links = [];
+                for ($i = 0; $i < $count; ++$i) {
+                    $link = ($this->linkGenerator)();
+                    $link->setExtras([
+                                         'filter' => $this->fakerGenerator->randomElement(array_keys($filters)),
+                                         'value' => $this->fakerGenerator->word,
+                                     ]);
+                    $links[] = $link;
+                }
+
+                return $links;
             }
         );
         $pager = new Pager($adapter);
