@@ -31,7 +31,7 @@ class TextFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $max = 10): string
+    public function __invoke(int $max = 10)
     {
         $count = rand(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
