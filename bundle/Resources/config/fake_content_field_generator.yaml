@@ -114,3 +114,8 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'url'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ProductSpecificationGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'product_specification'}
