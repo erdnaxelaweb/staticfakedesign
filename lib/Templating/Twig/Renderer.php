@@ -12,6 +12,7 @@
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use Knp\Menu\ItemInterface;
 use Twig\Environment;
@@ -106,7 +107,14 @@ class Renderer
     {
         $template = null;
         if ($block instanceof Block) {
-            $blockConfiguration = $this->blockConfigurationManager->getConfiguration($block->type);
+            try
+            {
+                $blockConfiguration = $this->blockConfigurationManager->getConfiguration( $block->type );
+            }
+            catch ( ConfigurationNotFoundException $e )
+            {
+                return 'Not supported';
+            }
             $template = $blockConfiguration['views'][$block->view];
         }
         return $this->render($environment, 'display_block', [
