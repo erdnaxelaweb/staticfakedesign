@@ -61,10 +61,11 @@ class PagerConfigurationManager extends AbstractConfigurationManager
         $optionsResolver->define('filters')
             ->default([])
             ->normalize(function (Options $options, $filtersDefinitionOptions) {
-                $optionsResolver = new OptionsResolver();
-                $this->configureFilterOptions($optionsResolver);
                 $filtersDefinition = [];
                 foreach ($filtersDefinitionOptions as $fieldIdentifier => $filterDefinitionOptions) {
+                    $optionsResolver = new OptionsResolver();
+                    $this->configureFilterOptions($optionsResolver, $filterDefinitionOptions['type'] ?? '');
+
                     $filtersDefinition[$fieldIdentifier] = $this->resolveOptions(
                         $fieldIdentifier,
                         $optionsResolver,
@@ -86,7 +87,7 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->allowedTypes('string');
     }
 
-    protected function configureFilterOptions(OptionsResolver $optionsResolver): void
+    protected function configureFilterOptions(OptionsResolver $optionsResolver, string $filterType): void
     {
         $optionsResolver->define('options')
             ->default([])
