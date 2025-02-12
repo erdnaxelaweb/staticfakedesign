@@ -100,6 +100,7 @@ class Renderer
             'template' => $template,
             'parameters' => $parameters,
             'controllerAction' => $controllerAction,
+            'isEsi' => $isEsi
         ]);
     }
 
