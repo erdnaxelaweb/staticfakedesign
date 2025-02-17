@@ -13,7 +13,7 @@ services:
         resource: '../../../lib/Fake/ContentGenerator/**'
         lazy: true
 
-    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry:
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry:
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\BlocksFieldGenerator:
         lazy: true
@@ -109,3 +109,13 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'form'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\UrlFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'url'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ProductSpecificationGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'product_specification'}

@@ -1,0 +1,2 @@
+showroom:
+    resource: "@StaticFakeDesignBundle/Resources/config/routing/showroom.yaml"

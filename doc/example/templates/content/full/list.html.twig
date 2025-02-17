@@ -1,0 +1,14 @@
+{% extends 'layout_default.html.twig' %}
+
+{% component {
+    name: 'List page'
+    description: 'Template used for a list page'
+    parameters: {
+        title: 'text'
+    }
+} %}
+{% block content %}
+    <div>
+        <h1>{{ title }}</h1>
+    </div>
+{% endblock %}

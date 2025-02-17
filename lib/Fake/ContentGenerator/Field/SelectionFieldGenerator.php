@@ -38,6 +38,8 @@ class SelectionFieldGenerator extends AbstractFieldGenerator
     public function __invoke(array $options, bool $isMultiple = false): array
     {
         $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
-        return $this->fakerGenerator->randomElements($options, $count, false);
+        $selection = $this->fakerGenerator->randomElements(array_keys($options), $count, false);
+
+        return array_intersect_key($options, array_flip($selection));
     }
 }

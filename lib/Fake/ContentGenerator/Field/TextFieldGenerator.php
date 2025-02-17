@@ -31,11 +31,23 @@ class TextFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $max = 10): string
+    public function __invoke(int $max = 10)
     {
         $count = rand(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
-        return sprintf('<p>%s</p>', implode('<br/>', $paragraphes));
+        return new class (implode(PHP_EOL, $paragraphes))
+        {
+            public string $rawText;
+            public function __construct(string $text)
+            {
+                $this->rawText = $text;
+            }
+
+            public function __toString(): string
+            {
+                return sprintf('<p>%s</p>', nl2br($this->rawText));
+            }
+        };
     }
 }

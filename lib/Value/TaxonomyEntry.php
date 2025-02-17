@@ -14,23 +14,20 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use DateTime;
-use Symfony\Component\VarExporter\LazyGhostTrait;
 
-class TaxonomyEntry
+class TaxonomyEntry extends AbstractContent
 {
-    use LazyGhostTrait;
-
-    /**
-     * @param array $fields
-     */
     public function __construct(
-        public readonly int $id,
-        public readonly string $name,
-        public readonly string $type,
-        public readonly DateTime $creationDate,
-        public readonly DateTime $modificationDate,
-        public readonly ContentFieldsCollection  $fields,
-        public readonly int $level
+        int                            $id,
+        string                         $name,
+        string                         $type,
+        DateTime                       $creationDate,
+        DateTime                       $modificationDate,
+        ContentFieldsCollection        $fields,
+        public readonly string         $identifier,
+        public readonly int            $level = 0,
+        public readonly ?TaxonomyEntry $parent = null,
     ) {
+        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }
 }

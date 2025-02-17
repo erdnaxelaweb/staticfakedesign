@@ -16,13 +16,15 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
-use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PagerGenerator extends AbstractGenerator
 {
     public function __construct(
+        protected RequestStack $requestStack,
         protected ContentGenerator $contentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
         protected LinkGenerator $linkGenerator,
@@ -45,14 +47,17 @@ class PagerGenerator extends AbstractGenerator
             ->allowedTypes('int', 'null');
     }
 
-    public function __invoke(string $type, ?int $pagesCount = null): Pagerfanta
+    public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
+        $currentPage = (int) $this->requestStack->getCurrentRequest()
+            ->query->get('page', 1);
         $configuration = $this->pagerConfigurationManager->getConfiguration($type);
         $sorts = $configuration['sorts'];
         $filters = $configuration['filters'];
         $contentTypes = $configuration['contentTypes'];
         $maxPerPage = $configuration['maxPerPage'];
-        $pagesCount = $pagesCount ?? rand(1, 10);
+        $headlineCount = $configuration['headlineCount'];
+        $pagesCount = $pagesCount ?? rand($currentPage, 10);
 
         $adapter = new PagerAdapter(
             static function () use ($maxPerPage, $pagesCount) {
@@ -69,16 +74,24 @@ class PagerGenerator extends AbstractGenerator
                 return ($this->searchFormGenerator)($filters, $sorts, $type);
             },
             function () use ($filters, $sorts) {
-                return [
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                    ($this->linkGenerator)(),
-                ];
+                $count = $this->fakerGenerator->numberBetween(0,10);
+                $links = [];
+                for ($i = 0; $i < $count; ++$i) {
+                    $link = ($this->linkGenerator)();
+                    $link->setExtras([
+                                         'filter' => $this->fakerGenerator->randomElement(array_keys($filters)),
+                                         'value' => $this->fakerGenerator->word,
+                                     ]);
+                    $links[] = $link;
+                }
+
+                return $links;
             }
         );
-        $pager = new Pagerfanta($adapter);
+        $pager = new Pager($adapter);
+        $pager->setCurrentPage($currentPage);
         $pager->setMaxPerPage($maxPerPage);
+        $pager->setHeadlineCount($headlineCount);
 
         return $pager;
     }

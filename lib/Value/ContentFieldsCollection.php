@@ -13,15 +13,6 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
-class ContentFieldsCollection extends ArrayCollection
+class ContentFieldsCollection extends FieldsCollection
 {
-    public function __call(string $name, array $arguments)
-    {
-        $value = $this->get($name);
-        if (is_callable($value)) {
-            return call_user_func_array($value, $arguments);
-        }
-    }
 }

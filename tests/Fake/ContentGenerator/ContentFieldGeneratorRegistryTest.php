@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FieldGeneratorInterface;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\BlocksFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\BooleanFieldGeneratorTest;
@@ -38,10 +38,10 @@ use PHPUnit\Framework\TestCase;
 
 class ContentFieldGeneratorRegistryTest extends TestCase
 {
-    public static function getRegistry(): ContentFieldGeneratorRegistry
+    public static function getRegistry(): FieldGeneratorRegistry
     {
         return new class(function () {
-            return new ContentFieldGeneratorRegistry([
+            return new FieldGeneratorRegistry([
                 "blocks" => BlocksFieldGeneratorTest::getGenerator(),
                 "boolean" => BooleanFieldGeneratorTest::getGenerator(),
                 "content" => ContentFieldGeneratorTest::getGenerator(),
@@ -61,15 +61,15 @@ class ContentFieldGeneratorRegistryTest extends TestCase
                 "text" => TextFieldGeneratorTest::getGenerator(),
                 "time" => TimeFieldGeneratorTest::getGenerator(),
             ]);
-        }) extends ContentFieldGeneratorRegistry {
-            protected ?ContentFieldGeneratorRegistry $instance = null;
+        }) extends FieldGeneratorRegistry {
+            protected ?FieldGeneratorRegistry $instance = null;
 
             public function __construct(
                 protected $initializer
             ) {
             }
 
-            public function getInstance(): ContentFieldGeneratorRegistry
+            public function getInstance(): FieldGeneratorRegistry
             {
                 if (! $this->instance) {
                     $this->instance = ($this->initializer)();

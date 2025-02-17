@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\TaxonomyEntry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +24,7 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
     public function __construct(
         protected TaxonomyEntryConfigurationManager $taxonomyEntryConfigurationManager,
         FakerGenerator                              $fakerGenerator,
-        ContentFieldGeneratorRegistry               $fieldGeneratorRegistry
+        FieldGeneratorRegistry $fieldGeneratorRegistry
     ) {
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
@@ -50,7 +50,8 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
                 $type,
                 $this->fakerGenerator->dateTime(),
                 $this->fakerGenerator->dateTime(),
-                $this->generateFieldsValue($configuration['fields'], $configuration['models'])
+                $this->generateFieldsValue($configuration['fields'], $configuration['models']),
+                $this->fakerGenerator->word()
             );
         });
     }

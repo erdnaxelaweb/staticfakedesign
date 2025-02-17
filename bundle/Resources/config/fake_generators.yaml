@@ -9,11 +9,6 @@ parameters:
     erdnaxelaweb.static_fake_design.generator.locale: "en_US"
 
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        public: false
-
     ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator:
         factory: ['ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGeneratorFactory', 'createGenerator']
         arguments:
@@ -21,36 +16,52 @@ services:
             $imageProviderParameters: '%erdnaxelaweb.static_fake_design.generator.image.provider_parameters%'
             $locale: '%erdnaxelaweb.static_fake_design.generator.locale%'
 
-    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\:
-        resource: '../../../lib/Fake/Generator/'
-        lazy: true
+    erdnaxelaweb.static_fake_design.generator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator:
         arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $enableFakeGeneration: '%erdnaxelaweb.static_fake_design.enable_fake_generation%'
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\AudioGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $imageGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'audio'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator:
         lazy: true
+        arguments:
+            $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $attributeGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'block'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'breadcrumb'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator:
         lazy: true
+        arguments:
+            $breadcrumbGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator'
+            $contentConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'content'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\CoordinatesGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'coordinates'}
 
@@ -58,6 +69,9 @@ services:
         lazy: true
         arguments:
             $generators: !tagged_iterator { tag: 'erdnaxelaweb.static_fake_design.form.field.generator', index_by: 'type' }
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $formFactory: '@form.factory'
+            $requestStack: '@request_stack'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form'}
 
@@ -65,40 +79,69 @@ services:
         lazy: true
         arguments:
             $generators: !tagged_iterator { tag: 'erdnaxelaweb.static_fake_design.form.field.generator', index_by: 'type' }
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'form_field'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $formFactory: '@form.factory'
+            $requestStack: '@request_stack'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'search_form'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $imageConfiguration: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'image'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator:
         lazy: true
+        arguments:
+            $factory: '@knp_menu.factory'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $translator: '@translator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'link'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\PagerGenerator:
         lazy: true
+        arguments:
+            $requestStack: '@request_stack'
+            $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
+            $pagerConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager'
+            $searchFormGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'pager'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'richtext'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\TaxonomyEntryGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
+            $taxonomyEntryConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'taxonomy_entry'}
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\VideoGenerator:
         lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $imageGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator'
+            $richTextGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'video'}

@@ -1,0 +1,47 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry:
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\BooleanAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'boolean' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\ContentAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'content' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\IntegerAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'integer' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\RichTextAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'richtext' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\SelectionAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'selection' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\StringAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'string' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\TextAttributeGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'text'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\UrlAttributeGenerator:
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'url' }

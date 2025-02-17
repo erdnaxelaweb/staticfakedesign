@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,8 +24,8 @@ class ContentGenerator extends AbstractContentGenerator
     public function __construct(
         protected ContentConfigurationManager $contentConfigurationManager,
         protected BreadcrumbGenerator         $breadcrumbGenerator,
+        FieldGeneratorRegistry                $fieldGeneratorRegistry,
         FakerGenerator                        $fakerGenerator,
-        ContentFieldGeneratorRegistry         $fieldGeneratorRegistry,
     ) {
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+<head>
+    <meta charset="utf-8">
+
+    {% block meta %}{% endblock %}
+
+    {% if content is defined and title is not defined %}
+        {% set title = content.name %}
+    {% endif %}
+    <title>{{ title|default( 'Home' ) }}</title>
+
+    {% block stylesheets %}
+        {% include 'include/stylesheets.html.twig' %}
+    {% endblock %}
+    {% block head_scripts %}
+        {% include 'include/head_scripts.html.twig' %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+
+{% block footer_scripts %}
+    {% include '@include/footer_scripts.html.twig' %}
+{% endblock %}
+</body>
+</html>

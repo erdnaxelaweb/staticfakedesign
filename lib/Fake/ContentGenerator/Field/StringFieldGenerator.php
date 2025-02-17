@@ -28,11 +28,11 @@ class StringFieldGenerator extends AbstractFieldGenerator
         parent::configureOptions($optionsResolver);
 
         $optionsResolver->define('maxLength')
-            ->default(255)
+            ->default(100)
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $maxLength = 255): string
+    public function __invoke(int $maxLength = 100): string
     {
         return $this->fakerGenerator->text($maxLength);
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Configuration;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\ContentFieldGeneratorRegistry;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +21,7 @@ class ContentConfigurationManager extends AbstractConfigurationManager
 {
     public function __construct(
         array                                   $definitions,
-        protected ContentFieldGeneratorRegistry $contentFieldGeneratorRegistry
+        protected FieldGeneratorRegistry $fieldGeneratorRegistry
     ) {
         parent::__construct($definitions);
     }
@@ -46,7 +46,7 @@ class ContentConfigurationManager extends AbstractConfigurationManager
             ->default([])
             ->normalize(function (Options $options, $fieldDefinitionOptions) {
                 $optionsResolver = new OptionsResolver();
-                $fieldGenerator = $this->contentFieldGeneratorRegistry->getGenerator($options['type']);
+                $fieldGenerator = $this->fieldGeneratorRegistry->getGenerator($options['type']);
                 $fieldGenerator->configureOptions($optionsResolver);
                 return $this->resolveOptions($options['type'], $optionsResolver, $fieldDefinitionOptions);
             })

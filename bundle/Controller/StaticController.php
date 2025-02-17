@@ -35,12 +35,12 @@ class StaticController extends TemplateController
         parent::__construct($twig);
     }
 
-    public function viewAction(string $path)
+    public function viewAction(string $path): \Symfony\Component\HttpFoundation\Response
     {
         return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
     }
 
-    public function viewExamplesAction(string $path)
+    public function viewExamplesAction(string $path): \Symfony\Component\HttpFoundation\Response
     {
         $exampleParameters = Yaml::parseFile(__DIR__ . '/../Resources/config/examples.yaml');
 

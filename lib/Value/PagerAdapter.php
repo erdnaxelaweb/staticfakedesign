@@ -11,11 +11,10 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use Pagerfanta\Adapter\AdapterInterface;
 use Pagerfanta\Adapter\CallbackAdapter;
 use Symfony\Component\Form\FormView;
 
-class PagerAdapter extends CallbackAdapter implements AdapterInterface
+class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
 {
     public function __construct(
         $nbResultsCallable,

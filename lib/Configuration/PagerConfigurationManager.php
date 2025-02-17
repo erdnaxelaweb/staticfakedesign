@@ -30,6 +30,9 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->required()
             ->allowedTypes('string[]');
 
+        $optionsResolver->define('excludedContentTypes')
+            ->allowedTypes('string[]');
+
         $optionsResolver->define('sorts')
             ->default([])
             ->allowedTypes('array')
@@ -51,13 +54,18 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->required()
             ->allowedTypes('int');
 
+        $optionsResolver->define('headlineCount')
+            ->default(0)
+            ->allowedTypes('int');
+
         $optionsResolver->define('filters')
             ->default([])
             ->normalize(function (Options $options, $filtersDefinitionOptions) {
-                $optionsResolver = new OptionsResolver();
-                $this->configureFilterOptions($optionsResolver);
                 $filtersDefinition = [];
                 foreach ($filtersDefinitionOptions as $fieldIdentifier => $filterDefinitionOptions) {
+                    $optionsResolver = new OptionsResolver();
+                    $this->configureFilterOptions($optionsResolver, $filterDefinitionOptions['type'] ?? '');
+
                     $filtersDefinition[$fieldIdentifier] = $this->resolveOptions(
                         $fieldIdentifier,
                         $optionsResolver,
@@ -79,7 +87,7 @@ class PagerConfigurationManager extends AbstractConfigurationManager
             ->allowedTypes('string');
     }
 
-    protected function configureFilterOptions(OptionsResolver $optionsResolver): void
+    protected function configureFilterOptions(OptionsResolver $optionsResolver, string $filterType): void
     {
         $optionsResolver->define('options')
             ->default([])

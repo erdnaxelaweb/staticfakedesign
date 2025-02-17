@@ -1,19 +1,19 @@
 {% extends 'static/layout.html.twig' %}
 {% block content %}
-        <div class="row g-2 border-top m-2">
-            {# @fake var17 form #}
-            <div class="col-5 ">
-                <div class="border bg-light g-2 p-2">
+    <div class="row g-2 border-top m-2">
+        {# @fake var17 form #}
+        <div class="col-5 ">
+            <div class="border bg-light g-2 p-2">
                 <code class="chroma">
                     &#123;# @fake var form #&#125;<br/>
                     &#123;&#123; form(var) &#125;&#125;<br/>
                 </code>
-                    </div>
-            </div>
-            <div class="col">
-                {% form_theme var17 'bootstrap_5_layout.html.twig' %}
-                {{ form(var17) }}
             </div>
         </div>
+        <div class="col">
+            {% form_theme var17 'bootstrap_5_layout.html.twig' %}
+            {{ form(var17) }}
+        </div>
+    </div>
 {% endblock %}
 

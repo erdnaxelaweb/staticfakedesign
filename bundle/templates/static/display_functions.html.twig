@@ -1,0 +1,38 @@
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% block display_component %}
+    {% include template with parameters only %}
+{% endblock %}
+
+{% block display_menu_item %}
+    {% import _self as macros %}
+    {%- if item.uri is not empty %}
+        <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes|merge({'class': 'nav-link'})) }}>{{ item.label }}</a>
+    {%- else %}
+        <span{{ macros.attributes(item.labelAttributes|merge({'class': 'nav-link'})) }}>{{ item.label }}</span>
+    {%- endif %}
+{% endblock %}
+
+{% block display_active_filter %}
+{# @var item \Knp\Menu\ItemInterface #}
+    {% import _self as macros %}
+    <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes|merge({'class': 'btn btn-primary '})) }}>{{ item.extra('filter') }}: {{ item.label }}<span class="btn-close btn-close-white ms-3" aria-label="remove"></span></a>
+{% endblock %}
+
+{% block display_content %}
+    {# @var content \ErdnaxelaWeb\StaticFakeDesign\Value\Content #}
+    {% set template = template|replace({'%type%': content.type}) %}
+    {% include template with {content: content}|merge(parameters|default({})) only %}
+{% endblock %}
+
+
+{% block display_block %}
+    {# @var content \ErdnaxelaWeb\StaticFakeDesign\Value\Content #}
+    {% include template with {block: block} only %}
+{% endblock %}

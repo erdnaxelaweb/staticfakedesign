@@ -1,0 +1,2 @@
+globals:
+    showroom: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\ShowroomHelper'

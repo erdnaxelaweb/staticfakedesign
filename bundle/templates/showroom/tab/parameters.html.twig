@@ -1,0 +1,52 @@
+{# @var component \ErdnaxelaWeb\StaticFakeDesign\Showroom\Component #}
+{% form_theme parametersForm 'bootstrap_5_horizontal_layout.html.twig' %}
+
+<table class="table table-hover caption-top">
+    <caption>Properties</caption>
+    <thead>
+    <tr>
+        <th class="col-1">Name</th>
+        <th class="col-2">Label</th>
+        <th class="col-1">Type</th>
+        <th class="col-1">Required</th>
+        <th class="col-7"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for parameter in component.properties %}
+        <tr class="align-middle">
+            <td>{{ parameter.name }}</td>
+            <td>{{ parameter.label }}</td>
+            <td>{{ parameter.type }}</td>
+            <td>{{ (parameter.required ? 'true': 'false')|trans }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ form_start(parametersForm, {attr: {target: 'preview-canvas-iframe', action: previewUrl}}) }}
+<table class="table table-hover caption-top">
+    <caption>Parameters</caption>
+    <thead>
+        <tr>
+            <th class="col-1">Name</th>
+            <th class="col-2">Label</th>
+            <th class="col-1">Type</th>
+            <th class="col-1">Required</th>
+            <th class="col-7">Value</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for parameter in component.parameters %}
+        {% set parameterForm = attribute(parametersForm, parameter.name) ?? null %}
+        <tr class="align-middle">
+            <td>{{ parameter.name }}</td>
+            <td>{{ parameter.label }}</td>
+            <td>{{ parameter.type }}</td>
+            <td>{{ (parameter.required ? 'true': 'false')|trans }}</td>
+            <td>{{ parameterForm ? form_widget(parameterForm) }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ form_end(parametersForm) }}
