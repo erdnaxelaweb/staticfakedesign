@@ -36,8 +36,9 @@ services:
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration:
         arguments:
-            $breakpoints: '%erdnaxelaweb.static_fake_design.image.breakpoints%'
-            $variations: '%erdnaxelaweb.static_fake_design.image.variations%'
+            $configuration:
+                breakpoints: '%erdnaxelaweb.static_fake_design.image.breakpoints%'
+                variations: '%erdnaxelaweb.static_fake_design.image.variations%'
 
     ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager:
         lazy: true
