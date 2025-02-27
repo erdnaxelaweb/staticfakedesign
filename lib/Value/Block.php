@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+use DateTime;
 use Symfony\Component\VarExporter\LazyGhostTrait;
 
 class Block
@@ -24,6 +25,10 @@ class Block
         public readonly string                  $name,
         public readonly string                  $type,
         public readonly string  $view,
+        public readonly ?string $class,
+        public readonly ?string $style,
+        public readonly ?DateTime $since,
+        public readonly ?DateTime $till,
         public readonly BlockAttributesCollection $attributes
     ) {
     }

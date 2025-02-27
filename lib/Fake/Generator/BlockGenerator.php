@@ -86,6 +86,10 @@ class BlockGenerator extends AbstractGenerator
                 $this->fakerGenerator->sentence(),
                 $type,
                 $view,
+                null,
+                null,
+                null,
+                null,
                 $this->generateAttributeValue($configuration['attributes'], $configuration['models'])
             );
         });
