@@ -27,13 +27,20 @@ class ImageConfiguration
     public function __construct(array $configuration)
     {
         $optionsResolver = new OptionsResolver();
-        $optionsResolver->setDefault('breakpoints', function(OptionsResolver  $breakpointsOptionsResolver): void {
+        $optionsResolver->setDefault('breakpoints', function (OptionsResolver $breakpointsOptionsResolver): void {
             $breakpointsOptionsResolver->setPrototype(true);
-            $breakpointsOptionsResolver->define('suffix')->required()->allowedTypes('string');
-            $breakpointsOptionsResolver->define('media')->required()->allowedTypes('string');
-            $breakpointsOptionsResolver->define('use_webp')->default(true)->allowedValues(true, false, self::FORCE_WEBP);
+            $breakpointsOptionsResolver->define('suffix')
+                ->required()
+                ->allowedTypes('string');
+            $breakpointsOptionsResolver->define('media')
+                ->required()
+                ->allowedTypes('string');
+            $breakpointsOptionsResolver->define('use_webp')
+                ->default(true)
+                ->allowedValues(true, false, self::FORCE_WEBP);
         });
-        $optionsResolver->define('variations')->default( [])->allowedTypes('array');
+        $optionsResolver->define('variations')
+            ->default([])->allowedTypes('array');
 
         $configuration = $optionsResolver->resolve($configuration);
         $this->breakpoints = $configuration['breakpoints'];
@@ -65,7 +72,7 @@ class ImageConfiguration
 
         foreach ($sizes as $i => $size) {
             $breakpoint = $this->breakpoints[$i];
-            if($breakpoint['use_webp'] !== self::FORCE_WEBP) {
+            if ($breakpoint['use_webp'] !== self::FORCE_WEBP) {
                 $config[] = [
                     'suffix' => $breakpoint['suffix'],
                     'width' => $size[0],
@@ -73,9 +80,9 @@ class ImageConfiguration
                     'media' => $breakpoint['media'],
                 ];
             }
-            if(in_array($breakpoint['use_webp'], [true, self::FORCE_WEBP])) {
+            if (in_array($breakpoint['use_webp'], [true, self::FORCE_WEBP])) {
                 $config[] = [
-                    'suffix' => $breakpoint['suffix'].'_webp',
+                    'suffix' => $breakpoint['suffix'] . '_webp',
                     'width' => $size[0],
                     'height' => $size[1],
                     'media' => $breakpoint['media'],

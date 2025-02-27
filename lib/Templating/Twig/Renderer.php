@@ -100,7 +100,7 @@ class Renderer
             'template' => $template,
             'parameters' => $parameters,
             'controllerAction' => $controllerAction,
-            'isEsi' => $isEsi
+            'isEsi' => $isEsi,
         ]);
     }
 
@@ -108,12 +108,9 @@ class Renderer
     {
         $template = null;
         if ($block instanceof Block) {
-            try
-            {
-                $blockConfiguration = $this->blockConfigurationManager->getConfiguration( $block->type );
-            }
-            catch ( ConfigurationNotFoundException $e )
-            {
+            try {
+                $blockConfiguration = $this->blockConfigurationManager->getConfiguration($block->type);
+            } catch (ConfigurationNotFoundException $e) {
                 return 'Not supported';
             }
             $template = $blockConfiguration['views'][$block->view];

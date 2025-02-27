@@ -30,7 +30,7 @@ class ImageSource
     ) {
     }
 
-    public function getUri(  ): string
+    public function getUri(): string
     {
         return implode(', ', $this->uris);
     }

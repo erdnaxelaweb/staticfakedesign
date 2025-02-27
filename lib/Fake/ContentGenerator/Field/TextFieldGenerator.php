@@ -36,11 +36,12 @@ class TextFieldGenerator extends AbstractFieldGenerator
         $count = rand(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
-        return new class (implode(PHP_EOL, $paragraphes))
-        {
+        return new class(implode(PHP_EOL, $paragraphes)) {
             public string $rawText;
-            public function __construct(string $text)
-            {
+
+            public function __construct(
+                string $text
+            ) {
                 $this->rawText = $text;
             }
 
