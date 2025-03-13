@@ -45,3 +45,9 @@ services:
         lazy: true
         tags:
             - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'url' }
+
+    erdnaxelaweb.static_fake_design.generator.block_field.segment_content_map:
+        class: ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\ContentAttributeGenerator
+        lazy: true
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.generator.block_field', type: 'segment_content_map' }
