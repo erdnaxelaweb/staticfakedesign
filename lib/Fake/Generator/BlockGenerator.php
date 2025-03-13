@@ -90,6 +90,7 @@ class BlockGenerator extends AbstractGenerator
                 null,
                 null,
                 null,
+                true,
                 $this->generateAttributeValue($configuration['attributes'], $configuration['models'])
             );
         });

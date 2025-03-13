@@ -29,7 +29,8 @@ class Block
         public readonly ?string $style,
         public readonly ?DateTime $since,
         public readonly ?DateTime $till,
-        public readonly BlockAttributesCollection $attributes
+        public readonly bool     $isVisible,
+        public readonly BlockAttributesCollection $attributes,
     ) {
     }
 }
