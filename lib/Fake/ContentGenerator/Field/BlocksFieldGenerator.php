@@ -16,6 +16,8 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
+use ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlocksFieldGenerator extends AbstractFieldGenerator
@@ -45,19 +47,18 @@ class BlocksFieldGenerator extends AbstractFieldGenerator
         $zones = [];
         foreach ($layoutConfiguration['zones'] as $zone) {
             $count = $this->fakerGenerator->numberBetween(1, 10);
-            $zones[$zone] = [
-                'id' => $zone,
-                'blocks' => [],
-            ];
+            $blocks = [];
             for ($i = 0; $i < $count; $i++) {
                 $type = $this->fakerGenerator->randomElement($allowedTypes);
                 [$blockType, $blockView] = explode('/', $type) + [null, null];
-                $zones[$zone]['blocks'][] = ($this->blockGenerator)($blockType, $blockView);
+                $blocks[] = ($this->blockGenerator)($blockType, $blockView);
             }
+
+            $zones[$zone] = new LayoutZone($zone, $blocks);
         }
 
         return [
-            "layout" => $layoutConfiguration['template'],
+            "layout" => new Layout($layoutConfiguration['template'], $zones, $layoutConfiguration['sections']),
             "zones" => $zones,
         ];
     }

@@ -26,5 +26,9 @@ class BlockLayoutConfigurationManager extends AbstractConfigurationManager
         $optionsResolver->define('zones')
             ->required()
             ->allowedTypes('array');
+
+        $optionsResolver->define('sections')
+            ->default([])
+            ->allowedTypes('array');
     }
 }
