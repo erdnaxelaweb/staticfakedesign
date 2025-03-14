@@ -35,6 +35,9 @@ class ImageConfiguration
             $breakpointsOptionsResolver->define('media')
                 ->required()
                 ->allowedTypes('string');
+            $breakpointsOptionsResolver->define('previewSize')
+                ->default('100%')
+                ->allowedTypes('string');
             $breakpointsOptionsResolver->define('use_webp')
                 ->default(true)
                 ->allowedValues(true, false, self::FORCE_WEBP);
