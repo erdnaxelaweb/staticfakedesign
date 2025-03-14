@@ -15,6 +15,9 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 class Layout
 {
+    /**
+     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[]  $zones
+     */
     public function __construct(
         public readonly string $template,
         public readonly array $zones,

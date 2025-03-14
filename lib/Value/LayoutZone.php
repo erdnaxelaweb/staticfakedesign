@@ -15,6 +15,9 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 class LayoutZone
 {
+    /**
+     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\Block[] $blocks
+     */
     public function __construct(
         public readonly mixed $id,
         public readonly array $blocks = []
