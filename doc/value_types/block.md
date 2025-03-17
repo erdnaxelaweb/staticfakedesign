@@ -104,4 +104,80 @@ erdnaxelaweb.static_fake_design.block_layout_definition:
         template: <template path>
         zones:
             - <zone identifier>
+        sections:
+            <section identifier>:
+                blocks: 
+                    - <block type>
+                    - <block type>/<view type>
+                template: <section template path>
 ```
+
+The sections of a layout allow to group block together when they are following each other based on there type and view.\
+The `default` section will be used when there is no other section matched.\
+In your layout template you can then use the twig filter `group_blocks_by_section` to groups a list of blocks.
+
+## Example
+Considering the following layout :
+
+```yaml
+erdnaxelaweb.static_fake_design.block_layout_definition:
+    default:
+        template: layout/default.html.twig
+        zones:
+            - default
+        sections:
+            default:
+                blocks: []
+                template: layout/section/default.html.twig
+            slider:
+                blocks: 
+                    - article/slider
+                template: layout/section/slider.html.twig
+```
+
+And having the following array of block in our default zone :
+````twig
+[
+    article,
+    article/slider,
+    article/slider,
+    article,
+    article/slider,
+]
+````
+
+Using `layout.zones[0].blocks|group_blocks_by_section(layout)` will return the following list :
+
+````twig
+[
+    [
+        identifier: 'default',
+        template: 'layout/section/default.html.twig',
+        blocks: [
+            article
+        ],
+    ],
+    [
+        identifier: 'slider',
+        template: 'layout/section/slider.html.twig',
+        blocks: [
+            article/slider,
+            article/slider
+        ],
+    ],
+    [
+        identifier: 'default',
+        template: 'layout/section/default.html.twig',
+        blocks: [
+            article
+        ],
+    ],
+    [
+        identifier: 'slider',
+        template: 'layout/section/slider.html.twig',
+        blocks: [
+            article/slider
+        ],
+    ]
+]
+````

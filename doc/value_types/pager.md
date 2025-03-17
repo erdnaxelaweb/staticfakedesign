@@ -64,4 +64,4 @@ Below is the list of available filters type and options :
 
 ## Sort definition
 
-Anything can't be used as a sort type since it's not used as of now
+Anything can't be used as a sort type since it's not used by the static templates
