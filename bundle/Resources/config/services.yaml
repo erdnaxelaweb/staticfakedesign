@@ -43,6 +43,11 @@ services:
             $generator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
             $renderer: '@ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Renderer'
 
+    ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\BlockExtension:
+        arguments:
+            $blockLayoutConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager'
+            $requestStack: '@request_stack'
+
     ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\Loader:
         decorates: twig.loader
         arguments:

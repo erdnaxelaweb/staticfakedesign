@@ -16,11 +16,11 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
-use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class BlockExtension extends TwigExtension
+class BlockExtension extends AbstractExtension
 {
     public function __construct(
         protected BlockLayoutConfigurationManager $blockLayoutConfigurationManager,
@@ -28,16 +28,16 @@ class BlockExtension extends TwigExtension
     ) {
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
-        return [new TwigFilter('groupBlocksBySection', [$this, 'groupBlocksBySection'])];
+        return [new TwigFilter('group_blocks_by_section', [$this, 'groupBlocksBySection'])];
     }
 
     /**
      * @param \ErdnaxelaWeb\StaticFakeDesign\Value\Block[] $blocks
      * @return list<array{identifier: string, template: string, blocks: Block[]}>
      */
-    public function groupBlocksBySection(array $blocks, Layout $layout)
+    public function groupBlocksBySection(array $blocks, Layout $layout): array
     {
         $sections = [];
         /** @var array{identifier: string, template: string, blocks: Block[]}|null $currentSection */
