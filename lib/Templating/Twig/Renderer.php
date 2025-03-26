@@ -96,6 +96,7 @@ class Renderer
         ?string     $controllerAction = null,
         bool $isEsi = false
     ): string {
+        $parameters['template'] = $template;
         return $this->render($environment, 'display_component', [
             'template' => $template,
             'parameters' => $parameters,
