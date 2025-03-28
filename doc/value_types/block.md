@@ -69,6 +69,8 @@ Example :
 ```yaml
 erdnaxelaweb.static_fake_design.block_definition:
     element:
+        views:
+            default: 'block/elements/default.html.twig'
         models:
             -
                 name: 'Fire'
