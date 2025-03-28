@@ -22,7 +22,7 @@ class BreadcrumbGenerator extends AbstractGenerator
 {
     public function __construct(
         protected LinkGenerator $linkGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator          $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }

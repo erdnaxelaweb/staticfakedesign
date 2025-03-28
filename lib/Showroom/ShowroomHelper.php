@@ -13,16 +13,22 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Showroom;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
 
+/**
+ * @phpstan-import-type breakpoint from ImageConfiguration
+ */
 class ShowroomHelper
 {
     protected bool $previewActive = false;
 
     public function __construct(
         protected ImageConfiguration $imageConfiguration,
-        protected string $previewLayout,
+        protected string             $previewLayout,
     ) {
     }
 
+    /**
+     * @return array<breakpoint>
+     */
     public function getBreakpoints(): array
     {
         return $this->imageConfiguration->getBreakpoints();

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
+use Exception;
+
 class ProductSpecificationGenerator extends AbstractFieldGenerator
 {
-    public function __invoke()
+    public function __invoke(): void
     {
-        return null;
+        throw new Exception('Not implemented');
     }
 }

@@ -25,7 +25,7 @@ class ImageGenerator extends AbstractGenerator
 {
     public function __construct(
         protected ImageConfiguration $imageConfiguration,
-        FakerGenerator $fakerGenerator
+        FakerGenerator               $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
@@ -41,20 +41,18 @@ class ImageGenerator extends AbstractGenerator
             );
     }
 
-    public function __invoke(string $variationName, $id = null): Image
+    public function __invoke(string $variationName, string|int|null $id = null): Image
     {
         $variationConfig = $this->imageConfiguration->getVariationConfig($variationName);
 
         $sources = [];
         foreach ($variationConfig as $sourceReqs) {
-            $width = ! empty($sourceReqs['width']) ? $sourceReqs['width'] : $this->fakerGenerator->numberBetween(
+            $width = ! empty($sourceReqs->getWidth()) ? $sourceReqs->getWidth() : $this->fakerGenerator->numberBetween(
                 100,
                 1000
             );
-            $height = ! empty($sourceReqs['height']) ? $sourceReqs['height'] : $this->fakerGenerator->numberBetween(
-                3,
-                1000
-            );
+            $height = ! empty($sourceReqs->getHeight()) ? $sourceReqs->getHeight(
+            ) : $this->fakerGenerator->numberBetween(3, 1000);
 
             $uris = [
                 $this->fakerGenerator->imagePlaceholder($width, $height, $id),
@@ -62,13 +60,13 @@ class ImageGenerator extends AbstractGenerator
             ];
             $sources[] = new ImageSource(
                 $uris,
-                $sourceReqs['media'],
+                $sourceReqs->getMedia(),
                 $width,
                 $height,
                 null,
                 new ImageFocusPoint(0, 0),
                 null,
-                $sourceReqs['suffix']
+                $sourceReqs->getSuffix()
             );
         }
 

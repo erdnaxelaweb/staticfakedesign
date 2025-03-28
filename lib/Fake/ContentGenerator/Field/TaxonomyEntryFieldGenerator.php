@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\TaxonomyEntryGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\TaxonomyEntry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
@@ -35,7 +36,10 @@ class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(string $type, int $max = 1)
+    /**
+     * @return TaxonomyEntry[]|TaxonomyEntry
+     */
+    public function __invoke(string $type, int $max = 1): array|TaxonomyEntry
     {
         if ($max === 1) {
             return ($this->taxonomyEntryGenerator)($type);

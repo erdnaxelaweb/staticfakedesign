@@ -20,7 +20,7 @@ class ComponentFinder
 {
     public function __construct(
         protected Environment $twig,
-        protected string $baseDir
+        protected string      $baseDir
     ) {
     }
 
@@ -66,6 +66,6 @@ class ComponentFinder
     public function getComponentFromTemplate(TemplateWrapper $template): ?Component
     {
         return $template->unwrap()
-->component ?? null;
+                   ->component ?? null;
     }
 }

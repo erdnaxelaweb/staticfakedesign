@@ -6,5 +6,5 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 
 interface AttributeGeneratorInterface extends GeneratorInterface
 {
-    public function getForcedValue($value);
+    public function getForcedValue(mixed $value): mixed;
 }

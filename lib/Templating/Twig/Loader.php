@@ -39,7 +39,7 @@ class Loader implements LoaderInterface
         return $this->innerLoader->isFresh($name, $time);
     }
 
-    public function exists(string $name)
+    public function exists(string $name): bool
     {
         return $this->innerLoader->exists($name);
     }

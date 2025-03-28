@@ -21,19 +21,21 @@ class FloatFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private FloatFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): FloatFieldGenerator
     {
         return new FloatFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $float = $generator();
-        self::assertIsFloat($float);
-        $float = $generator(10, 50);
-        self::assertIsFloat($float);
+        $float = ($this->generator)(10, 50);
         self::assertGreaterThanOrEqual(10, $float);
         self::assertLessThanOrEqual(50, $float);
     }

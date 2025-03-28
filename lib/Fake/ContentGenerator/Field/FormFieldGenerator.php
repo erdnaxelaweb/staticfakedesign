@@ -33,42 +33,21 @@ class FormFieldGenerator extends AbstractFieldGenerator
                 $this->configureFieldOptions($optionsResolver);
                 $definitions = [];
                 foreach ($fieldsDefinitionOptions as $fieldName => $fieldDefinitionOptions) {
-                    $definitions[$fieldName] = $this->resolveOptions(
-                        $fieldName,
-                        $optionsResolver,
-                        $fieldDefinitionOptions
-                    );
+                    try {
+                        $definitions[$fieldName] = $optionsResolver->resolve($fieldDefinitionOptions);
+                    } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
+                        throw new InvalidOptionsException(
+                            sprintf('[%s] %s', $fieldName, $exception->getMessage()),
+                            $exception->getCode(),
+                            $exception
+                        );
+                    }
                 }
                 return $definitions;
             });
         $optionsResolver->define('name')
             ->default(null)
             ->allowedTypes('null', 'string');
-    }
-
-    protected function resolveOptions(string $identifier, OptionsResolver $optionsResolver, array $options)
-    {
-        try {
-            return $optionsResolver->resolve($options);
-        } catch (UndefinedOptionsException $exception) {
-            throw new UndefinedOptionsException(
-                sprintf('[%s] %s', $identifier, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        } catch (MissingOptionsException $exception) {
-            throw new MissingOptionsException(
-                sprintf('[%s] %s', $identifier, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        } catch (InvalidOptionsException $exception) {
-            throw new InvalidOptionsException(
-                sprintf('[%s] %s', $identifier, $exception->getMessage()),
-                $exception->getCode(),
-                $exception
-            );
-        }
     }
 
     protected function configureFieldOptions(OptionsResolver $optionsResolver): void
@@ -84,11 +63,16 @@ class FormFieldGenerator extends AbstractFieldGenerator
 
     public function __construct(
         protected FormGenerator $formGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator          $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
+    /**
+     * @param array<string, array{type: string, options: array<string, mixed>}> $fields
+     *
+     * @return \Closure(mixed|null): \Symfony\Component\Form\FormView
+     */
     public function __invoke(array $fields = [], ?string $name = null): Closure
     {
         return function ($modelData = null) use ($name, $fields) {

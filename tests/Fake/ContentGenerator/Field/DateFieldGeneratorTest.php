@@ -22,16 +22,21 @@ class DateFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private DateFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): DateFieldGenerator
     {
         return new DateFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $date = $generator();
+        $date = ($this->generator)();
         self::assertInstanceOf(DateTime::class, $date);
     }
 }

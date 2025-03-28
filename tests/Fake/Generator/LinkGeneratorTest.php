@@ -25,6 +25,13 @@ class LinkGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private LinkGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): LinkGenerator
     {
         $menuFactory = new MenuFactory();
@@ -34,14 +41,12 @@ class LinkGeneratorTest extends TestCase
         return new LinkGenerator($menuFactory, $translator, self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $link = $generator();
+        $link = ($this->generator)();
         self::assertInstanceOf(MenuItem::class, $link);
 
-        $link = $generator("_blank");
+        $link = ($this->generator)("_blank");
         self::assertInstanceOf(MenuItem::class, $link);
         self::assertEquals('_blank', $link->getLinkAttribute('target'));
     }

@@ -22,8 +22,17 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param \Faker\Generator $fakerGenerator
+     * @param array<string, mixed> $options
+     *
+     * @return array<string, mixed>
      */
+    protected function resolveOptions(array $options): array
+    {
+        $optionsResolver = new OptionsResolver();
+        $this->configureOptions($optionsResolver);
+        return $optionsResolver->resolve($options);
+    }
+
     public function __construct(
         protected FakerGenerator $fakerGenerator
     ) {

@@ -16,6 +16,9 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-import-type allowedTags from \ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator
+ */
 class RichTextFieldGenerator extends AbstractFieldGenerator
 {
     public function __construct(
@@ -36,6 +39,9 @@ class RichTextFieldGenerator extends AbstractFieldGenerator
             ->info(implode(', ', RichTextGenerator::ALLOWED_TAGS));
     }
 
+    /**
+     * @param array<allowedTags> $allowedTags
+     */
     public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
     {
         return ($this->richTextGenerator)($maxWidth, $allowedTags);

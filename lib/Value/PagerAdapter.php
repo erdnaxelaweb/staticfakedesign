@@ -16,6 +16,12 @@ use Symfony\Component\Form\FormView;
 
 class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
 {
+    /**
+     * @param callable(): int                                     $nbResultsCallable
+     * @param callable(int $offset, int $length): iterable<mixed> $sliceCallable
+     * @param callable(): FormView                                $filtersCallback
+     * @param callable(): \Knp\Menu\ItemInterface[]               $activeFiltersCallback
+     */
     public function __construct(
         $nbResultsCallable,
         $sliceCallable,
@@ -30,6 +36,9 @@ class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
         return ($this->filtersCallback)();
     }
 
+    /**
+     * @return \Knp\Menu\ItemInterface[]
+     */
     public function getActiveFilters(): array
     {
         return ($this->activeFiltersCallback)();

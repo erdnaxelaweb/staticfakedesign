@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 /**
- * @property-read string uri
+ * @property-read string $uri
  */
 class ImageSource
 {
+    /**
+     * @param array<string> $uris
+     */
     public function __construct(
-        public readonly array           $uris,
+        public readonly array            $uris,
         public readonly string           $media,
         public readonly ?int             $width = null,
         public readonly ?int             $height = null,
@@ -35,6 +38,11 @@ class ImageSource
         return implode(', ', $this->uris);
     }
 
+    /**
+     * @param array<string, mixed> $attrs
+     *
+     * @return array<string, mixed>
+     */
     public function getTagAttributes(array $attrs = []): array
     {
         $this->initiateArrayAttribute($attrs, 'srcset');
@@ -58,6 +66,9 @@ class ImageSource
         return $attrs;
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     protected function initiateArrayAttribute(array &$attributes, string $attributeName): void
     {
         if (! isset($attributes[$attributeName])) {

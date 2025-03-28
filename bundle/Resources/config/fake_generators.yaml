@@ -34,7 +34,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator:
         lazy: true
         arguments:
-            $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $attributeGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry'
         tags:
@@ -52,7 +52,7 @@ services:
         lazy: true
         arguments:
             $breadcrumbGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BreadcrumbGenerator'
-            $contentConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
         tags:
@@ -116,7 +116,7 @@ services:
             $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
-            $pagerConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
             $searchFormGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'pager'}
@@ -133,7 +133,7 @@ services:
         arguments:
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
-            $taxonomyEntryConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'taxonomy_entry'}
 

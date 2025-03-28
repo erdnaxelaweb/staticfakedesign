@@ -33,16 +33,22 @@ class FormGenerator extends AbstractGenerator
         $this->generators[$type] = $generator;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getFieldsTypes(): array
     {
         return array_keys($this->generators);
     }
 
+    /**
+     * @param iterable<GeneratorInterface> $generators
+     */
     public function __construct(
-        protected RequestStack $requestStack,
+        protected RequestStack         $requestStack,
         protected FormFactoryInterface $formFactory,
-        FakerGenerator        $fakerGenerator,
-        iterable                 $generators = []
+        FakerGenerator                 $fakerGenerator,
+        iterable                       $generators = []
     ) {
         foreach ($generators as $type => $generator) {
             $this->registerGenerator($type, $generator);
@@ -51,7 +57,10 @@ class FormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function __invoke(array $fields = [], ?string $name = null, $data = null): FormView
+    /**
+     * @param array<string, array{type: string, options: array<string, mixed>}> $fields
+     */
+    public function __invoke(array $fields = [], ?string $name = null, mixed $data = null): FormView
     {
         $formOptions = [];
 

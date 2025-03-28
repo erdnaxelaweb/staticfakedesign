@@ -11,15 +11,17 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-class ComponentParameter implements \JsonSerializable
+use JsonSerializable;
+
+class ComponentParameter implements JsonSerializable
 {
     public function __construct(
-        protected readonly string $name,
-        protected readonly string $label,
-        protected readonly bool $required,
+        protected readonly string                 $name,
+        protected readonly string                 $label,
+        protected readonly bool                   $required,
         protected readonly ComponentParameterType $type,
-        protected readonly bool $hasDefaultValue,
-        protected readonly mixed $defaultValue
+        protected readonly bool                   $hasDefaultValue,
+        protected readonly mixed                  $defaultValue
     ) {
     }
 
@@ -48,7 +50,7 @@ class ComponentParameter implements \JsonSerializable
         return $this->hasDefaultValue;
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->defaultValue;
     }

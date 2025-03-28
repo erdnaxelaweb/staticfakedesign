@@ -32,7 +32,7 @@ class Extension extends AbstractExtension
         protected FakerGenerator   $fakerGenerator,
         protected ComponentBuilder $componentBuilder,
         protected Renderer         $renderer,
-        protected ShowroomHelper                  $showroomHelper,
+        protected ShowroomHelper   $showroomHelper,
         protected string           $kernelProjectDir
     ) {
     }
@@ -52,11 +52,17 @@ class Extension extends AbstractExtension
         );
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function buildComponent(array $parameters, Template $template): Component
     {
         return $this->componentBuilder->fromArray($parameters, $template);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function setContext(array &$context, ?Component $component): void
     {
         if (! $component) {

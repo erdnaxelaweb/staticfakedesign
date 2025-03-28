@@ -24,6 +24,11 @@ class SelectionAttributeGenerator extends AbstractAttributeGenerator
             ->allowedTypes('bool');
     }
 
+    /**
+     * @param array<mixed, mixed> $options
+     *
+     * @return array<mixed, mixed>
+     */
     public function __invoke(array $options, bool $isMultiple = false): array
     {
         $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;

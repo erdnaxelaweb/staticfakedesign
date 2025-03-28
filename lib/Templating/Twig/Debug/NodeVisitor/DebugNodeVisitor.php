@@ -60,12 +60,12 @@ class DebugNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    protected function getTemplatePath(string $path)
+    protected function getTemplatePath(string $path): string
     {
         return str_replace($this->kernelProjectDir . "/", '', $path);
     }
 
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }

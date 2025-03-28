@@ -6,7 +6,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 
 abstract class AbstractAttributeGenerator extends AbstractGenerator implements AttributeGeneratorInterface
 {
-    public function getForcedValue($value)
+    public function getForcedValue(mixed $value): mixed
     {
         return $value;
     }

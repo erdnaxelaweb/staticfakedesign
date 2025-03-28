@@ -22,9 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VideoGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected ImageGenerator $imageGenerator,
+        protected ImageGenerator    $imageGenerator,
         protected RichTextGenerator $richTextGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator              $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }

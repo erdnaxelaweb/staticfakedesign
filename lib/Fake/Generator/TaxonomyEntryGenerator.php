@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\TaxonomyEntry;
@@ -22,9 +23,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TaxonomyEntryGenerator extends AbstractContentGenerator
 {
     public function __construct(
-        protected TaxonomyEntryConfigurationManager $taxonomyEntryConfigurationManager,
-        FakerGenerator                              $fakerGenerator,
-        FieldGeneratorRegistry $fieldGeneratorRegistry
+        protected DefinitionManager $definitionManager,
+        FakerGenerator              $fakerGenerator,
+        FieldGeneratorRegistry      $fieldGeneratorRegistry
     ) {
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
@@ -42,7 +43,7 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
 
     public function __invoke(string $type): TaxonomyEntry
     {
-        $configuration = $this->taxonomyEntryConfigurationManager->getConfiguration($type);
+        $configuration = $this->definitionManager->getDefinition(TaxonomyEntryDefinition::class, $type);
         return TaxonomyEntry::createLazyGhost(function (TaxonomyEntry $instance) use ($type, $configuration) {
             $instance->__construct(
                 $this->fakerGenerator->randomNumber(),
@@ -50,7 +51,7 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
                 $type,
                 $this->fakerGenerator->dateTime(),
                 $this->fakerGenerator->dateTime(),
-                $this->generateFieldsValue($configuration['fields'], $configuration['models']),
+                $this->generateFieldsValue($configuration->getFields(), $configuration->getModels()),
                 $this->fakerGenerator->word()
             );
         });

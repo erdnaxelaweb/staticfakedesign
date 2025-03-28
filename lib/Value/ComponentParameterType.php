@@ -13,6 +13,9 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 class ComponentParameterType
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         protected readonly string $expression,
         protected readonly string $type,
@@ -32,6 +35,9 @@ class ComponentParameterType
         return $this->type;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;

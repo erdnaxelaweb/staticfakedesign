@@ -2,16 +2,10 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IntegerAttributeGenerator extends AbstractAttributeGenerator
 {
-    public function __construct(
-        protected FakerGenerator $fakerGenerator
-    ) {
-    }
-
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);

@@ -16,8 +16,8 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 class Coordinates
 {
     public function __construct(
-        public readonly float $latitude,
-        public readonly float $longitude,
+        public readonly float  $latitude,
+        public readonly float  $longitude,
         public readonly string $address = ""
     ) {
     }

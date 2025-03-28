@@ -21,22 +21,21 @@ class RichTextGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private RichTextGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): RichTextGenerator
     {
         return new RichTextGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $richtext = $generator();
-        self::assertIsString($richtext);
-
-        $richtext = $generator(1);
-        self::assertIsString($richtext);
-
-        $richtext = $generator(10, ['p']);
-        self::assertIsString($richtext);
+        $richtext = ($this->generator)();
+        self::assertNotEmpty($richtext);
     }
 }

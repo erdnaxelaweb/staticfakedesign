@@ -18,12 +18,15 @@ use Symfony\Component\Form\FormRegistryInterface;
 
 class ChoiceFormFieldGenerator extends GenericFormFieldGenerator
 {
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function __construct(
-        FormFactoryInterface $formFactory,
+        FormFactoryInterface  $formFactory,
         FormRegistryInterface $registry,
-        FakerGenerator       $fakerGenerator,
-        string               $formType = ChoiceType::class,
-        array                $formOptions = []
+        FakerGenerator        $fakerGenerator,
+        string                $formType = ChoiceType::class,
+        array                 $formOptions = []
     ) {
         parent::__construct(
             $formFactory,

@@ -22,10 +22,13 @@ trait GeneratorTestTrait
 {
     public static ?GeneratorInterface $instance = null;
 
+    /**
+     * @param array<string, mixed>       $imageProviderParameters
+     */
     public static function getFakerGenerator(
         array $imageProviderParameters = [],
         ?string $imageProviderClass = null,
-        $locale = Factory::DEFAULT_LOCALE
+        string $locale = Factory::DEFAULT_LOCALE
     ): FakerGenerator {
         return FakerGeneratorFactory::createGenerator($imageProviderParameters, $imageProviderClass, $locale);
     }

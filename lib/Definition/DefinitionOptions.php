@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Exception;
+namespace ErdnaxelaWeb\StaticFakeDesign\Definition;
 
-use Exception;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class ConfigurationNotFoundException extends Exception
+/**
+ * @extends ArrayCollection<string, mixed>
+ */
+class DefinitionOptions extends ArrayCollection
 {
-    public function __construct(string $type)
-    {
-        parent::__construct("Config $type not found");
-    }
 }

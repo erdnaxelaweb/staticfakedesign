@@ -21,20 +21,24 @@ class StringFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private StringFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): StringFieldGenerator
     {
         return new StringFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
+        $string = ($this->generator)();
+        self::assertGreaterThan(0, strlen($string));
 
-        $string = $generator();
-        self::assertIsString($string);
-
-        $string = $generator(200);
-        self::assertIsString($string);
+        $string = ($this->generator)(200);
         self::assertLessThanOrEqual(200, strlen($string));
     }
 }

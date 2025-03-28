@@ -21,12 +21,12 @@ class Component
      */
     public function __construct(
         protected readonly Template $template,
-        protected readonly string $name,
-        protected readonly string $type = 'default',
-        protected readonly string $description = '',
-        protected readonly string $specifications = '',
-        protected readonly array $properties = [],
-        protected readonly array $parameters = []
+        protected readonly string   $name,
+        protected readonly string   $type = 'default',
+        protected readonly string   $description = '',
+        protected readonly string   $specifications = '',
+        protected readonly array    $properties = [],
+        protected readonly array    $parameters = []
     ) {
     }
 

@@ -23,7 +23,7 @@ class EnterDebugNode extends Node
         ]);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->write(sprintf('echo "<!-- START: %s -->";', $this->getAttribute('template_path')))
             ->raw("\n");

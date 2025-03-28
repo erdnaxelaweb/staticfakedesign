@@ -1,0 +1,95 @@
+<?php
+
+namespace ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer;
+
+use ErdnaxelaWeb\StaticFakeDesign\Definition\AbstractLazyDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockAttributeDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\DefinitionInterface;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarExporter\Instantiator;
+
+class BlockDefinitionTransformer extends AbstractDefinitionTransformer
+{
+    public function __construct(
+        protected BlockAttributeDefinitionTransformer $blockAttributeDefinitionTransformer
+    ) {
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('attributes')
+            ->required()
+            ->allowedTypes('array')
+            ->info('Array of field definition');
+
+        $optionsResolver->define('views')
+            ->required()
+            ->allowedTypes('string[]')
+            ->normalize(function (Options $options, $views) {
+                if (empty($views)) {
+                    throw new InvalidOptionsException('The option "views" is expected to not be empty.');
+                }
+                foreach (array_keys($views) as $view) {
+                    if (! is_string($view)) {
+                        throw new InvalidOptionsException(
+                            'The view identifier "' . $view . '" is expected to be a string.'
+                        );
+                    }
+                }
+                return $views;
+            });
+
+        $optionsResolver->define('models')
+            ->default([])
+            ->allowedTypes('array');
+    }
+
+    public function fromHash(array $hash): BlockDefinition
+    {
+        return $this->lazyFromHash(
+            Instantiator::instantiate(BlockDefinition::class, [
+                'identifier' => $hash['identifier'],
+            ]),
+            $hash['hash']
+        );
+    }
+
+    protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
+    {
+        $attributes = [];
+        foreach ($options['attributes'] as $attributeIdentifier => $attributeHash) {
+            $attributes[$attributeIdentifier] = $this->blockAttributeDefinitionTransformer->fromHash(
+                [
+                    'identifier' => $attributeIdentifier,
+                    'hash' => $attributeHash,
+                ]
+            );
+        }
+        $options['attributes'] = $attributes;
+        return parent::lazyInitialize($instance, $options);
+    }
+
+    /**
+     * @param BlockDefinition $definition
+     */
+    public function toHash(DefinitionInterface $definition): array
+    {
+        return [
+            'identifier' => $definition->getIdentifier(),
+            'hash' => [
+                'attributes' => array_map(
+                    function (BlockAttributeDefinition $definition) {
+                        return $this->blockAttributeDefinitionTransformer->toHash($definition)['hash'];
+                    },
+                    $definition->getAttributes()
+                ),
+                'views' => $definition->getViews(),
+                'models' => $definition->getModels(),
+            ],
+        ];
+    }
+}

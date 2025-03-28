@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+/**
+ * @extends FieldsCollection<string, mixed>
+ */
 class BlockAttributesCollection extends FieldsCollection
 {
 }

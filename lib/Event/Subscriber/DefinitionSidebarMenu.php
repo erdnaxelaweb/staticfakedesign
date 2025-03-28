@@ -11,11 +11,7 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\AbstractConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
 use ErdnaxelaWeb\StaticFakeDesign\Event\ConfigureMenuEvent;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,11 +27,8 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
     }
 
     public function __construct(
-        protected ContentConfigurationManager $contentConfigurationManager,
-        protected TaxonomyEntryConfigurationManager $taxonomyEntryConfigurationManager,
-        protected BlockConfigurationManager $blockConfigurationManager,
-        protected PagerConfigurationManager $pagerConfigurationManager,
-        protected RouterInterface $router
+        protected DefinitionManager $definitionManager,
+        protected RouterInterface   $router
     ) {
     }
 
@@ -45,18 +38,18 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
 
         $root = $menu->addChild('sidebar.definitions.root');
 
-        $this->addDefinitions('content', $this->contentConfigurationManager, $root);
-        $this->addDefinitions('taxonomy', $this->taxonomyEntryConfigurationManager, $root);
-        $this->addDefinitions('block', $this->blockConfigurationManager, $root);
-        $this->addDefinitions('pager', $this->pagerConfigurationManager, $root);
+        //        $this->addDefinitions(ContentDefinition::class, 'content', $this->definitionManager, $root);
+        //        $this->addDefinitions(TaxonomyEntryDefinition::class, 'taxonomy', $this->definitionManager, $root);
+        //        $this->addDefinitions(BlockDefinition::class, 'block', $this->definitionManager, $root);
+        //        $this->addDefinitions(PagerDefinition::class, 'pager', $this->definitionManager, $root);
     }
 
     protected function addDefinitions(
-        string $definitionType,
-        AbstractConfigurationManager $configurationManager,
-        ItemInterface $menu
+        string            $definitionType,
+        DefinitionManager $definitionManager,
+        ItemInterface     $menu
     ): void {
-        $types = $configurationManager->getConfigurationsType();
+        $types = $definitionManager->getDefinitionsByType($definitionType);
         if (empty($types)) {
             return;
         }

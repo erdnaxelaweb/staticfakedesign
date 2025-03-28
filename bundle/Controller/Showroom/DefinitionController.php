@@ -18,5 +18,6 @@ class DefinitionController extends AbstractController
 {
     public function view(string $definitionType, string $type): Response
     {
+        return new Response('');
     }
 }

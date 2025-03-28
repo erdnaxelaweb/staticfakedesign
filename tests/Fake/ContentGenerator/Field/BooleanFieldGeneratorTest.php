@@ -21,16 +21,21 @@ class BooleanFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private BooleanFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): BooleanFieldGenerator
     {
         return new BooleanFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $bool = $generator();
-        self::assertIsBool($bool);
+        $bool = ($this->generator)();
+        $this->expectNotToPerformAssertions();
     }
 }

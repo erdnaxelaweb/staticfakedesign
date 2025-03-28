@@ -21,17 +21,21 @@ class EmailFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private EmailFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): EmailFieldGenerator
     {
         return new EmailFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $email = $generator();
-        self::assertIsString($email);
+        $email = ($this->generator)();
         self::assertTrue(preg_match('/^.+\@\S+\.\S+$/', $email) === 1);
     }
 }

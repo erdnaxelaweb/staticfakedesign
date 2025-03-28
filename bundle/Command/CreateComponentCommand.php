@@ -28,13 +28,13 @@ class CreateComponentCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to the component template');
         $this->addArgument('name', InputArgument::REQUIRED, 'Name of the component');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

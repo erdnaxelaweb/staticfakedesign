@@ -23,6 +23,13 @@ class VideoGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private VideoGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): VideoGenerator
     {
         return new VideoGenerator(
@@ -32,15 +39,14 @@ class VideoGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-        $video = $generator();
+        $video = ($this->generator)();
         self::assertInstanceOf(Video::class, $video);
         self::assertNull($video->image);
         self::assertTrue($video->hasSource());
 
-        $video = $generator('large');
+        $video = ($this->generator)('large');
         self::assertInstanceOf(Video::class, $video);
         self::assertInstanceOf(Image::class, $video->image);
         self::assertTrue($video->hasSource());

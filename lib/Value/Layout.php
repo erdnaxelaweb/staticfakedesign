@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
+
 class Layout
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[]  $zones
+     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[] $zones
+     * @param array<string, BlockLayoutSectionDefinition>       $sections
      */
     public function __construct(
         public readonly string $template,
-        public readonly array $zones,
-        public readonly array $sections
+        public readonly array  $zones,
+        public readonly array  $sections
     ) {
     }
 

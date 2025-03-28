@@ -13,15 +13,24 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use BadMethodCallException;
 
-class FieldsCollection extends ArrayCollection
+/**
+ * @template TKey of array-key
+ * @template T
+ * @extends Collection<TKey, T>
+ */
+class FieldsCollection extends Collection
 {
-    public function __call(string $name, array $arguments)
+    /**
+     * @param array<mixed> $arguments
+     */
+    public function __call(string $name, array $arguments): mixed
     {
         $value = $this->get($name);
         if (is_callable($value)) {
             return call_user_func_array($value, $arguments);
         }
+        throw new BadMethodCallException(sprintf('Method %s does not exist', $name));
     }
 }

@@ -37,7 +37,10 @@ class StringFieldGenerator extends AbstractFieldGenerator
         return $this->fakerGenerator->text($maxLength);
     }
 
-    public function getForcedValue($value)
+    /**
+     * @param string|string[] $value
+     */
+    public function getForcedValue(mixed $value): string
     {
         return is_array($value) ? $this->fakerGenerator->randomElement($value) : $value;
     }

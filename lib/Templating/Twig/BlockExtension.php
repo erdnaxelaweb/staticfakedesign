@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,7 +23,6 @@ use Twig\TwigFilter;
 class BlockExtension extends AbstractExtension
 {
     public function __construct(
-        protected BlockLayoutConfigurationManager $blockLayoutConfigurationManager,
         protected RequestStack $requestStack
     ) {
     }
@@ -35,6 +34,7 @@ class BlockExtension extends AbstractExtension
 
     /**
      * @param \ErdnaxelaWeb\StaticFakeDesign\Value\Block[] $blocks
+     *
      * @return list<array{identifier: string, template: string, blocks: Block[]}>
      */
     public function groupBlocksBySection(array $blocks, Layout $layout): array
@@ -69,7 +69,8 @@ class BlockExtension extends AbstractExtension
     }
 
     /**
-     * @param array<string,array{blocks: string[], template: string}> $blockSections
+     * @param array<string, BlockLayoutSectionDefinition> $blockSections
+     *
      * @return array{identifier: string, template: string, blocks: Block[]}
      */
     protected function getBlockSection(Block $block, array $blockSections): array

@@ -33,6 +33,7 @@ class ComponentNodeVisitor implements NodeVisitorInterface
             return $node;
         } elseif ($this->inAModule) {
             if ($node instanceof ComponentReferenceNode) {
+                /** @phpstan-ignore-next-line */
                 $this->storyParameters = $node->getNode('parameters');
             }
         }
@@ -53,7 +54,8 @@ class ComponentNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    public function getPriority()
+    public function getPriority(): int
     {
+        return 0;
     }
 }

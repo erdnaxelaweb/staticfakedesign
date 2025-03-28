@@ -24,11 +24,17 @@ class ComponentBuilder
     ) {
     }
 
+    /**
+     * @param array<mixed> $componentArgs
+     */
     protected function instanciate(array $componentArgs): Component
     {
         return new Component(...$componentArgs);
     }
 
+    /**
+     * @param array<string, mixed> $rawParameters
+     */
     public function fromArray(array $rawParameters, Template $template): Component
     {
         $optionsResolver = new OptionsResolver();
@@ -56,7 +62,7 @@ class ComponentBuilder
 
         $optionsResolver->define('type')
             ->default(function (Options $options) use ($template) {
-                if (preg_match('#landing_page/block/#', $template->getTemplateName())) {
+                if (str_contains($template->getTemplateName(), 'landing_page/block/')) {
                     return 'block';
                 }
                 if (preg_match('#content/([^/]+)/#', $template->getTemplateName())) {

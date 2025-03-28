@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\TextFieldValue;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextFieldGenerator extends AbstractFieldGenerator
@@ -31,24 +32,11 @@ class TextFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $max = 10)
+    public function __invoke(int $max = 10): TextFieldValue
     {
         $count = rand(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
-        return new class(implode(PHP_EOL, $paragraphes)) {
-            public string $rawText;
-
-            public function __construct(
-                string $text
-            ) {
-                $this->rawText = $text;
-            }
-
-            public function __toString(): string
-            {
-                return sprintf('<p>%s</p>', nl2br($this->rawText));
-            }
-        };
+        return new TextFieldValue(implode(PHP_EOL, $paragraphes));
     }
 }

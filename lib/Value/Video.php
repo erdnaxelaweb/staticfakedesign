@@ -48,11 +48,7 @@ class Video implements MediaInterface
 
     public function getPosterSource(): ?ImageSource
     {
-        if ($this->image) {
-            return $this->image->getDefaultSource();
-        }
-
-        return null;
+        return $this->image?->getDefaultSource();
     }
 
     public function isExternalVideo(): bool

@@ -1,0 +1,44 @@
+<?php
+
+namespace ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer;
+
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\DefinitionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarExporter\Instantiator;
+
+class BlockLayoutSectionDefinitionTransformer extends AbstractDefinitionTransformer
+{
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('template')
+            ->required()
+            ->allowedTypes('string');
+
+        $optionsResolver->define('blocks')
+            ->default([])
+            ->allowedTypes('array');
+    }
+
+    public function fromHash(array $hash): BlockLayoutSectionDefinition
+    {
+        return $this->lazyFromHash(Instantiator::instantiate(BlockLayoutSectionDefinition::class, [
+            'identifier' => $hash['identifier'],
+        ]), $hash['hash']);
+    }
+
+    /**
+     * @param BlockLayoutSectionDefinition $definition
+     */
+    public function toHash(DefinitionInterface $definition): array
+    {
+        return [
+            'identifier' => $definition->getIdentifier(),
+            'hash' => [
+                'template' => $definition->getTemplate(),
+                'blocks' => $definition->getBlocksIdentifier(),
+            ],
+        ];
+    }
+}

@@ -23,9 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LinkGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected FactoryInterface $factory,
+        protected FactoryInterface    $factory,
         protected TranslatorInterface $translator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator                $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }

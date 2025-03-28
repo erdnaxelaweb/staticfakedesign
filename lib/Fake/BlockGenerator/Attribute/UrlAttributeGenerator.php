@@ -11,7 +11,7 @@ class UrlAttributeGenerator extends AbstractAttributeGenerator
     ) {
     }
 
-    public function __invoke(): bool
+    public function __invoke(): string
     {
         return $this->fakerGenerator->url();
     }

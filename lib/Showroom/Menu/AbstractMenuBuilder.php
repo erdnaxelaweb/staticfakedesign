@@ -24,6 +24,9 @@ class AbstractMenuBuilder
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     protected function createMenuItem(string $id, array $options = []): ItemInterface
     {
         return $this->factory->createItem($id, $options);

@@ -21,22 +21,23 @@ class MatrixFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private MatrixFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): MatrixFieldGenerator
     {
         return new MatrixFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $matrix = $generator(['firstCol', 'secondCol']);
-        self::assertIsArray($matrix);
+        $matrix = ($this->generator)(['firstCol', 'secondCol']);
         self::assertNotEmpty($matrix);
-        self::assertIsArray($matrix[0]);
         self::assertArrayHasKey('firstCol', $matrix[0]);
-        self::assertIsString($matrix[0]['firstCol']);
         self::assertArrayHasKey('secondCol', $matrix[0]);
-        self::assertIsString($matrix[0]['secondCol']);
     }
 }

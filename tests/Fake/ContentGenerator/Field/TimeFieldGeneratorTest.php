@@ -21,17 +21,21 @@ class TimeFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private TimeFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): TimeFieldGenerator
     {
         return new TimeFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $time = $generator();
-        self::assertIsInt($time);
+        $time = ($this->generator)();
         self::assertGreaterThanOrEqual(0, $time);
         self::assertLessThanOrEqual(24 * 60 * 60, $time);
     }

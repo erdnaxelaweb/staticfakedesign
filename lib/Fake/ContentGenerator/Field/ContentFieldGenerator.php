@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContentFieldGenerator extends AbstractFieldGenerator
@@ -35,7 +36,12 @@ class ContentFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke($type, int $max = 1)
+    /**
+     * @param string|string[] $type
+     *
+     * @return Content[]|Content
+     */
+    public function __invoke(string|array $type, int $max = 1): array|Content
     {
         if ($max === 1) {
             return ($this->contentGenerator)($type);

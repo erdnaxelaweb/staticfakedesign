@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 
 class ComponentParametersFormFactory
 {
@@ -25,7 +26,7 @@ class ComponentParametersFormFactory
     ];
 
     public function __construct(
-        protected FormFactory $formFactory,
+        protected FormFactory                     $formFactory,
         protected ComponentContextResolverFactory $componentContextResolverFactory
     ) {
     }
@@ -35,7 +36,10 @@ class ComponentParametersFormFactory
         return self::FORM_TYPES[$valueType] ?? null;
     }
 
-    public function __invoke(Component $component, array $values = [])
+    /**
+     * @param array<string, mixed> $values
+     */
+    public function __invoke(Component $component, array $values = []): FormInterface
     {
         $data = ($this->componentContextResolverFactory)($component)
             ->resolve($values);

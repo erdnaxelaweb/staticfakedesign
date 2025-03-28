@@ -22,16 +22,21 @@ class FileFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private FileFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): FileFieldGenerator
     {
         return new FileFieldGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $file = $generator();
+        $file = ($this->generator)();
         self::assertInstanceOf(File::class, $file);
     }
 }

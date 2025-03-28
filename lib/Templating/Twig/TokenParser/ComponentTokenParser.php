@@ -28,7 +28,7 @@ class ComponentTokenParser extends AbstractTokenParser
         return new ComponentReferenceNode($parameters);
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'component';
     }

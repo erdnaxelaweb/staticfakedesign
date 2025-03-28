@@ -23,16 +23,21 @@ class ImageFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private ImageFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): ImageFieldGenerator
     {
         return new ImageFieldGenerator(ImageGeneratorTest::getGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $imageGenerator = $generator();
+        $imageGenerator = ($this->generator)();
         self::assertInstanceOf(ImageGenerator::class, $imageGenerator);
     }
 }

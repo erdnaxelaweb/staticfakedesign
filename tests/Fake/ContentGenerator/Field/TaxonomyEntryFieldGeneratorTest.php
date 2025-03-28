@@ -23,19 +23,24 @@ class TaxonomyEntryFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private TaxonomyEntryFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): TaxonomyEntryFieldGenerator
     {
         return new TaxonomyEntryFieldGenerator(TaxonomyEntryGeneratorTest::getGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $taxonomy = $generator('tag');
+        $taxonomy = ($this->generator)('tag');
         self::assertInstanceOf(TaxonomyEntry::class, $taxonomy);
 
-        $taxonomies = $generator('tag', 5);
+        $taxonomies = ($this->generator)('tag', 5);
         self::assertIsArray($taxonomies);
         self::assertNotEmpty($taxonomies);
         self::assertInstanceOf(TaxonomyEntry::class, $taxonomies[0]);

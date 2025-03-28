@@ -13,11 +13,16 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests;
 
+use ReflectionClass;
+
 trait MethodInvokerTrait
 {
-    protected function invokeMethod(&$object, $methodName, array $parameters = [])
+    /**
+     * @param array<mixed>  $parameters
+     */
+    protected function invokeMethod(object$object, string $methodName, array $parameters = []): mixed
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

@@ -13,6 +13,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRegistryInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,21 +21,27 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 abstract class AbstractFormFieldGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected FormFactoryInterface $formFactory,
+        protected FormFactoryInterface  $formFactory,
         protected FormRegistryInterface $registry,
-        FakerGenerator        $fakerGenerator
+        FakerGenerator                  $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
     abstract protected function getFormType(): string;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getFormOptions(): array
     {
         return [];
     }
 
-    public function __invoke(string $name, array $options = [])
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function __invoke(string $name, array $options = []): FormBuilderInterface
     {
         $defaultOptions = $this->getFormOptions();
         $options = $options + $defaultOptions;

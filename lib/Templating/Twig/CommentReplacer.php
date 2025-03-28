@@ -15,7 +15,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
 class CommentReplacer
 {
-    public function replaceInString(string $string)
+    public function replaceInString(string $string): string
     {
         $comments = $this->matchComments($string);
         foreach ($comments as $comment) {
@@ -51,14 +51,23 @@ class CommentReplacer
         return $string;
     }
 
-    protected function matchComments(string $string)
+    /**
+     * @return array{string: string, fake_name: string, fake_type: string, fake_parameters: string, is_array: bool,
+     *                       array_size: string|null}[]
+     */
+    protected function matchComments(string $string): array
     {
         $matches = [];
-        preg_match_all('/{# @fake ([^\s]+) (\w+)(?:\(([^)]+)\))?(?:\[(\d*)\])? #}/', $string, $matches, PREG_SET_ORDER);
+        preg_match_all(
+            '/{# @fake ([^\s]+) (\w+)(?:\(([^)]+)\))?(?:\[(\d*)\])? #}/',
+            $string,
+            $matches,
+            PREG_SET_ORDER
+        );
         $comments = [];
         foreach ($matches as $match) {
             $fakeParameters = $match[3] ?? null;
-            if ($fakeParameters === null || strpos($fakeParameters, "{") !== 0) {
+            if ($fakeParameters === null || ! str_starts_with($fakeParameters, "{")) {
                 $fakeParameters = sprintf('[%s]', $fakeParameters);
             }
             $comments[] = [

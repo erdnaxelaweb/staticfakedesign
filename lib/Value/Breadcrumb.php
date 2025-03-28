@@ -12,8 +12,12 @@
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\VarExporter\LazyGhostTrait;
 
+/**
+ * @extends ArrayCollection<int, ItemInterface>
+ */
 class Breadcrumb extends ArrayCollection
 {
     use LazyGhostTrait;

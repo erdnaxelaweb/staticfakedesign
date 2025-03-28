@@ -21,12 +21,12 @@ class AbstractContent
     use LazyGhostTrait;
 
     public function __construct(
-        public readonly int $id,
-        public readonly string $name,
-        public readonly string $type,
-        public readonly DateTime $creationDate,
-        public readonly DateTime $modificationDate,
-        public readonly ContentFieldsCollection  $fields
+        public readonly int                     $id,
+        public readonly string                  $name,
+        public readonly string                  $type,
+        public readonly DateTime                $creationDate,
+        public readonly DateTime                $modificationDate,
+        public readonly ContentFieldsCollection $fields
     ) {
     }
 }

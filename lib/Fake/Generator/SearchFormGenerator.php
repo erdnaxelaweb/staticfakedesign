@@ -11,6 +11,8 @@
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
+use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerFilterDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerSortDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -28,6 +30,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class SearchFormGenerator extends AbstractGenerator
 {
+    /**
+     * @return array<string, array{type: string, options?: array<string, mixed>}>
+     */
     public function getFormTypes(): array
     {
         return [
@@ -78,25 +83,33 @@ class SearchFormGenerator extends AbstractGenerator
     }
 
     public function __construct(
-        protected RequestStack $requestStack,
+        protected RequestStack         $requestStack,
         protected FormFactoryInterface $formFactory,
-        FakerGenerator        $fakerGenerator
+        FakerGenerator                 $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
+    /**
+     * @param array<string, string|array{type: string, options?: array<string, mixed>}|PagerFilterDefinition> $fields
+     * @param array<string, string|PagerSortDefinition>                                                       $sorts
+     */
     public function __invoke(array $fields = [], array $sorts = [], ?string $name = null): FormView
     {
         $formTypes = $this->getFormTypes();
 
         $formOptions = [
-            'csrf_protection' => false,
             'method' => 'GET',
         ];
+
+        if ($this->formFactory->createBuilder()->hasOption('csrf_protection')) {
+            $formOptions['csrf_protection'] = false;
+        }
 
         $builder = $name ?
             $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
             $this->formFactory->createBuilder(FormType::class, null, $formOptions);
+
         $formFields = $builder->create('filters', FormType::class, [
             'compound' => true,
             'block_prefix' => 'filters',
@@ -106,7 +119,7 @@ class SearchFormGenerator extends AbstractGenerator
         }
         foreach ($fields as $fieldName => $field) {
             if (is_array($field)) {
-                ["type" => $field,  "options" => $fieldOptions] = $field;
+                ["type" => $field, "options" => $fieldOptions] = $field;
             }
 
             $formType = $formTypes[$field];
@@ -123,7 +136,7 @@ class SearchFormGenerator extends AbstractGenerator
         $builder->add($formFields);
         if (count($sorts) > 1) {
             $builder->add('sort', ChoiceType::class, [
-                'choices' => array_combine(array_keys($sorts), array_keys($sorts)),
+                'choices' => array_flip($sorts),
                 'block_prefix' => 'sort',
             ]);
         }

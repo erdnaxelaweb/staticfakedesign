@@ -16,6 +16,9 @@ use Knp\Menu\ItemInterface;
 
 class SidebarMenuBuilder extends AbstractMenuBuilder
 {
+    /**
+     * @param array<mixed> $options
+     */
     public function buildMenu(array $options = []): ItemInterface
     {
         $menu = $this->createMenuItem('sidebar.root');

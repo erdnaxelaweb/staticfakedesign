@@ -17,6 +17,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ImageGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\ImageConfigurationTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Image;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ImageSource;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -24,10 +25,29 @@ class ImageGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private ImageGenerator $generator;
+
+    private ImageGenerator $generatorWithProvider;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+        $this->generatorWithProvider = self::getGenerator(
+            [
+                'randomize' => false,
+                'gray' => false,
+            ],
+            "\\Smknstd\\FakerPicsumImages\\FakerPicsumImagesProvider",
+        );
+    }
+
+    /**
+     * @param array<string, mixed>       $imageProviderParameters
+     */
     public static function getGenerator(
         array $imageProviderParameters = [],
         ?string $imageProviderClass = null,
-        $locale = Factory::DEFAULT_LOCALE
+        string $locale = Factory::DEFAULT_LOCALE
     ): ImageGenerator {
         $imageConfiguration = ImageConfigurationTest::getConfiguration();
 
@@ -38,52 +58,43 @@ class ImageGeneratorTest extends TestCase
         ));
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
-        $generator = self::getGenerator();
-
-        $image = $generator('large');
+        $image = ($this->generator)('large');
         self::assertInstanceOf(Image::class, $image);
         self::assertTrue($image->hasSource());
-        self::assertCount(3, $image->sources);
+        self::assertCount(4, $image->sources);
+
+        $defaultSource = $image->getDefaultSource();
+        self::assertInstanceOf(ImageSource::class, $defaultSource);
+        self::assertEquals(200, $defaultSource->height);
+        self::assertEquals(200, $defaultSource->width);
+        self::assertEquals('(min-width: 1024px)', $defaultSource->media);
+        self::assertEquals('desktop', $defaultSource->variation);
+        self::assertStringStartsWith('https://via.placeholder.com/', $defaultSource->getUri());
+
+        $image = ($this->generatorWithProvider)('large');
+        self::assertInstanceOf(Image::class, $image);
+        self::assertTrue($image->hasSource());
+        self::assertCount(4, $image->sources);
 
         $defaultSource = $image->getDefaultSource();
         self::assertEquals(200, $defaultSource->height);
         self::assertEquals(200, $defaultSource->width);
         self::assertEquals('(min-width: 1024px)', $defaultSource->media);
         self::assertEquals('desktop', $defaultSource->variation);
-        self::assertStringStartsWith('https://via.placeholder.com/', $defaultSource->uri);
+        self::assertStringStartsWith('https://picsum.photos/', $defaultSource->getUri());
 
-        $generator = self::getGenerator(
-            [
-                'randomize' => false,
-                'gray' => false,
-            ],
-            "\\Smknstd\\FakerPicsumImages\\FakerPicsumImagesProvider",
-        );
-
-        $image = $generator('large');
+        $image = ($this->generatorWithProvider)('large', 1);
         self::assertInstanceOf(Image::class, $image);
         self::assertTrue($image->hasSource());
-        self::assertCount(3, $image->sources);
+        self::assertCount(4, $image->sources);
 
         $defaultSource = $image->getDefaultSource();
         self::assertEquals(200, $defaultSource->height);
         self::assertEquals(200, $defaultSource->width);
         self::assertEquals('(min-width: 1024px)', $defaultSource->media);
         self::assertEquals('desktop', $defaultSource->variation);
-        self::assertStringStartsWith('https://picsum.photos/', $defaultSource->uri);
-
-        $image = $generator('large', 1);
-        self::assertInstanceOf(Image::class, $image);
-        self::assertTrue($image->hasSource());
-        self::assertCount(3, $image->sources);
-
-        $defaultSource = $image->getDefaultSource();
-        self::assertEquals(200, $defaultSource->height);
-        self::assertEquals(200, $defaultSource->width);
-        self::assertEquals('(min-width: 1024px)', $defaultSource->media);
-        self::assertEquals('desktop', $defaultSource->variation);
-        self::assertStringStartsWith('https://picsum.photos/id/1/', $defaultSource->uri);
+        self::assertStringStartsWith('https://picsum.photos/id/1/', $defaultSource->getUri());
     }
 }

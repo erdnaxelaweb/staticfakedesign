@@ -11,5 +11,8 @@ interface PagerAdapterInterface extends AdapterInterface
 {
     public function getFilters(): FormView;
 
+    /**
+     * @return \Knp\Menu\ItemInterface[]
+     */
     public function getActiveFilters(): array;
 }

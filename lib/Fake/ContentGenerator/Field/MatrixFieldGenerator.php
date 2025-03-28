@@ -35,6 +35,11 @@ class MatrixFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
+    /**
+     * @param array<string> $columns
+     *
+     * @return array<array<string, string>>
+     */
     public function __invoke(array $columns, int $minimumRows = 1): array
     {
         $count = $this->fakerGenerator->numberBetween($minimumRows, 10);

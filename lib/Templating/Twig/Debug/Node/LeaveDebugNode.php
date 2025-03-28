@@ -23,7 +23,7 @@ class LeaveDebugNode extends Node
         ]);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->write(sprintf('echo "<!-- END: %s -->";', $this->getAttribute('template_path')))
             ->raw("\n");

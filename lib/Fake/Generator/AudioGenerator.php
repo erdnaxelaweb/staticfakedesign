@@ -23,7 +23,7 @@ class AudioGenerator extends AbstractGenerator
 {
     public function __construct(
         protected ImageGenerator $imageGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator           $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }

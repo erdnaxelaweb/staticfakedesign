@@ -17,5 +17,5 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\GeneratorInterface;
 
 interface FieldGeneratorInterface extends GeneratorInterface
 {
-    public function getForcedValue($value);
+    public function getForcedValue(mixed $value): mixed;
 }

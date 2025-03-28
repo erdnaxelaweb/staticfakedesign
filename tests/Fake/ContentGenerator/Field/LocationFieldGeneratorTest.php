@@ -23,16 +23,21 @@ class LocationFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private LocationFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): LocationFieldGenerator
     {
         return new LocationFieldGenerator(CoordinatesGeneratorTest::getGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $coordinates = $generator();
+        $coordinates = ($this->generator)();
         self::assertInstanceOf(Coordinates::class, $coordinates);
     }
 }

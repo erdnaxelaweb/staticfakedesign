@@ -22,6 +22,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class StaticFakeDesignExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @param array<mixed>                                                   $configs
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
