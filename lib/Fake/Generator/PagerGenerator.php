@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
@@ -27,9 +28,9 @@ class PagerGenerator extends AbstractGenerator
         protected RequestStack $requestStack,
         protected ContentGenerator $contentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
-        protected LinkGenerator $linkGenerator,
-        protected PagerConfigurationManager $pagerConfigurationManager,
-        FakerGenerator             $fakerGenerator
+        protected LinkGenerator       $linkGenerator,
+        protected DefinitionManager   $definitionManager,
+        FakerGenerator                $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
@@ -51,13 +52,13 @@ class PagerGenerator extends AbstractGenerator
     {
         $currentPage = (int) $this->requestStack->getCurrentRequest()
             ->query->get('page', 1);
-        $configuration = $this->pagerConfigurationManager->getConfiguration($type);
-        $sorts = $configuration['sorts'];
-        $filters = $configuration['filters'];
-        $contentTypes = $configuration['contentTypes'];
-        $maxPerPage = $configuration['maxPerPage'];
-        $headlineCount = $configuration['headlineCount'];
-        $pagesCount = $pagesCount ?? rand($currentPage, 10);
+        $pagerDefinition = $this->definitionManager->getDefinition(PagerDefinition::class, $type);
+        $sorts = $pagerDefinition->getSorts();
+        $filters = $pagerDefinition->getFilters();
+        $contentTypes = $pagerDefinition->getContentTypes();
+        $maxPerPage = $pagerDefinition->getMaxPerPage();
+        $headlineCount = $pagerDefinition->getHeadlineCount();
+        $pagesCount = $pagesCount ?? rand(1, 10);
 
         $adapter = new PagerAdapter(
             static function () use ($maxPerPage, $pagesCount) {

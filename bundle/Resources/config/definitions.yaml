@@ -1,0 +1,61 @@
+services:
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\DefinitionTransformer:
+        arguments:
+            $transformers: !tagged_iterator { tag: 'erdnaxelaweb.static_fake_design.definition_transformer', index_by: 'type' }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\ContentFieldDefinitionTransformer:
+        arguments:
+            $fieldGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\ContentFieldDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\ContentDefinitionTransformer:
+        arguments:
+            $contentFieldDefinitionTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\ContentFieldDefinitionTransformer'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\ContentDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\TaxonomyEntryDefinitionTransformer:
+        arguments:
+            $contentFieldDefinitionTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\ContentFieldDefinitionTransformer'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\PagerSortDefinitionTransformer:
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\PagerSortDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\PagerFilterDefinitionTransformer:
+        arguments:
+            $searchFormGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\SearchFormGenerator'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\PagerFilterDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\PagerDefinitionTransformer:
+        arguments:
+            $pagerSortDefinitionTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\PagerSortDefinitionTransformer'
+            $pagerFilterDefinitionTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\PagerFilterDefinitionTransformer'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockAttributeDefinitionTransformer:
+        arguments:
+            $attributeGeneratorRegistry: '@ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockAttributeDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockDefinitionTransformer:
+        arguments:
+            $blockAttributeDefinitionTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockAttributeDefinitionTransformer'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockLayoutSectionDefinitionTransformer:
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition::DEFINITION_TYPE }
+
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockLayoutDefinitionTransformer:
+        arguments:
+            $blockLayoutSectionConfigurationTransformer: '@ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\BlockLayoutSectionDefinitionTransformer'
+        tags:
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutDefinition::DEFINITION_TYPE }

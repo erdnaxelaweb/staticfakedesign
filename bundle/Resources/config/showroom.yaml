@@ -49,10 +49,7 @@ services:
 
     ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber\DefinitionSidebarMenu:
         arguments:
-            $blockConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager'
-            $contentConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager'
-            $pagerConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager'
-            $taxonomyEntryConfigurationManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
             $router: '@router.default'
         tags:
             - { name: kernel.event_subscriber }
