@@ -1,2 +1,110 @@
 parameters:
-    erdnaxelaweb.static_fake_design.content_definition: []
+    erdnaxelaweb.static_fake_design.content_definition:
+        header_configuration:
+            fields:
+                name:
+                    type: string
+                    required: true
+                logo:
+                    type: image
+                    required: false
+
+        footer_configuration:
+            fields:
+                name:
+                    type: string
+                    options: { }
+                    required: true
+        image:
+            fields:
+                name:
+                    type: string
+                    options: { }
+                    required: true
+                image:
+                    type: image
+                    options: { }
+                    required: true
+                caption:
+                    type: richtext
+                    options: { }
+                    required: false
+                credits:
+                    type: string
+                    options: { }
+                    required: false
+        news_list:
+            fields:
+                title:
+                    type: string
+                    options: { }
+                    required: true
+                short_title:
+                    type: string
+                    options: { }
+                    required: false
+                page:
+                    type: blocks
+                    options:
+                        layout: default
+                        allowedTypes:
+                            - test
+                    required: true
+        news:
+            fields:
+                title:
+                    type: string
+                    options: { }
+                    required: true
+                short_title:
+                    type: string
+                    options: { }
+                    required: false
+                news_date:
+                    type: date
+                    options: { }
+                    required: true
+                intro:
+                    type: richtext
+                    options: { }
+                    required: true
+                thematic:
+                    type: taxonomy_entry
+                    options:
+                        type: thematic_tag
+                        max: 10
+                    required: true
+                image:
+                    type: image
+                    options: { }
+                    required: true
+                description:
+                    type: richtext
+                    options: { }
+                    required: true
+                read_also:
+                    type: content
+                    options:
+                        type: [ news ]
+                        max: 4
+                    required: false
+        not_found_page:
+            fields:
+                title:
+                    type: string
+                    options: { }
+                    required: true
+                short_title:
+                    type: string
+                    options: { }
+                    required: true
+                description:
+                    type: richtext
+                    options: { }
+                    required: false
+        homepage:
+            fields:
+                title:
+                    type: string
+                    options: { }
+                    required: true

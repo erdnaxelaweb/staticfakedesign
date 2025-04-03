@@ -1,0 +1,35 @@
+parameters:
+    erdnaxelaweb.static_fake_design.pager_definition:
+        news_list:
+            contentTypes: [news]
+            filters:
+                thematic:
+                    type: checkbox
+                    options:
+                        choices:
+                            - tag 1
+                            - tag 2
+                            - tag 3
+                        multiple: true
+                date_from:
+                    type: date
+                    options:
+                        widget: single_text
+                        format: 'dd-mm-yyyy'
+                        input_format: 'd-m-Y'
+                        html5: false
+                date_to:
+                    type: date
+                    options:
+                        widget: single_text
+                        format: 'dd-mm-yyyy'
+                        input_format: 'd-m-Y'
+                        html5: false
+            headlineCount: 3
+            maxPerPage: 10
+            sorts:
+                start_date:
+                    type: custom_field
+                    options:
+                        field: news_news_date_value_dt
+                        sortDirection: !php/const Ibexa\Contracts\Core\Repository\Values\Content\Query::SORT_DESC

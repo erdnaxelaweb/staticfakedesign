@@ -2,6 +2,9 @@
 <html lang="{{ app.request.locale|replace({'_': '-'}) }}">
 <head>
     <meta charset="utf-8">
+    {% block head %}
+        {% include 'include/head.html.twig' %}
+    {% endblock %}
 
     {% block meta %}{% endblock %}
 
@@ -22,7 +25,7 @@
 {% endblock %}
 
 {% block footer_scripts %}
-    {% include '@include/footer_scripts.html.twig' %}
+    {% include 'include/footer_scripts.html.twig' %}
 {% endblock %}
 </body>
 </html>
