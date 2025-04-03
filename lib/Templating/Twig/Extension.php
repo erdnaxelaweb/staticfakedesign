@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
@@ -32,7 +31,7 @@ class Extension extends AbstractExtension
         protected FakerGenerator   $fakerGenerator,
         protected ComponentBuilder $componentBuilder,
         protected Renderer         $renderer,
-        protected ShowroomHelper                  $showroomHelper,
+        protected ShowroomHelper   $showroomHelper,
         protected string           $kernelProjectDir
     ) {
     }
@@ -52,21 +51,27 @@ class Extension extends AbstractExtension
         );
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function buildComponent(array $parameters, Template $template): Component
     {
         return $this->componentBuilder->fromArray($parameters, $template);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function setContext(array &$context, ?Component $component): void
     {
-        if (! $component) {
+        if (!$component) {
             return;
         }
         foreach ($component->getParameters() as $parameter) {
             if (isset($context[$parameter->getName()])) {
                 continue;
             }
-            if (! $parameter->isRequired() && $parameter->hasDefaultValue()) {
+            if (!$parameter->isRequired() && $parameter->hasDefaultValue()) {
                 $context[$parameter->getName()] = $parameter->getDefaultValue();
             }
         }

@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Exception\ConfigurationNotFoundException;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use Knp\Menu\ItemInterface;
 use Twig\Environment;
@@ -21,22 +23,14 @@ use Twig\TwigFunction;
 class Renderer
 {
     public function __construct(
-        protected string $renderTemplate,
-        protected BlockConfigurationManager $blockConfigurationManager
+        protected string            $renderTemplate,
+        protected DefinitionManager $definitionManager
     ) {
     }
 
-    protected function getDisplayFunctions(): array
-    {
-        return [
-            'display_component' => [$this, 'displayComponent'],
-            'display_menu_item' => [$this, 'displayMenuItem'],
-            'display_active_filter' => [$this, 'displayActiveFilter'],
-            'display_content' => [$this, 'displayContent'],
-            'display_block' => [$this, 'displayBlock'],
-        ];
-    }
-
+    /**
+     * @return TwigFunction[]
+     */
     public function getTwigFunctions(): array
     {
         $functions = $this->getDisplayFunctions();
@@ -52,6 +46,9 @@ class Renderer
         return $twigFunctions;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function displayActiveFilter(Environment $environment, ItemInterface $item, array $parameters = []): string
     {
         return $this->render($environment, 'display_active_filter', [
@@ -60,6 +57,9 @@ class Renderer
         ]);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function displayMenuItem(Environment $environment, ItemInterface $item, array $parameters = []): string
     {
         return $this->render($environment, 'display_menu_item', [
@@ -68,15 +68,19 @@ class Renderer
         ]);
     }
 
+    /**
+     * @param mixed|\ErdnaxelaWeb\StaticFakeDesign\Value\Content $content
+     * @param array<string, mixed>                               $parameters
+     */
     public function displayContent(
         Environment $environment,
         string      $template,
-        $content,
+        mixed       $content,
         array       $parameters = [],
-        bool $isEsi = false,
+        bool        $isEsi = false,
         ?string     $viewType = null
     ): string {
-        if (! $viewType && preg_match('#content/([^/]+)/#', $template, $matches)) {
+        if (!$viewType && preg_match('#content/([^/]+)/#', $template, $matches)) {
             $viewType = $matches[1];
         }
 
@@ -89,12 +93,15 @@ class Renderer
         ]);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function displayComponent(
         Environment $environment,
         string      $template,
         array       $parameters = [],
         ?string     $controllerAction = null,
-        bool $isEsi = false
+        bool        $isEsi = false
     ): string {
         $parameters['template'] = $template;
         return $this->render($environment, 'display_component', [
@@ -105,16 +112,19 @@ class Renderer
         ]);
     }
 
-    public function displayBlock(Environment $environment, $block, bool $isEsi = true): string
+    /**
+     * @param mixed|Block $block
+     */
+    public function displayBlock(Environment $environment, mixed $block, bool $isEsi = true): string
     {
         $template = null;
         if ($block instanceof Block) {
             try {
-                $blockConfiguration = $this->blockConfigurationManager->getConfiguration($block->type);
-            } catch (ConfigurationNotFoundException $e) {
+                $blockDefinition = $this->definitionManager->getDefinition(BlockDefinition::class, $block->type);
+            } catch (DefinitionTypeNotFoundException $e) {
                 return 'Not supported';
             }
-            $template = $blockConfiguration['views'][$block->view];
+            $template = $blockDefinition->getView($block->view);
         }
         return $this->render($environment, 'display_block', [
             'template' => $template,
@@ -123,6 +133,23 @@ class Renderer
         ]);
     }
 
+    /**
+     * @return array<string, callable>
+     */
+    protected function getDisplayFunctions(): array
+    {
+        return [
+            'display_component' => [$this, 'displayComponent'],
+            'display_menu_item' => [$this, 'displayMenuItem'],
+            'display_active_filter' => [$this, 'displayActiveFilter'],
+            'display_content' => [$this, 'displayContent'],
+            'display_block' => [$this, 'displayBlock'],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
     protected function render(Environment $environment, string $blockName, array $parameters = []): string
     {
         $renderTemplate = $environment->loadTemplate(

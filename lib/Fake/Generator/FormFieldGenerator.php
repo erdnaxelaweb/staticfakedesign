@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -35,11 +36,9 @@ class FormFieldGenerator extends AbstractGenerator
         }
     }
 
-    public function registerGenerator(string $type, GeneratorInterface $generator): void
-    {
-        $this->generators[$type] = $generator;
-    }
-
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __invoke(string $name = null, ?string $type = null, array $options = []): FormView
     {
         $type = $type ?? $this->fakerGenerator->randomElement(array_keys($this->generators));
@@ -54,5 +53,10 @@ class FormFieldGenerator extends AbstractGenerator
             'options' => $options,
         ])->getForm()
             ->createView();
+    }
+
+    public function registerGenerator(string $type, GeneratorInterface $generator): void
+    {
+        $this->generators[$type] = $generator;
     }
 }

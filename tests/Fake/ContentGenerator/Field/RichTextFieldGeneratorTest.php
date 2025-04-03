@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
@@ -22,16 +21,21 @@ class RichTextFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private RichTextFieldGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): RichTextFieldGenerator
     {
         return new RichTextFieldGenerator(RichTextGeneratorTest::getGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $richtext = $generator();
-        self::assertIsString($richtext);
+        $richtext = ($this->generator)();
+        self::assertStringStartsWith('<?xml version="1.0"?>', $richtext);
     }
 }

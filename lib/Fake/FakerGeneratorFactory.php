@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
@@ -21,13 +20,13 @@ class FakerGeneratorFactory extends BaseFactory
     /**
      * Create a new generator
      *
-     * @return Generator
+     * @param array<string, mixed> $imageProviderParameters
      */
     public static function createGenerator(
-        array $imageProviderParameters = [],
+        array   $imageProviderParameters = [],
         ?string $imageProviderClass = null,
-        string $locale = self::DEFAULT_LOCALE
-    ): Generator|FakerGenerator {
+        string  $locale = self::DEFAULT_LOCALE
+    ): FakerGenerator {
         $generator = new FakerGenerator($imageProviderParameters);
 
         foreach (static::$defaultProviders as $provider) {

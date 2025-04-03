@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -22,6 +21,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\BlockAttributesCollection;
+use InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockGenerator extends AbstractGenerator
@@ -29,7 +29,7 @@ class BlockGenerator extends AbstractGenerator
     public function __construct(
         protected DefinitionManager $definitionManager,
         protected AttributeGeneratorRegistry $attributeGeneratorRegistry,
-        FakerGenerator                $fakerGenerator
+        FakerGenerator $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
@@ -64,6 +64,10 @@ class BlockGenerator extends AbstractGenerator
             ->info('Identifier of the block to generate. See erdnaxelaweb.static_fake_design.block_definition');
     }
 
+    /**
+     * @param array<string, BlockAttributeDefinition> $attributesDefinitions
+     * @param array<mixed>                            $models
+     */
     protected function generateAttributeValue(
         array $attributesDefinitions,
         array $models = []
@@ -79,12 +83,12 @@ class BlockGenerator extends AbstractGenerator
 
             try {
                 $generator = $this->getAttributeGenerator($type);
-                if (! $fieldValue && is_callable($generator)) {
+                if (!$fieldValue && is_callable($generator)) {
                     $fieldValue = ($required || $this->fakerGenerator->boolean()) ? $generator(...$options) : null;
                 } else {
                     $fieldValue = $generator->getForcedValue($fieldValue);
                 }
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $fieldValue = $e->getMessage();
             }
 

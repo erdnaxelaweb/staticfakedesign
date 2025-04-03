@@ -1,48 +1,59 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\PagerGenerator;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\PagerConfigurationManagerTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
-use Pagerfanta\Pagerfanta;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PagerGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private PagerGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): PagerGenerator
     {
+        $request = new Request();
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
         return new PagerGenerator(
+            $requestStack,
             ContentGeneratorTest::getGenerator(),
-            SearchFormGeneratorTest::getGenerator(),
+            SearchFormGeneratorTest::getGenerator($requestStack),
             LinkGeneratorTest::getGenerator(),
-            PagerConfigurationManagerTest::getManager(),
+            DefinitionManagerTest::getManager(),
             self::getFakerGenerator()
         );
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $pager = $generator('articles_list', 10);
-        self::assertInstanceOf(Pagerfanta::class, $pager);
+        $pager = ($this->generator)('articles_list', 10);
+        self::assertInstanceOf(Pager::class, $pager);
         self::assertInstanceOf(Content::class, $pager->getCurrentPageResults()[0]);
         self::assertEquals(5, $pager->getMaxPerPage());
-        self::assertEquals(10, $pager->getNbPages());
+        self::assertGreaterThanOrEqual(1, $pager->getNbPages());
+        self::assertLessThanOrEqual(10, $pager->getNbPages());
     }
 }

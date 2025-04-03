@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -18,17 +19,16 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ComponentSidebarMenu implements EventSubscriberInterface
 {
+    public function __construct(
+        protected ComponentFinder $storiesFinder,
+        protected RouterInterface $router
+    ) {
+    }
     public static function getSubscribedEvents(): array
     {
         return [
             ConfigureMenuEvent::SHOWROOM_MENU_SIDEBAR => ['buildMenu', 0],
         ];
-    }
-
-    public function __construct(
-        protected ComponentFinder $storiesFinder,
-        protected RouterInterface $router
-    ) {
     }
 
     public function buildMenu(ConfigureMenuEvent $event): void
@@ -48,7 +48,7 @@ class ComponentSidebarMenu implements EventSubscriberInterface
             foreach ($splittedPath as $dirName) {
                 $path[] = $dirName;
                 $dirPath = implode('/', $path);
-                if (! isset($menuItems[$dirPath])) {
+                if (!isset($menuItems[$dirPath])) {
                     $menuItems[$dirPath] = $parent->addChild($dirPath, [
                         'label' => $dirName,
                         'extras' => [

@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -16,6 +17,12 @@ use Symfony\Component\Form\FormView;
 
 class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
 {
+    /**
+     * @param callable(): int                                     $nbResultsCallable
+     * @param callable(int, int): iterable<mixed> $sliceCallable
+     * @param callable(): FormView                                $filtersCallback
+     * @param callable(): \Knp\Menu\ItemInterface[]               $activeFiltersCallback
+     */
     public function __construct(
         $nbResultsCallable,
         $sliceCallable,
@@ -30,6 +37,9 @@ class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
         return ($this->filtersCallback)();
     }
 
+    /**
+     * @return \Knp\Menu\ItemInterface[]
+     */
     public function getActiveFilters(): array
     {
         return ($this->activeFiltersCallback)();

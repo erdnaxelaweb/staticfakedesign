@@ -1,16 +1,15 @@
 <?php
 
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
@@ -43,16 +42,12 @@ class Video implements MediaInterface
 
     public function hasSource(): bool
     {
-        return ! empty($this->sources);
+        return !empty($this->sources);
     }
 
     public function getPosterSource(): ?ImageSource
     {
-        if ($this->image) {
-            return $this->image->getDefaultSource();
-        }
-
-        return null;
+        return $this->image?->getDefaultSource();
     }
 
     public function isExternalVideo(): bool

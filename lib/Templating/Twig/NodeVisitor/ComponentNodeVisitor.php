@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -33,6 +34,7 @@ class ComponentNodeVisitor implements NodeVisitorInterface
             return $node;
         } elseif ($this->inAModule) {
             if ($node instanceof ComponentReferenceNode) {
+                /** @phpstan-ignore-next-line */
                 $this->storyParameters = $node->getNode('parameters');
             }
         }
@@ -53,7 +55,8 @@ class ComponentNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    public function getPriority()
+    public function getPriority(): int
     {
+        return 0;
     }
 }

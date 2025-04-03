@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * Static Fake Design Bundle.
+ *
+ * @author    Florian ALEXANDRE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
+ */
+
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
@@ -12,6 +22,17 @@ class SelectionAttributeGenerator extends AbstractAttributeGenerator
     ) {
     }
 
+    /**
+     * @param array<mixed, mixed> $options
+     *
+     * @return array<mixed, mixed>
+     */
+    public function __invoke(array $options, bool $isMultiple = false): array
+    {
+        $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
+        return $this->fakerGenerator->randomElements($options, $count, false);
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -22,11 +43,5 @@ class SelectionAttributeGenerator extends AbstractAttributeGenerator
         $optionsResolver->define('isMultiple')
             ->default(false)
             ->allowedTypes('bool');
-    }
-
-    public function __invoke(array $options, bool $isMultiple = false): array
-    {
-        $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
-        return $this->fakerGenerator->randomElements($options, $count, false);
     }
 }

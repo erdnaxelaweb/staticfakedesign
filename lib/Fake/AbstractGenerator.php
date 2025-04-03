@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
@@ -17,15 +16,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractGenerator implements GeneratorInterface
 {
+    public function __construct(
+        protected FakerGenerator $fakerGenerator
+    ) {
+    }
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
     }
 
     /**
-     * @param \Faker\Generator $fakerGenerator
+     * @param array<string, mixed> $options
+     *
+     * @return array<string, mixed>
      */
-    public function __construct(
-        protected FakerGenerator $fakerGenerator
-    ) {
+    protected function resolveOptions(array $options): array
+    {
+        $optionsResolver = new OptionsResolver();
+        $this->configureOptions($optionsResolver);
+        return $optionsResolver->resolve($options);
     }
 }

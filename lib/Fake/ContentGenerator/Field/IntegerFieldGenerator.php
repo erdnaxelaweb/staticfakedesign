@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -23,6 +22,11 @@ class IntegerFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
+    public function __invoke(int $min = 0, int $max = PHP_INT_MAX): int
+    {
+        return $this->fakerGenerator->numberBetween($min, $max);
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -33,10 +37,5 @@ class IntegerFieldGenerator extends AbstractFieldGenerator
         $optionsResolver->define('max')
             ->default(PHP_INT_MAX)
             ->allowedTypes('int');
-    }
-
-    public function __invoke(int $min = 0, int $max = PHP_INT_MAX): int
-    {
-        return $this->fakerGenerator->numberBetween($min, $max);
     }
 }

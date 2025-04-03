@@ -1,21 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
 class CommentReplacer
 {
-    public function replaceInString(string $string)
+    public function replaceInString(string $string): string
     {
         $comments = $this->matchComments($string);
         foreach ($comments as $comment) {
@@ -27,7 +26,7 @@ class CommentReplacer
                         $comment['fake_name'],
                         $comment['fake_name'],
                         $comment['fake_name'],
-                        ! empty($comment['array_size']) ? $comment['array_size'] : 'null',
+                        !empty($comment['array_size']) ? $comment['array_size'] : 'null',
                         addslashes($comment['fake_type']),
                         $comment['fake_parameters']
                     ),
@@ -51,14 +50,23 @@ class CommentReplacer
         return $string;
     }
 
-    protected function matchComments(string $string)
+    /**
+     * @return array{string: string, fake_name: string, fake_type: string, fake_parameters: string, is_array: bool,
+     *                       array_size: string|null}[]
+     */
+    protected function matchComments(string $string): array
     {
         $matches = [];
-        preg_match_all('/{# @fake ([^\s]+) (\w+)(?:\(([^)]+)\))?(?:\[(\d*)\])? #}/', $string, $matches, PREG_SET_ORDER);
+        preg_match_all(
+            '/{# @fake ([^\s]+) (\w+)(?:\(([^)]+)\))?(?:\[(\d*)\])? #}/',
+            $string,
+            $matches,
+            PREG_SET_ORDER
+        );
         $comments = [];
         foreach ($matches as $match) {
             $fakeParameters = $match[3] ?? null;
-            if ($fakeParameters === null || strpos($fakeParameters, "{") !== 0) {
+            if ($fakeParameters === null || !str_starts_with($fakeParameters, "{")) {
                 $fakeParameters = sprintf('[%s]', $fakeParameters);
             }
             $comments[] = [

@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -18,12 +19,15 @@ use Symfony\Component\Form\FormRegistryInterface;
 
 class ChoiceFormFieldGenerator extends GenericFormFieldGenerator
 {
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function __construct(
-        FormFactoryInterface $formFactory,
+        FormFactoryInterface  $formFactory,
         FormRegistryInterface $registry,
-        FakerGenerator       $fakerGenerator,
-        string               $formType = ChoiceType::class,
-        array                $formOptions = []
+        FakerGenerator        $fakerGenerator,
+        string                $formType = ChoiceType::class,
+        array                 $formOptions = []
     ) {
         parent::__construct(
             $formFactory,

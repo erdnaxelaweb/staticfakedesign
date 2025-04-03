@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -31,16 +30,10 @@ class ContentGenerator extends AbstractContentGenerator
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('identifier')
-            ->required()
-            ->allowedTypes('string', 'string[]')
-            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
-    }
-
-    public function __invoke($type): Content
+    /**
+     * @param string|string[] $type
+     */
+    public function __invoke(array|string $type): Content
     {
         if (is_array($type)) {
             $type = $this->fakerGenerator->randomElement($type);
@@ -58,5 +51,14 @@ class ContentGenerator extends AbstractContentGenerator
                 ($this->breadcrumbGenerator)()
             );
         });
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string', 'string[]')
+            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
     }
 }

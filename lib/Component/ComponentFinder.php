@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -20,20 +21,8 @@ class ComponentFinder
 {
     public function __construct(
         protected Environment $twig,
-        protected string $baseDir
+        protected string      $baseDir
     ) {
-    }
-
-    protected function getFinder(): Finder
-    {
-        $finder = new Finder();
-
-        $finder
-            ->in(sprintf('%s', $this->baseDir))
-            ->name('*.html.twig')
-            ->files();
-
-        return $finder;
     }
 
     /**
@@ -66,6 +55,18 @@ class ComponentFinder
     public function getComponentFromTemplate(TemplateWrapper $template): ?Component
     {
         return $template->unwrap()
-->component ?? null;
+                   ->component ?? null;
+    }
+
+    protected function getFinder(): Finder
+    {
+        $finder = new Finder();
+
+        $finder
+            ->in(sprintf('%s', $this->baseDir))
+            ->name('*.html.twig')
+            ->files();
+
+        return $finder;
     }
 }

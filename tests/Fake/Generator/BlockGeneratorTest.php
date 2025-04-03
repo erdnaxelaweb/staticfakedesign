@@ -1,21 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\BlockConfigurationManagerTest;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\ContentFieldGeneratorRegistryTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\BlockGenerator\AttributeGeneratorRegistryTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use PHPUnit\Framework\TestCase;
@@ -24,28 +23,34 @@ class BlockGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private BlockGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): BlockGenerator
     {
         return new BlockGenerator(
-            BlockConfigurationManagerTest::getManager(),
+            DefinitionManagerTest::getManager(),
+            AttributeGeneratorRegistryTest::getRegistry(),
             self::getFakerGenerator(),
-            ContentFieldGeneratorRegistryTest::getRegistry()
         );
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-        $block = $generator('list');
+        $block = ($this->generator)('list');
         self::assertInstanceOf(Block::class, $block);
-        self::assertNotNull($block->name);
-        self::assertNotEmpty($block->attributes);
-        self::assertNotEmpty('default', $block->view);
+        self::assertNotEmpty($block->name);
+        self::assertNotTrue($block->attributes->isEmpty());
+        self::assertEquals('default', $block->view);
 
-        $block = $generator('list', 'headline');
+        $block = ($this->generator)('list', 'headline');
         self::assertInstanceOf(Block::class, $block);
-        self::assertNotNull($block->name);
-        self::assertNotEmpty($block->attributes);
-        self::assertNotEmpty('headline', $block->view);
+        self::assertNotEmpty($block->name);
+        self::assertNotTrue($block->attributes);
+        self::assertEquals('headline', $block->view);
     }
 }

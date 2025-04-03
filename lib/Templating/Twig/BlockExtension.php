@@ -1,19 +1,18 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Templating\Twig;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,7 +22,6 @@ use Twig\TwigFilter;
 class BlockExtension extends AbstractExtension
 {
     public function __construct(
-        protected BlockLayoutConfigurationManager $blockLayoutConfigurationManager,
         protected RequestStack $requestStack
     ) {
     }
@@ -35,6 +33,7 @@ class BlockExtension extends AbstractExtension
 
     /**
      * @param \ErdnaxelaWeb\StaticFakeDesign\Value\Block[] $blocks
+     *
      * @return list<array{identifier: string, template: string, blocks: Block[]}>
      */
     public function groupBlocksBySection(array $blocks, Layout $layout): array
@@ -69,22 +68,23 @@ class BlockExtension extends AbstractExtension
     }
 
     /**
-     * @param array<string,array{blocks: string[], template: string}> $blockSections
+     * @param array<string, BlockLayoutSectionDefinition> $blockSections
+     *
      * @return array{identifier: string, template: string, blocks: Block[]}
      */
     protected function getBlockSection(Block $block, array $blockSections): array
     {
-        if (! $this->inEditorialMode()) {
+        if (!$this->inEditorialMode()) {
             foreach ($blockSections as $blockSectionId => $blockSection) {
                 if (
-                    in_array($block->type, $blockSection['blocks']) ||
-                    in_array(sprintf('%s/%s', $block->type, $block->view), $blockSection['blocks'])
+                    in_array($block->type, $blockSection->getBlocksIdentifier(), true) ||
+                    in_array(sprintf('%s/%s', $block->type, $block->view), $blockSection->getBlocksIdentifier(), true)
                 ) {
-                    return $this->getNewSection($blockSectionId, $blockSection['template']);
+                    return $this->getNewSection($blockSectionId, $blockSection->getTemplate());
                 }
             }
         }
-        return $this->getNewSection('default', $blockSections['default']['template']);
+        return $this->getNewSection('default', $blockSections['default']->getTemplate());
     }
 
     /**

@@ -1,25 +1,28 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-class ComponentParameter implements \JsonSerializable
+use JsonSerializable;
+
+class ComponentParameter implements JsonSerializable
 {
     public function __construct(
-        protected readonly string $name,
-        protected readonly string $label,
-        protected readonly bool $required,
+        protected readonly string                 $name,
+        protected readonly string                 $label,
+        protected readonly bool                   $required,
         protected readonly ComponentParameterType $type,
-        protected readonly bool $hasDefaultValue,
-        protected readonly mixed $defaultValue
+        protected readonly bool                   $hasDefaultValue,
+        protected readonly mixed                  $defaultValue
     ) {
     }
 
@@ -48,7 +51,7 @@ class ComponentParameter implements \JsonSerializable
         return $this->hasDefaultValue;
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->defaultValue;
     }

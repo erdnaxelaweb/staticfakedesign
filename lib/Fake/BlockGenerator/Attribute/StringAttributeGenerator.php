@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * Static Fake Design Bundle.
+ *
+ * @author    Florian ALEXANDRE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
+ */
+
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
@@ -12,6 +22,11 @@ class StringAttributeGenerator extends AbstractAttributeGenerator
     ) {
     }
 
+    public function __invoke(int $maxLength = 100): string
+    {
+        return $this->fakerGenerator->text($maxLength);
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -21,12 +36,10 @@ class StringAttributeGenerator extends AbstractAttributeGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $maxLength = 100): string
-    {
-        return $this->fakerGenerator->text($maxLength);
-    }
-
-    public function getForcedValue($value)
+    /**
+     * @param string|string[] $value
+     */
+    public function getForcedValue(mixed $value): string
     {
         return is_array($value) ? $this->fakerGenerator->randomElement($value) : $value;
     }

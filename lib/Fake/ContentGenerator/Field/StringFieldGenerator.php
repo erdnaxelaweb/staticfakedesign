@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -23,6 +22,11 @@ class StringFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
+    public function __invoke(int $maxLength = 100): string
+    {
+        return $this->fakerGenerator->text($maxLength);
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -32,12 +36,10 @@ class StringFieldGenerator extends AbstractFieldGenerator
             ->allowedTypes('int');
     }
 
-    public function __invoke(int $maxLength = 100): string
-    {
-        return $this->fakerGenerator->text($maxLength);
-    }
-
-    public function getForcedValue($value)
+    /**
+     * @param string|string[] $value
+     */
+    public function getForcedValue(mixed $value): string
     {
         return is_array($value) ? $this->fakerGenerator->randomElement($value) : $value;
     }

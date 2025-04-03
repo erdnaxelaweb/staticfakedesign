@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -23,6 +22,13 @@ class VideoGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private VideoGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): VideoGenerator
     {
         return new VideoGenerator(
@@ -32,15 +38,14 @@ class VideoGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-        $video = $generator();
+        $video = ($this->generator)();
         self::assertInstanceOf(Video::class, $video);
         self::assertNull($video->image);
         self::assertTrue($video->hasSource());
 
-        $video = $generator('large');
+        $video = ($this->generator)('large');
         self::assertInstanceOf(Video::class, $video);
         self::assertInstanceOf(Image::class, $video->image);
         self::assertTrue($video->hasSource());

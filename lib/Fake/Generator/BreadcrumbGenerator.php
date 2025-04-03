@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -22,17 +21,9 @@ class BreadcrumbGenerator extends AbstractGenerator
 {
     public function __construct(
         protected LinkGenerator $linkGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator          $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
-    }
-
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('count')
-            ->default(null)
-            ->allowedTypes('int', 'null');
     }
 
     public function __invoke(?int $count = null): Breadcrumb
@@ -43,5 +34,13 @@ class BreadcrumbGenerator extends AbstractGenerator
                 $instance->add(($this->linkGenerator)());
             }
         });
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('count')
+            ->default(null)
+            ->allowedTypes('int', 'null');
     }
 }

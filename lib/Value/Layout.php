@@ -1,27 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
+
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
 
 class Layout
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[]  $zones
+     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[] $zones
+     * @param array<string, BlockLayoutSectionDefinition>       $sections
      */
     public function __construct(
         public readonly string $template,
-        public readonly array $zones,
-        public readonly array $sections
+        public readonly array  $zones,
+        public readonly array  $sections
     ) {
     }
 

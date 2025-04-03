@@ -1,19 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockLayoutConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\BlockGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
@@ -23,29 +23,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BlocksFieldGenerator extends AbstractFieldGenerator
 {
     public function __construct(
-        protected BlockGenerator $blockGenerator,
-        protected BlockLayoutConfigurationManager $blockLayoutConfigurationManager,
-        protected FakerGenerator $fakerGenerator
+        protected BlockGenerator    $blockGenerator,
+        protected DefinitionManager $definitionManager,
+        FakerGenerator              $fakerGenerator
     ) {
+        parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('allowedTypes')
-            ->required()
-            ->allowedTypes('string[]');
-        $optionsResolver->define('layout')
-            ->required()
-            ->allowedTypes('string');
-    }
-
+    /**
+     * @param array<string> $allowedTypes
+     *
+     * @return array{layout: Layout, zones: array<string, LayoutZone>}
+     */
     public function __invoke(string $layout, array $allowedTypes): array
     {
-        $layoutConfiguration = $this->blockLayoutConfigurationManager->getConfiguration($layout);
+        $layoutConfiguration = $this->definitionManager->getDefinition(BlockLayoutDefinition::class, $layout);
 
         $zones = [];
-        foreach ($layoutConfiguration['zones'] as $zone) {
+        foreach ($layoutConfiguration->getZones() as $zone) {
             $count = $this->fakerGenerator->numberBetween(1, 10);
             $blocks = [];
             for ($i = 0; $i < $count; $i++) {
@@ -58,8 +53,19 @@ class BlocksFieldGenerator extends AbstractFieldGenerator
         }
 
         return [
-            "layout" => new Layout($layoutConfiguration['template'], $zones, $layoutConfiguration['sections']),
+            "layout" => new Layout($layoutConfiguration->getTemplate(), $zones, $layoutConfiguration->getSections()),
             "zones" => $zones,
         ];
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('allowedTypes')
+            ->required()
+            ->allowedTypes('string[]');
+        $optionsResolver->define('layout')
+            ->required()
+            ->allowedTypes('string');
     }
 }

@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -25,8 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PagerGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected RequestStack $requestStack,
-        protected ContentGenerator $contentGenerator,
+        protected RequestStack        $requestStack,
+        protected ContentGenerator    $contentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
         protected LinkGenerator       $linkGenerator,
         protected DefinitionManager   $definitionManager,
@@ -35,19 +34,9 @@ class PagerGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('type')
-            ->required()
-            ->allowedTypes('string')
-            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
-
-        $optionsResolver->define('pagesCount')
-            ->default(null)
-            ->allowedTypes('int', 'null');
-    }
-
+    /**
+     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Pager<\ErdnaxelaWeb\StaticFakeDesign\Value\Content>
+     */
     public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
         $currentPage = (int) $this->requestStack->getCurrentRequest()
@@ -74,7 +63,7 @@ class PagerGenerator extends AbstractGenerator
             function () use ($filters, $sorts, $type) {
                 return ($this->searchFormGenerator)($filters, $sorts, $type);
             },
-            function () use ($filters, $sorts) {
+            function () use ($filters) {
                 $count = $this->fakerGenerator->numberBetween(0, 10);
                 $links = [];
                 for ($i = 0; $i < $count; ++$i) {
@@ -89,11 +78,25 @@ class PagerGenerator extends AbstractGenerator
                 return $links;
             }
         );
+
         $pager = new Pager($adapter);
         $pager->setCurrentPage($currentPage);
         $pager->setMaxPerPage($maxPerPage);
         $pager->setHeadlineCount($headlineCount);
 
         return $pager;
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string')
+            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
+
+        $optionsResolver->define('pagesCount')
+            ->default(null)
+            ->allowedTypes('int', 'null');
     }
 }

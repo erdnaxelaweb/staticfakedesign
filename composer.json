@@ -1,10 +1,17 @@
 {
     "name":  "erdnaxelaweb/staticfakedesign",
-    "type": "library",
-    "description": "Provides utilities to generate fake data in order to create a static design",
-    "keywords": [],
+    "type": "symfony-bundle",
+    "description": "Generate realistic-looking static HTML/CSS/JS based on fake data",
+    "keywords": [
+      "sympfony",
+      "twig",
+      "faker",
+      "front-end-development",
+      "ui-prototyping"
+    ],
     "license": "MIT",
     "require": {
+        "php": "^8.1",
         "fakerphp/faker": "^1.23",
         "friendsofphp/proxy-manager-lts": "^1.0",
         "symfony/translation": "^5.0",
@@ -15,11 +22,14 @@
         "smknstd/fakerphp-picsum-images": "^1.0",
         "symfony/form": "^5.0",
         "twig/intl-extra": "^3.0",
-        "jms/translation-bundle": "^1.5"
+        "jms/translation-bundle": "^1.5",
+        "symfony/yaml": "^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.3",
-        "symplify/easy-coding-standard": "*"
+        "symplify/easy-coding-standard": "*",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0"
     },
     "suggest": {
         "ext-dom": "*"

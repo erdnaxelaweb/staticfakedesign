@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -30,17 +29,6 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
         parent::__construct($fakerGenerator, $fieldGeneratorRegistry);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('identifier')
-            ->required()
-            ->allowedTypes('string')
-            ->info(
-                'Identifier of the taxonomy entry to generate. See erdnaxelaweb.static_fake_design.taxonomy_entry_definition'
-            );
-    }
-
     public function __invoke(string $type): TaxonomyEntry
     {
         $configuration = $this->definitionManager->getDefinition(TaxonomyEntryDefinition::class, $type);
@@ -55,5 +43,16 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
                 $this->fakerGenerator->word()
             );
         });
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('identifier')
+            ->required()
+            ->allowedTypes('string')
+            ->info(
+                'Identifier of the taxonomy entry to generate. See erdnaxelaweb.static_fake_design.taxonomy_entry_definition'
+            );
     }
 }

@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -22,16 +21,21 @@ class CoordinatesGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator()
+    private CoordinatesGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
+    public static function getGenerator(): CoordinatesGenerator
     {
         return new CoordinatesGenerator(self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $coordinates = $generator();
+        $coordinates = ($this->generator)();
         self::assertInstanceOf(Coordinates::class, $coordinates);
     }
 }

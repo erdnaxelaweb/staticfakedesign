@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -17,12 +18,15 @@ use Symfony\Component\Form\FormRegistryInterface;
 
 class GenericFormFieldGenerator extends AbstractFormFieldGenerator
 {
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function __construct(
-        FormFactoryInterface $formFactory,
+        FormFactoryInterface  $formFactory,
         FormRegistryInterface $registry,
-        FakerGenerator $fakerGenerator,
-        protected string $formType,
-        protected array $formOptions = []
+        FakerGenerator        $fakerGenerator,
+        protected string      $formType,
+        protected array       $formOptions = []
     ) {
         parent::__construct($formFactory, $registry, $fakerGenerator);
     }

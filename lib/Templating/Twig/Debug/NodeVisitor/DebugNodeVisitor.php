@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -32,7 +33,7 @@ class DebugNodeVisitor implements NodeVisitorInterface
 
     public function leaveNode(Node $node, Environment $env): ?Node
     {
-        if (! $env->isDebug() || ! str_contains($node->getTemplateName(), '.html.twig')) {
+        if (!$env->isDebug() || !str_contains($node->getTemplateName(), '.html.twig')) {
             return $node;
         }
 
@@ -60,13 +61,13 @@ class DebugNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    protected function getTemplatePath(string $path)
-    {
-        return str_replace($this->kernelProjectDir . "/", '', $path);
-    }
-
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
+    }
+
+    protected function getTemplatePath(string $path): string
+    {
+        return str_replace($this->kernelProjectDir . "/", '', $path);
     }
 }

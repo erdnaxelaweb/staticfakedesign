@@ -1,26 +1,36 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-import-type allowedTags from \ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator
+ */
 class RichTextFieldGenerator extends AbstractFieldGenerator
 {
     public function __construct(
         protected RichTextGenerator $richTextGenerator
     ) {
+    }
+
+    /**
+     * @param array<allowedTags> $allowedTags
+     */
+    public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
+    {
+        return ($this->richTextGenerator)($maxWidth, $allowedTags);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void
@@ -34,10 +44,5 @@ class RichTextFieldGenerator extends AbstractFieldGenerator
             ->default([])
             ->allowedTypes('string[]')
             ->info(implode(', ', RichTextGenerator::ALLOWED_TAGS));
-    }
-
-    public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
-    {
-        return ($this->richTextGenerator)($maxWidth, $allowedTags);
     }
 }

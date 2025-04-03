@@ -1,40 +1,55 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\BlocksFieldGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator\BlockGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
-use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Layout;
+use ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone;
 use PHPUnit\Framework\TestCase;
 
 class BlocksFieldGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(): BlocksFieldGenerator
+    private BlocksFieldGenerator $generator;
+
+    protected function setUp(): void
     {
-        return new BlocksFieldGenerator(BlockGeneratorTest::getGenerator(), self::getFakerGenerator());
+        $this->generator = self::getGenerator();
     }
 
-    public function testGenerator()
+    public static function getGenerator(): BlocksFieldGenerator
     {
-        $generator = self::getGenerator();
+        return new BlocksFieldGenerator(
+            BlockGeneratorTest::getGenerator(),
+            DefinitionManagerTest::getManager(),
+            self::getFakerGenerator()
+        );
+    }
 
-        $block = $generator(['list']);
-        self::assertIsArray($block);
-        self::assertNotEmpty($block);
-        self::assertInstanceOf(Block::class, $block[0]);
+    public function testGenerator(): void
+    {
+        $block = ($this->generator)('default', ['list']);
+
+        self::assertArrayHasKey('layout', $block);
+        self::assertInstanceOf(Layout::class, $block['layout']);
+
+        self::assertArrayHasKey('zones', $block);
+        self::assertNotEmpty($block['zones']);
+        self::assertArrayHasKey('default', $block['zones']);
+        self::assertInstanceOf(LayoutZone::class, $block['zones']['default']);
     }
 }

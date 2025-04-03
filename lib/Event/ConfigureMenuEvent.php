@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -19,21 +20,18 @@ class ConfigureMenuEvent extends Event
 {
     public const SHOWROOM_MENU_SIDEBAR = "showroom.menu.sidebar";
 
-    /**
-     * @var \Knp\Menu\FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
+
+    private ItemInterface $menu;
 
     /**
-     * @var \Knp\Menu\ItemInterface
+     * @var array<mixed>
      */
-    private $menu;
+    private array $options;
 
     /**
-     * @var array|null
+     * @param array<mixed> $options
      */
-    private $options;
-
     public function __construct(FactoryInterface $factory, ItemInterface $menu, array $options = [])
     {
         $this->factory = $factory;
@@ -51,6 +49,9 @@ class ConfigureMenuEvent extends Event
         return $this->menu;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getOptions(): array
     {
         return $this->options ?? [];

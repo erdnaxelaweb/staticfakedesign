@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -23,19 +22,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LinkGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected FactoryInterface $factory,
+        protected FactoryInterface    $factory,
         protected TranslatorInterface $translator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator                $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
-    }
-
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('target')
-            ->default(null)
-            ->allowedTypes('string', 'null');
     }
 
     public function __invoke(?string $target = null): ItemInterface
@@ -53,5 +44,13 @@ class LinkGenerator extends AbstractGenerator
         }
 
         return $this->factory->createItem($name, $options);
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('target')
+            ->default(null)
+            ->allowedTypes('string', 'null');
     }
 }
