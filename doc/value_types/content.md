@@ -79,6 +79,30 @@ erdnaxelaweb.static_fake_design.content_definition:
 - time
 - url
 
+## Support new field types
+
+You can extend the available field types by creating and registering your own custom field generators within your own project or bundle, without modifying the `StaticFakeDesignBundle` itself.
+
+Follow these steps:
+
+1.  **Create a Field generator class:**
+    *   Create a new PHP class to implement the `ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FieldGeneratorInterface` or extend the `ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\AbstractFieldGenerator` abstract class.
+    *   Implement the `__invoke` methods to define the logic for generating fake data for your custom field type.
+
+2.  **Register as a Symfony service:**
+    *   Define a new service for your generator class.
+    *   Tag your service definition with `erdnaxelaweb.static_fake_design.generator.content_field`.
+    *   Add the `type` attribute to the tag, assigning a unique string identifier for your new field type. This identifier is what you will use in the `erdnaxelaweb.static_fake_design.content_definition` YAML configuration within your project.
+
+**Example Service Definition (in `config/services.yaml`):**
+
+```yaml
+services:
+    App\Fake\FieldGenerator\MyCustomFieldGenerator:
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'my_custom_field'}
+```
+
 ## Models
 
 The `models` parameter allow you to create variations of your content with specific data.
@@ -502,3 +526,4 @@ erdnaxelaweb.static_fake_design.content_definition:
                 translatable: true
                 category: Forms
 ```
+
