@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -21,12 +22,12 @@ class Component
      */
     public function __construct(
         protected readonly Template $template,
-        protected readonly string $name,
-        protected readonly string $type = 'default',
-        protected readonly string $description = '',
-        protected readonly string $specifications = '',
-        protected readonly array $properties = [],
-        protected readonly array $parameters = []
+        protected readonly string   $name,
+        protected readonly string   $type = 'default',
+        protected readonly string   $description = '',
+        protected readonly string   $specifications = '',
+        protected readonly array    $properties = [],
+        protected readonly array    $parameters = []
     ) {
     }
 

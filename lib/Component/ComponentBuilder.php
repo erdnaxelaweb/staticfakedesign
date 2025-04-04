@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -24,11 +25,9 @@ class ComponentBuilder
     ) {
     }
 
-    protected function instanciate(array $componentArgs): Component
-    {
-        return new Component(...$componentArgs);
-    }
-
+    /**
+     * @param array<string, mixed> $rawParameters
+     */
     public function fromArray(array $rawParameters, Template $template): Component
     {
         $optionsResolver = new OptionsResolver();
@@ -38,6 +37,14 @@ class ComponentBuilder
         $componentArgs['template'] = $template;
 
         return $this->instanciate($componentArgs);
+    }
+
+    /**
+     * @param array<mixed> $componentArgs
+     */
+    protected function instanciate(array $componentArgs): Component
+    {
+        return new Component(...$componentArgs);
     }
 
     protected function configureComponentOptions(OptionsResolver $optionsResolver, Template $template): void
@@ -56,7 +63,7 @@ class ComponentBuilder
 
         $optionsResolver->define('type')
             ->default(function (Options $options) use ($template) {
-                if (preg_match('#landing_page/block/#', $template->getTemplateName())) {
+                if (str_contains($template->getTemplateName(), 'landing_page/block/')) {
                     return 'block';
                 }
                 if (preg_match('#content/([^/]+)/#', $template->getTemplateName())) {
@@ -111,7 +118,7 @@ class ComponentBuilder
         $optionsResolver->define('type')
             ->required()
             ->default(function (Options $options) {
-                if (! isset($options['default'])) {
+                if (!isset($options['default'])) {
                     return null;
                 }
 
@@ -127,7 +134,7 @@ class ComponentBuilder
 
         $optionsResolver->define('required')
             ->default(function (Options $options) {
-                if (! isset($options['default'])) {
+                if (!isset($options['default'])) {
                     return true;
                 }
 

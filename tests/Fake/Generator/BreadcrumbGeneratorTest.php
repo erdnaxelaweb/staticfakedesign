@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -23,21 +22,25 @@ class BreadcrumbGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator()
+    private BreadcrumbGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
+    public static function getGenerator(): BreadcrumbGenerator
     {
         return new BreadcrumbGenerator(LinkGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $breadcrumb = $generator();
+        $breadcrumb = ($this->generator)();
         self::assertInstanceOf(Breadcrumb::class, $breadcrumb);
-        self::assertNotEmpty($breadcrumb);
         self::assertInstanceOf(MenuItem::class, $breadcrumb[0]);
 
-        $breadcrumb = $generator(5);
+        $breadcrumb = ($this->generator)(5);
         self::assertInstanceOf(Breadcrumb::class, $breadcrumb);
         self::assertCount(5, $breadcrumb);
         self::assertInstanceOf(MenuItem::class, $breadcrumb[0]);

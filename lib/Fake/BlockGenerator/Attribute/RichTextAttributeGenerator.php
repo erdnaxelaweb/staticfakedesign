@@ -1,15 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * Static Fake Design Bundle.
+ *
+ * @author    Florian ALEXANDRE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
+ */
+
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-import-type allowedTags from \ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator
+ */
 class RichTextAttributeGenerator extends AbstractAttributeGenerator
 {
     public function __construct(
         protected RichTextGenerator $richTextGenerator
     ) {
+    }
+
+    /**
+     * @param array<allowedTags> $allowedTags
+     */
+    public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
+    {
+        return ($this->richTextGenerator)($maxWidth, $allowedTags);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void
@@ -23,10 +44,5 @@ class RichTextAttributeGenerator extends AbstractAttributeGenerator
             ->default([])
             ->allowedTypes('string[]')
             ->info(implode(', ', RichTextGenerator::ALLOWED_TAGS));
-    }
-
-    public function __invoke(int $maxWidth = 10, array $allowedTags = []): string
-    {
-        return ($this->richTextGenerator)($maxWidth, $allowedTags);
     }
 }

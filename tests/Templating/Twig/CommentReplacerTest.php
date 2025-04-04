@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Templating\Twig;
 
@@ -22,7 +21,10 @@ class CommentReplacerTest extends TestCase
 {
     use MethodInvokerTrait;
 
-    public static function replaceInStringData()
+    /**
+     * @return array<array{0: string, 1:string}>
+     */
+    public static function replaceInStringData(): array
     {
         return [
             [
@@ -52,14 +54,17 @@ class CommentReplacerTest extends TestCase
     /**
      * @dataProvider replaceInStringData
      */
-    public function testReplaceInString(string $string, string $expected)
+    public function testReplaceInString(string $string, string $expected): void
     {
         $replacer = new CommentReplacer();
         $result = $replacer->replaceInString($string);
         assertEquals($expected, $result);
     }
 
-    public static function matchCommentsData()
+    /**
+     * @return array<array{0: string, 1: array<string, mixed>}>
+     */
+    public static function matchCommentsData(): array
     {
         return [
             [
@@ -133,8 +138,9 @@ class CommentReplacerTest extends TestCase
 
     /**
      * @dataProvider matchCommentsData
+     * @param array<string, mixed> $expectedResult
      */
-    public function testMatchComments(string $comment, array $expectedResult)
+    public function testMatchComments(string $comment, array $expectedResult): void
     {
         $replacer = new CommentReplacer();
         $comments = $this->invokeMethod($replacer, "matchComments", [$comment]);

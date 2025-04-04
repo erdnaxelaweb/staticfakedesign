@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -28,7 +29,7 @@ class ComponentTokenParser extends AbstractTokenParser
         return new ComponentReferenceNode($parameters);
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'component';
     }

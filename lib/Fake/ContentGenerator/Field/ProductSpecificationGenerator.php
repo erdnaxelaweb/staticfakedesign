@@ -2,12 +2,22 @@
 
 declare(strict_types=1);
 
+/*
+ * Static Fake Design Bundle.
+ *
+ * @author    Florian ALEXANDRE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
+ */
+
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
+
+use Exception;
 
 class ProductSpecificationGenerator extends AbstractFieldGenerator
 {
-    public function __invoke()
+    public function __invoke(): void
     {
-        return null;
+        throw new Exception('Not implemented');
     }
 }

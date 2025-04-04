@@ -1,62 +1,61 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesignBundle\Controller;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\BlockConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\ContentConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager;
-use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\ContentDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
-use Twig\Environment;
 
-class StaticController extends TemplateController
+class StaticController extends AbstractController
 {
     public function __construct(
-        protected BlockConfigurationManager $blockConfigurationManager,
-        protected TaxonomyEntryConfigurationManager $taxonomyEntryConfigurationManager,
-        protected ContentConfigurationManager $contentConfigurationManager,
-        protected PagerConfigurationManager $pagerConfigurationManager,
-        protected ImageConfiguration $imageConfiguration,
-        Environment $twig = null
+        protected DefinitionManager         $definitionManager,
+        protected ImageConfiguration             $imageConfiguration
     ) {
-        parent::__construct($twig);
     }
 
-    public function viewAction(string $path): \Symfony\Component\HttpFoundation\Response
+    public function viewAction(string $path): Response
     {
-        return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
+        return $this->render(sprintf("static/%s.html.twig", !empty($path) ? $path : "index"));
     }
 
-    public function viewExamplesAction(string $path): \Symfony\Component\HttpFoundation\Response
+    public function viewExamplesAction(string $path): Response
     {
-        $exampleParameters = Yaml::parseFile(__DIR__ . '/../Resources/config/examples.yaml');
+        $exampleParameters = Yaml::parse(file_get_contents(__DIR__ . '/../Resources/config/examples.yaml'));
 
         $this->imageConfiguration->setVariations(
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.image.variations']
         );
-        $this->blockConfigurationManager->registerConfigurations(
+        $this->definitionManager->registerDefinitions(
+            BlockDefinition::DEFINITION_TYPE,
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.block_definition']
         );
-        $this->taxonomyEntryConfigurationManager->registerConfigurations(
+        $this->definitionManager->registerDefinitions(
+            TaxonomyEntryDefinition::DEFINITION_TYPE,
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.taxonomy_entry_definition']
         );
-        $this->contentConfigurationManager->registerConfigurations(
+        $this->definitionManager->registerDefinitions(
+            ContentDefinition::DEFINITION_TYPE,
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.content_definition']
         );
-        $this->pagerConfigurationManager->registerConfigurations(
+        $this->definitionManager->registerDefinitions(
+            PagerDefinition::DEFINITION_TYPE,
             $exampleParameters['parameters']['erdnaxelaweb.static_fake_design.pager_definition']
         );
 

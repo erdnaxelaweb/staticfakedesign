@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -23,6 +22,11 @@ class FloatFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
+    public function __invoke(float $min = 0, float $max = PHP_FLOAT_MAX): float
+    {
+        return $this->fakerGenerator->randomFloat(null, $min, $max);
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -33,10 +37,5 @@ class FloatFieldGenerator extends AbstractFieldGenerator
         $optionsResolver->define('max')
             ->default(PHP_FLOAT_MAX)
             ->allowedTypes('int', 'float');
-    }
-
-    public function __invoke(float $min = 0, float $max = PHP_FLOAT_MAX): float
-    {
-        return $this->fakerGenerator->randomFloat(null, $min, $max);
     }
 }

@@ -1,19 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
+use ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
@@ -24,40 +24,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PagerGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected RequestStack $requestStack,
-        protected ContentGenerator $contentGenerator,
+        protected RequestStack        $requestStack,
+        protected ContentGenerator    $contentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
-        protected LinkGenerator $linkGenerator,
-        protected PagerConfigurationManager $pagerConfigurationManager,
-        FakerGenerator             $fakerGenerator
+        protected LinkGenerator       $linkGenerator,
+        protected DefinitionManager   $definitionManager,
+        FakerGenerator                $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('type')
-            ->required()
-            ->allowedTypes('string')
-            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
-
-        $optionsResolver->define('pagesCount')
-            ->default(null)
-            ->allowedTypes('int', 'null');
-    }
-
+    /**
+     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Pager<\ErdnaxelaWeb\StaticFakeDesign\Value\Content>
+     */
     public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
         $currentPage = (int) $this->requestStack->getCurrentRequest()
             ->query->get('page', 1);
-        $configuration = $this->pagerConfigurationManager->getConfiguration($type);
-        $sorts = $configuration['sorts'];
-        $filters = $configuration['filters'];
-        $contentTypes = $configuration['contentTypes'];
-        $maxPerPage = $configuration['maxPerPage'];
-        $headlineCount = $configuration['headlineCount'];
-        $pagesCount = $pagesCount ?? rand($currentPage, 10);
+        $pagerDefinition = $this->definitionManager->getDefinition(PagerDefinition::class, $type);
+        $sorts = $pagerDefinition->getSorts();
+        $filters = $pagerDefinition->getFilters();
+        $contentTypes = $pagerDefinition->getContentTypes();
+        $maxPerPage = $pagerDefinition->getMaxPerPage();
+        $headlineCount = $pagerDefinition->getHeadlineCount();
+        $pagesCount = $pagesCount ?? rand(1, 10);
 
         $adapter = new PagerAdapter(
             static function () use ($maxPerPage, $pagesCount) {
@@ -73,7 +63,7 @@ class PagerGenerator extends AbstractGenerator
             function () use ($filters, $sorts, $type) {
                 return ($this->searchFormGenerator)($filters, $sorts, $type);
             },
-            function () use ($filters, $sorts) {
+            function () use ($filters) {
                 $count = $this->fakerGenerator->numberBetween(0, 10);
                 $links = [];
                 for ($i = 0; $i < $count; ++$i) {
@@ -88,11 +78,25 @@ class PagerGenerator extends AbstractGenerator
                 return $links;
             }
         );
+
         $pager = new Pager($adapter);
         $pager->setCurrentPage($currentPage);
         $pager->setMaxPerPage($maxPerPage);
         $pager->setHeadlineCount($headlineCount);
 
         return $pager;
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string')
+            ->info('Identifier of the content to generate. See erdnaxelaweb.static_fake_design.content_definition');
+
+        $optionsResolver->define('pagesCount')
+            ->default(null)
+            ->allowedTypes('int', 'null');
     }
 }

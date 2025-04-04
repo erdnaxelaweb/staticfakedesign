@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator;
 
@@ -22,28 +21,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VideoGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected ImageGenerator $imageGenerator,
+        protected ImageGenerator    $imageGenerator,
         protected RichTextGenerator $richTextGenerator,
-        FakerGenerator $fakerGenerator
+        FakerGenerator              $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
-    }
-
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('imageVariationName')
-            ->default(null)
-            ->allowedTypes('string', 'null')
-            ->info(
-                'Name of the image variation to generate. See erdnaxelaweb.static_fake_design.image.variations parameter'
-            );
     }
 
     public function __invoke(string $imageVariationName = null): Video
     {
         $image = null;
-        if (! empty($imageVariationName)) {
+        if (!empty($imageVariationName)) {
             $image = ($this->imageGenerator)($imageVariationName);
         }
 
@@ -62,5 +50,16 @@ class VideoGenerator extends AbstractGenerator
             $image,
             [$source],
         );
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('imageVariationName')
+            ->default(null)
+            ->allowedTypes('string', 'null')
+            ->info(
+                'Name of the image variation to generate. See erdnaxelaweb.static_fake_design.image.variations parameter'
+            );
     }
 }

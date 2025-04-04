@@ -1,20 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\ContentConfigurationManagerTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\ContentFieldGeneratorRegistryTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
@@ -24,23 +23,29 @@ class ContentGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private ContentGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): ContentGenerator
     {
         return new ContentGenerator(
-            ContentConfigurationManagerTest::getManager(),
+            DefinitionManagerTest::getManager(),
             BreadcrumbGeneratorTest::getGenerator(),
+            ContentFieldGeneratorRegistryTest::getRegistry(),
             self::getFakerGenerator(),
-            ContentFieldGeneratorRegistryTest::getRegistry()
         );
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-        $content = $generator('article');
+        $content = ($this->generator)('article');
         self::assertInstanceOf(Content::class, $content);
 
-        $content = $generator(['article', 'article']);
+        $content = ($this->generator)(['article', 'article']);
         self::assertInstanceOf(Content::class, $content);
     }
 }

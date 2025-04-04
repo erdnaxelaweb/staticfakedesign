@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -17,7 +16,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 
 abstract class AbstractFieldGenerator extends AbstractGenerator implements FieldGeneratorInterface
 {
-    public function getForcedValue($value)
+    public function getForcedValue(mixed $value): mixed
     {
         return $value;
     }

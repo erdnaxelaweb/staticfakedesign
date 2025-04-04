@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake;
 
@@ -22,10 +21,13 @@ trait GeneratorTestTrait
 {
     public static ?GeneratorInterface $instance = null;
 
+    /**
+     * @param array<string, mixed>       $imageProviderParameters
+     */
     public static function getFakerGenerator(
         array $imageProviderParameters = [],
         ?string $imageProviderClass = null,
-        $locale = Factory::DEFAULT_LOCALE
+        string $locale = Factory::DEFAULT_LOCALE
     ): FakerGenerator {
         return FakerGeneratorFactory::createGenerator($imageProviderParameters, $imageProviderClass, $locale);
     }

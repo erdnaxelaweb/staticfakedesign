@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -23,18 +22,11 @@ class MatrixFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('columns')
-            ->required()
-            ->allowedTypes('string[]');
-
-        $optionsResolver->define('minimumRows')
-            ->default(1)
-            ->allowedTypes('int');
-    }
-
+    /**
+     * @param array<string> $columns
+     *
+     * @return array<array<string, string>>
+     */
     public function __invoke(array $columns, int $minimumRows = 1): array
     {
         $count = $this->fakerGenerator->numberBetween($minimumRows, 10);
@@ -47,5 +39,17 @@ class MatrixFieldGenerator extends AbstractFieldGenerator
             $rows[] = $row;
         }
         return $rows;
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('columns')
+            ->required()
+            ->allowedTypes('string[]');
+
+        $optionsResolver->define('minimumRows')
+            ->default(1)
+            ->allowedTypes('int');
     }
 }

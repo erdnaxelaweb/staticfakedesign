@@ -1,19 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\TaxonomyEntryGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\TaxonomyEntry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
@@ -23,19 +23,10 @@ class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('type')
-            ->required()
-            ->allowedTypes('string');
-
-        $optionsResolver->define('max')
-            ->default(1)
-            ->allowedTypes('int');
-    }
-
-    public function __invoke(string $type, int $max = 1)
+    /**
+     * @return TaxonomyEntry[]|TaxonomyEntry
+     */
+    public function __invoke(string $type, int $max = 1): array|TaxonomyEntry
     {
         if ($max === 1) {
             return ($this->taxonomyEntryGenerator)($type);
@@ -48,5 +39,17 @@ class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
         }
 
         return $tags;
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string');
+
+        $optionsResolver->define('max')
+            ->default(1)
+            ->allowedTypes('int');
     }
 }

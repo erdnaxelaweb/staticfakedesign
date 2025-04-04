@@ -1,8 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * Static Fake Design Bundle.
+ *
+ * @author    Florian ALEXANDRE
+ * @copyright 2023-present Florian ALEXANDRE
+ * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
+ */
+
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContentAttributeGenerator extends AbstractAttributeGenerator
@@ -12,19 +23,12 @@ class ContentAttributeGenerator extends AbstractAttributeGenerator
     ) {
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        parent::configureOptions($optionsResolver);
-        $optionsResolver->define('type')
-            ->required()
-            ->allowedTypes('string', 'string[]');
-
-        $optionsResolver->define('max')
-            ->default(1)
-            ->allowedTypes('int');
-    }
-
-    public function __invoke($type, int $max = 1)
+    /**
+     * @param string|string[] $type
+     *
+     * @return Content[]|Content
+     */
+    public function __invoke(string|array $type, int $max = 1): array|Content
     {
         if ($max === 1) {
             return ($this->contentGenerator)($type);
@@ -37,5 +41,17 @@ class ContentAttributeGenerator extends AbstractAttributeGenerator
         }
 
         return $contents;
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        parent::configureOptions($optionsResolver);
+        $optionsResolver->define('type')
+            ->required()
+            ->allowedTypes('string', 'string[]');
+
+        $optionsResolver->define('max')
+            ->default(1)
+            ->allowedTypes('int');
     }
 }

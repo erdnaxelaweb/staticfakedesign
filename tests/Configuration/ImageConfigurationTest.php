@@ -1,64 +1,73 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-declare(strict_types=1);
-
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration;
 
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\ImageVariationSourceDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Exception\VariationConfigurationNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class ImageConfigurationTest extends TestCase
 {
+    private ImageConfiguration $imageConfiguration;
+
+    protected function setUp(): void
+    {
+        $this->imageConfiguration = self::getConfiguration();
+    }
+
     public static function getConfiguration(): ImageConfiguration
     {
         return new ImageConfiguration(
             [
-                [
-                    'suffix' => 'desktop',
-                    'media' => '(min-width: 1024px)',
+                "breakpoints" => [
+                    [
+                        'suffix' => 'desktop',
+                        'media' => '(min-width: 1024px)',
+                        'use_webp' => false,
+                    ],
+                    [
+                        'suffix' => 'tablet',
+                        'media' => '(min-width: 754px)',
+                        'use_webp' => true,
+                    ],
+                    [
+                        'suffix' => 'mobile',
+                        'media' => '(min-width: 0)',
+                        'use_webp' => ImageConfiguration::FORCE_WEBP,
+                    ],
                 ],
-                [
-                    'suffix' => 'tablet',
-                    'media' => '(min-width: 754px)',
+                "variations" => [
+                    'large' => [[200, 200], [100, 100], [50, 50]],
                 ],
-                [
-                    'suffix' => 'mobile',
-                    'media' => '(min-width: 0)',
-                ],
-            ],
-            [
-                'large' => [[200, 200], [100, 100], [50, 50]],
             ]
         );
     }
 
-    public function testGetVariationConfiguration()
+    public function testGetVariationConfiguration(): void
     {
-        $imageConfiguration = self::getConfiguration();
-        $configuration = $imageConfiguration->getVariationConfig('large');
-        self::assertIsArray($configuration);
-        self::assertCount(3, $configuration);
-        self::assertArrayHasKey('suffix', $configuration[0]);
-        self::assertArrayHasKey('media', $configuration[0]);
-        self::assertArrayHasKey('height', $configuration[0]);
-        self::assertArrayHasKey('width', $configuration[0]);
+        $configurations = $this->imageConfiguration->getVariationConfig('large');
+        self::assertCount(4, $configurations);
+        self::assertInstanceOf(ImageVariationSourceDefinition::class, $configurations[0]);
+        self::assertEquals('desktop', $configurations[0]->getSuffix());
+        self::assertEquals('(min-width: 1024px)', $configurations[0]->getMedia());
+        self::assertEquals(200, $configurations[0]->getHeight());
+        self::assertEquals(200, $configurations[0]->getWidth());
     }
 
-    public function testGetVariationConfigurationNotFound()
+    public function testGetVariationConfigurationNotFound(): void
     {
-        $imageConfiguration = self::getConfiguration();
-
         $this->expectException(VariationConfigurationNotFoundException::class);
-        $configuration = $imageConfiguration->getVariationConfig('notfound');
+        $configuration = $this->imageConfiguration->getVariationConfig('notfound');
     }
 }

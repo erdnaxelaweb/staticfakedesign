@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator;
 
@@ -34,10 +33,18 @@ use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\StringFieldG
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TaxonomyEntryFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TextFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TimeFieldGeneratorTest;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class ContentFieldGeneratorRegistryTest extends TestCase
 {
+    private FieldGeneratorRegistry $registry;
+
+    protected function setUp(): void
+    {
+        $this->registry = self::getRegistry();
+    }
+
     public static function getRegistry(): FieldGeneratorRegistry
     {
         return new class(function () {
@@ -64,14 +71,18 @@ class ContentFieldGeneratorRegistryTest extends TestCase
         }) extends FieldGeneratorRegistry {
             protected ?FieldGeneratorRegistry $instance = null;
 
+            /**
+             * @param callable(): FieldGeneratorRegistry $initializer
+             */
             public function __construct(
                 protected $initializer
             ) {
+                parent::__construct();
             }
 
             public function getInstance(): FieldGeneratorRegistry
             {
-                if (! $this->instance) {
+                if (!$this->instance) {
                     $this->instance = ($this->initializer)();
                 }
                 return $this->instance;
@@ -79,24 +90,28 @@ class ContentFieldGeneratorRegistryTest extends TestCase
 
             public function getGenerator(string $type): FieldGeneratorInterface
             {
-                return ($this->getInstance())
+                return $this->getInstance()
                     ->getGenerator($type);
+            }
+
+            public function getTypes(): array
+            {
+                return $this->getInstance()
+                    ->getTypes();
             }
         };
     }
 
-    public function testGetGenerator()
+    public function testGetGenerator(): void
     {
-        $registry = self::getRegistry();
-        $generator = $registry->getGenerator('string');
+        $generator = $this->registry->getGenerator('string');
         self::assertInstanceOf(GeneratorInterface::class, $generator);
     }
 
-    public function testGetGeneratorException()
+    public function testGetGeneratorException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
-        $registry = self::getRegistry();
-        $generator = $registry->getGenerator('notfound');
+        $this->registry->getGenerator('notfound');
     }
 }

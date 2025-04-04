@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
@@ -23,21 +22,26 @@ class AudioGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
+    private AudioGenerator $generator;
+
+    protected function setUp(): void
+    {
+        $this->generator = self::getGenerator();
+    }
+
     public static function getGenerator(): AudioGenerator
     {
         return new AudioGenerator(ImageGeneratorTest::getGenerator(), self::getFakerGenerator());
     }
 
-    public function testGenerator()
+    public function testGenerator(): void
     {
-        $generator = self::getGenerator();
-
-        $audio = $generator();
+        $audio = ($this->generator)();
         self::assertInstanceOf(Audio::class, $audio);
         self::assertNull($audio->image);
         self::assertTrue($audio->hasSource());
 
-        $audio = $generator('large');
+        $audio = ($this->generator)('large');
         self::assertInstanceOf(Audio::class, $audio);
         self::assertInstanceOf(Image::class, $audio->image);
         self::assertTrue($audio->hasSource());

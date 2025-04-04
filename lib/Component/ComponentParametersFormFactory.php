@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 
 class ComponentParametersFormFactory
 {
@@ -25,17 +27,15 @@ class ComponentParametersFormFactory
     ];
 
     public function __construct(
-        protected FormFactory $formFactory,
+        protected FormFactory                     $formFactory,
         protected ComponentContextResolverFactory $componentContextResolverFactory
     ) {
     }
 
-    protected function getFormType(string $valueType): ?string
-    {
-        return self::FORM_TYPES[$valueType] ?? null;
-    }
-
-    public function __invoke(Component $component, array $values = [])
+    /**
+     * @param array<string, mixed> $values
+     */
+    public function __invoke(Component $component, array $values = []): FormInterface
     {
         $data = ($this->componentContextResolverFactory)($component)
             ->resolve($values);
@@ -48,7 +48,7 @@ class ComponentParametersFormFactory
             $value = $data[$parameter->getName()] ?? null;
             $formType = $this->getFormType(gettype($value));
 
-            if (! $formType) {
+            if (!$formType) {
                 continue;
             }
             $form->add($parameter->getName(), $formType, [
@@ -57,5 +57,10 @@ class ComponentParametersFormFactory
         }
 
         return $form->getForm();
+    }
+
+    protected function getFormType(string $valueType): ?string
+    {
+        return self::FORM_TYPES[$valueType] ?? null;
     }
 }

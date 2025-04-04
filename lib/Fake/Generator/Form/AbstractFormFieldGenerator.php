@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -13,6 +14,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\Form;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRegistryInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,21 +22,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 abstract class AbstractFormFieldGenerator extends AbstractGenerator
 {
     public function __construct(
-        protected FormFactoryInterface $formFactory,
+        protected FormFactoryInterface  $formFactory,
         protected FormRegistryInterface $registry,
-        FakerGenerator        $fakerGenerator
+        FakerGenerator                  $fakerGenerator
     ) {
         parent::__construct($fakerGenerator);
     }
 
-    abstract protected function getFormType(): string;
-
-    protected function getFormOptions(): array
-    {
-        return [];
-    }
-
-    public function __invoke(string $name, array $options = [])
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function __invoke(string $name, array $options = []): FormBuilderInterface
     {
         $defaultOptions = $this->getFormOptions();
         $options = $options + $defaultOptions;
@@ -48,5 +46,15 @@ abstract class AbstractFormFieldGenerator extends AbstractGenerator
         }
 
         return $this->formFactory->createNamedBuilder($name, $this->getFormType(), null, $options);
+    }
+
+    abstract protected function getFormType(): string;
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getFormOptions(): array
+    {
+        return [];
     }
 }

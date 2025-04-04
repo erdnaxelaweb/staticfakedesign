@@ -1,23 +1,16 @@
-{% extends showroom.isPreviewActive ? showroom.previewLayout : 'layout_base.html.twig' %}
+{% extends showroom.isPreviewActive ? 'layout_preview.html.twig' : 'layout_base.html.twig' %}
 
 {% block body %}
-
     {% block header %}
-        <div>
-            Header
-        </div>
+        {{ display_component('components/header.html.twig', {}, 'App\\Controller\\LayoutController::viewHeader', true ) }}
     {% endblock %}
 
-    {% block content %}
-        <div>
-            content
-        </div>
-    {% endblock %}
+    <main id="main" role="main">
+        {% block content %}
+        {% endblock %}
+    </main>
 
     {% block footer %}
-        <div>
-            footer
-        </div>
+        {{ display_component('components/footer.html.twig', {}, 'App\\Controller\\LayoutController::viewFooter', true ) }}
     {% endblock %}
-
 {% endblock %}

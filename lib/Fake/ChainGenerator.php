@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
@@ -26,9 +25,9 @@ class ChainGenerator
      * @param iterable<GeneratorInterface> $generators
      */
     public function __construct(
-        protected FakerGenerator               $fakerGenerator,
-        protected bool                         $enableFakeGeneration,
-        iterable                               $generators = [],
+        protected FakerGenerator $fakerGenerator,
+        protected bool           $enableFakeGeneration,
+        iterable                 $generators = [],
     ) {
         foreach ($generators as $type => $generator) {
             $this->registerGenerator($type, $generator);
@@ -45,12 +44,20 @@ class ChainGenerator
         $this->generators[$type] = $generator;
     }
 
-    public function generateFake(string $type, array $parameters = [])
+    /**
+     * @param array<mixed> $parameters
+     */
+    public function generateFake(string $type, array $parameters = []): mixed
     {
         $generator = $this->generators[$type] ?? [$this->fakerGenerator, $type];
         return $this->isFakeGenerationEnabled() ? call_user_func_array($generator, $parameters) : null;
     }
 
+    /**
+     * @param array<mixed> $parameters
+     *
+     * @return array<mixed>
+     */
     public function generateFakeArray(?int $count, string $type, array $parameters = []): array
     {
         $count = $count ?? rand(1, 10);
@@ -61,7 +68,7 @@ class ChainGenerator
         return $values;
     }
 
-    public function generateFromTypeExpression(ComponentParameterType $type)
+    public function generateFromTypeExpression(ComponentParameterType $type): mixed
     {
         if ($type->isArray()) {
             return $this->generateFakeArray($type->getArraySize(), $type->getType(), $type->getParameters());

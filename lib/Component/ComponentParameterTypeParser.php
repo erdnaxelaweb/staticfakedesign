@@ -1,10 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
@@ -20,7 +21,7 @@ class ComponentParameterTypeParser
         preg_match('/(\w+)(?:\(([^)]+)\))?(?:\[(\d*)\])?/', $typeExpression, $matches);
 
         $fakeParameters = $matches[2] ?? null;
-        if ($fakeParameters === null || ! str_starts_with($fakeParameters, "{")) {
+        if ($fakeParameters === null || !str_starts_with($fakeParameters, "{")) {
             $fakeParameters = sprintf('[%s]', $fakeParameters);
         }
 
@@ -29,7 +30,7 @@ class ComponentParameterTypeParser
             $matches[1],
             json_decode($fakeParameters, true, 512, JSON_THROW_ON_ERROR),
             isset($matches[3]),
-            ! empty($matches[3]) ? $matches[3] : null,
+            !empty($matches[3]) ? (int) $matches[3] : null,
         );
     }
 }

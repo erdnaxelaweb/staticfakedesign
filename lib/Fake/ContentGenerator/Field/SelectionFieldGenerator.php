@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
@@ -23,6 +22,19 @@ class SelectionFieldGenerator extends AbstractFieldGenerator
     ) {
     }
 
+    /**
+     * @param array<mixed, mixed> $options
+     *
+     * @return array<mixed, mixed>
+     */
+    public function __invoke(array $options, bool $isMultiple = false): array
+    {
+        $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
+        $selection = $this->fakerGenerator->randomElements(array_keys($options), $count, false);
+
+        return array_intersect_key($options, array_flip($selection));
+    }
+
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
@@ -33,13 +45,5 @@ class SelectionFieldGenerator extends AbstractFieldGenerator
         $optionsResolver->define('isMultiple')
             ->default(false)
             ->allowedTypes('bool');
-    }
-
-    public function __invoke(array $options, bool $isMultiple = false): array
-    {
-        $count = $isMultiple ? $this->fakerGenerator->numberBetween(1, count($options)) : 1;
-        $selection = $this->fakerGenerator->randomElements(array_keys($options), $count, false);
-
-        return array_intersect_key($options, array_flip($selection));
     }
 }

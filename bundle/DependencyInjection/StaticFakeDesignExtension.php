@@ -1,15 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * staticfakedesignbundle.
+ * Static Fake Design Bundle.
  *
- * @package   DesignBundle
- *
- * @author    florian
+ * @author    Florian ALEXANDRE
  * @copyright 2023-present Florian ALEXANDRE
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesignBundle\DependencyInjection;
 
@@ -22,6 +21,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class StaticFakeDesignExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @param array<mixed>                                                   $configs
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -31,11 +33,12 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
         $loader->load('fake_form_generators.yml');
         $loader->load('fake_content_field_generator.yaml');
         $loader->load('fake_block_attribute_generator.yaml');
+        $loader->load('definitions.yaml');
     }
 
     public function prepend(ContainerBuilder $container): void
     {
-        if (! $container->hasExtension('twig')) {
+        if (!$container->hasExtension('twig')) {
             return;
         }
 
