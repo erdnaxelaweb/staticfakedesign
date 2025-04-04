@@ -30,6 +30,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\MatrixFieldG
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\RichTextFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\SelectionFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\StringFieldGeneratorTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\SvgFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TaxonomyEntryFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TextFieldGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ContentGenerator\Field\TimeFieldGeneratorTest;
@@ -64,6 +65,7 @@ class ContentFieldGeneratorRegistryTest extends TestCase
                 "richtext" => RichTextFieldGeneratorTest::getGenerator(),
                 "selection" => SelectionFieldGeneratorTest::getGenerator(),
                 "string" => StringFieldGeneratorTest::getGenerator(),
+                "svg" => SvgFieldGeneratorTest::getGenerator(),
                 "taxonomy_entry" => TaxonomyEntryFieldGeneratorTest::getGenerator(),
                 "text" => TextFieldGeneratorTest::getGenerator(),
                 "time" => TimeFieldGeneratorTest::getGenerator(),
