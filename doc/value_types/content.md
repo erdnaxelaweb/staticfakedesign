@@ -71,6 +71,10 @@ erdnaxelaweb.static_fake_design.content_definition:
     - isMultiple : optional (default false) - if multiple selection can be selected
 - string
     - maxLength: optional (default 255)
+- svg
+    - width : optional (default 200) - width of the SVG
+    - height : optional (default 200) - height of the SVG
+    - numShapes : optional (default 10) - number of shapes to generate
 - taxonomy_entry
     - type : type of taxonomy entry - [see here](taxonomy_entry.md)
     - max : max number of entries to generate
@@ -344,6 +348,23 @@ erdnaxelaweb.static_fake_design.content_definition:
                 required: false
                 searchable: false
                 translatable: false
+                category: Media
+
+            svg:
+                name:
+                    eng-GB: 'SVG'
+                    fre-FR: 'SVG'
+                description:
+                    eng-GB: ''
+                    fre-FR: ''
+                type: svg
+                options:
+                    width: 200
+                    height: 200
+                    numShapes: 10
+                required: false
+                searchable: false
+                translatable: true
                 category: Media
             
             # Selection field

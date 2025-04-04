@@ -34,6 +34,9 @@ class FieldGeneratorRegistry
 
     public function registerGenerator(string $type, FieldGeneratorInterface $generator): void
     {
+        if (!is_callable($generator)) {
+            throw new InvalidArgumentException("Generator must be callable");
+        }
         $this->generators[$type] = $generator;
     }
 
