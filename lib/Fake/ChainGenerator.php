@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake;
 
+use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParameterTypeParser;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameterType;
 
 class ChainGenerator
@@ -26,6 +27,7 @@ class ChainGenerator
      */
     public function __construct(
         protected FakerGenerator $fakerGenerator,
+        protected ComponentParameterTypeParser $componentParameterTypeParser,
         protected bool           $enableFakeGeneration,
         iterable                 $generators = [],
     ) {
@@ -68,7 +70,16 @@ class ChainGenerator
         return $values;
     }
 
-    public function generateFromTypeExpression(ComponentParameterType $type): mixed
+    /**
+     * @throws \JsonException
+     */
+    public function generateFromTypeExpression(string $typeExpression): mixed
+    {
+        $type = $this->componentParameterTypeParser->fromString($typeExpression);
+        return $this->generateFromType($type);
+    }
+
+    public function generateFromType(ComponentParameterType $type): mixed
     {
         if ($type->isArray()) {
             return $this->generateFakeArray($type->getArraySize(), $type->getType(), $type->getParameters());

@@ -82,7 +82,7 @@ class Extension extends AbstractExtension
             if ($property->hasDefaultValue()) {
                 $context[$property->getName()] = $property->getDefaultValue();
             } elseif ($this->showroomHelper->isPreviewActive()) {
-                $context[$property->getName()] = $this->generator->generateFromTypeExpression($property->getType());
+                $context[$property->getName()] = $this->generator->generateFromType($property->getType());
             }
         }
     }

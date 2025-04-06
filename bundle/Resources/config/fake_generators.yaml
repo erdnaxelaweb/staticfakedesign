@@ -145,3 +145,13 @@ services:
             $richTextGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RichTextGenerator'
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'video'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RecordGenerator:
+        lazy: true
+        arguments:
+            $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
+            $chainGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
+            $recordBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder'
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'record'}

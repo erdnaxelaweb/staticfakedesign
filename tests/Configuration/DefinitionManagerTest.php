@@ -21,6 +21,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Definition\ContentFieldDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerFilterDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerSortDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Definition\Transformer\DefinitionTransformerTest;
 use PHPUnit\Framework\TestCase;
@@ -96,6 +97,11 @@ class DefinitionManagerTest extends TestCase
                     ],
                 ],
                 'article' => [
+                    'models' => [
+                        [
+                            'title' => 'test article',
+                        ],
+                    ],
                     'parent' => ['list'],
                     'fields' => [
                         'title' => [
@@ -210,11 +216,31 @@ class DefinitionManagerTest extends TestCase
             TaxonomyEntryDefinition::DEFINITION_TYPE,
             [
                 'tag' => [
+                    'models' => [
+                        [
+                            'title' => 'test tag',
+                        ],
+                    ],
                     'fields' => [
                         'title' => [
                             'required' => true,
                             'type' => 'string',
                         ],
+                    ],
+                ],
+            ]
+        );
+
+        $manager->registerDefinitions(
+            RecordDefinition::DEFINITION_TYPE,
+            [
+                'article' => [
+                    'sources' => [
+                        'content' => 'content("article")',
+                    ],
+                    "attributes" => [
+                        'id' => 'content.id',
+                        'title' => 'content.fields.title',
                     ],
                 ],
             ]
@@ -297,5 +323,16 @@ class DefinitionManagerTest extends TestCase
         self::assertEquals('string', $configuration->getField('title')->getType());
         self::assertTrue($configuration->getField('title')->isRequired());
         self::assertEquals(100, $configuration->getField('title')->getOptions()->get('maxLength'));
+    }
+
+    public function testRecordDefinition(): void
+    {
+        $configuration = $this->manager->getDefinition(RecordDefinition::class, 'article');
+        self::assertInstanceOf(RecordDefinition::class, $configuration);
+        self::assertTrue($configuration->hasSource('content'));
+        self::assertEquals('content("article")', $configuration->getSource('content'));
+        self::assertTrue($configuration->hasAttribute('id'));
+        self::assertTrue($configuration->hasAttribute('title'));
+        self::assertEquals('content.fields.title', $configuration->getAttribute('title'));
     }
 }

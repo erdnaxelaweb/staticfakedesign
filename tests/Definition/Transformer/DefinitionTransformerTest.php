@@ -22,6 +22,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Definition\DefinitionInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerFilterDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerSortDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\DefinitionTransformer;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\DefinitionTransformerInterface;
@@ -73,6 +74,10 @@ class DefinitionTransformerTest extends TestCase
         $transformer->registerTransformer(
             TaxonomyEntryDefinition::DEFINITION_TYPE,
             TaxonomyEntryDefinitionTransformerTest::getTransformer()
+        );
+        $transformer->registerTransformer(
+            RecordDefinition::DEFINITION_TYPE,
+            RecordDefinitionTransformerTest::getTransformer()
         );
 
         return $transformer;
