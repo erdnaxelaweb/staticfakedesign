@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake;
 
+use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParameterTypeParser;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator\ContentGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator\ImageGeneratorTest;
@@ -33,10 +34,15 @@ class ChainGeneratorTest extends TestCase
     public static function getGenerator(): ChainGenerator
     {
         $fakerGenerator = self::getFakerGenerator();
-        return new ChainGenerator($fakerGenerator, true, [
-            'image' => ImageGeneratorTest::getGenerator(),
-            'content' => ContentGeneratorTest::getGenerator(),
-        ]);
+        return new ChainGenerator(
+            $fakerGenerator,
+            new ComponentParameterTypeParser(),
+            true,
+            [
+                'image' => ImageGeneratorTest::getGenerator(),
+                'content' => ContentGeneratorTest::getGenerator(),
+            ]
+        );
     }
 
     public function testGenerator(): void

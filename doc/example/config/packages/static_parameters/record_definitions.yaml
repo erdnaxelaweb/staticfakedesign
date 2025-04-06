@@ -1,0 +1,11 @@
+parameters:
+    erdnaxelaweb.static_fake_design.record_definition:
+        news:
+            sources:
+                news: news
+            attributes:
+                id: news.id
+                title: news.fields.title
+                description: news.fields.description
+                thematics: news.fields.thematic[*].name
+                read_also: news.fields.read_also[*].fields.title
