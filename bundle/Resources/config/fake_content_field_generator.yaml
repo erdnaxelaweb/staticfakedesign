@@ -119,3 +119,9 @@ services:
         lazy: true
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'product_specification'}
+
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\SvgFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'svg'}
+
