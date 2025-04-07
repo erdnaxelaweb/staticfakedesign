@@ -62,4 +62,4 @@ services:
 
     ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\RecordDefinitionTransformer:
         tags:
-            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\Record::DEFINITION_TYPE }
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition::DEFINITION_TYPE }

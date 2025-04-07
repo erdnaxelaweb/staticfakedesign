@@ -1,6 +1,6 @@
 parameters:
-#    erdnaxelaweb.static_fake_design.generator.image.provider: ~
-#    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {category: null, randomize: false, word: null, gray: true, format: 'png'}
+    #    erdnaxelaweb.static_fake_design.generator.image.provider: ~
+    #    erdnaxelaweb.static_fake_design.generator.image.provider_parameters: {category: null, randomize: false, word: null, gray: true, format: 'png'}
 
     erdnaxelaweb.static_fake_design.enable_fake_generation: true
 
@@ -22,6 +22,7 @@ services:
         arguments:
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $enableFakeGeneration: '%erdnaxelaweb.static_fake_design.enable_fake_generation%'
+            $componentParameterTypeParser: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentParameterTypeParser'
 
     ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\AudioGenerator:
         lazy: true
