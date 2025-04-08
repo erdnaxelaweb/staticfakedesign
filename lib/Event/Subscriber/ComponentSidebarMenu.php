@@ -14,13 +14,14 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber;
 
 use ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder;
 use ErdnaxelaWeb\StaticFakeDesign\Event\ConfigureMenuEvent;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class ComponentSidebarMenu implements EventSubscriberInterface
 {
     public function __construct(
-        protected ComponentFinder $storiesFinder,
+        protected ComponentFinder $componentFinder,
         protected RouterInterface $router
     ) {
     }
@@ -36,12 +37,12 @@ class ComponentSidebarMenu implements EventSubscriberInterface
         $factory = $event->getFactory();
         $menu = $event->getMenu();
 
-        $stories = $this->storiesFinder->findComponents();
+        $components = $this->componentFinder->findComponents();
 
         $menuItems = [];
         $root = $menu->addChild(/** @Desc('Components') */ 'sidebar.components.root');
-        foreach ($stories as $storyPath => $story) {
-            $splittedPath = explode('/', $storyPath);
+        foreach ($components as $componentPath => $component) {
+            $splittedPath = explode('/', $componentPath);
             $templateName = array_pop($splittedPath);
             $parent = $root;
             $path = [];
@@ -61,14 +62,34 @@ class ComponentSidebarMenu implements EventSubscriberInterface
             }
             $parent->addChild($templateName, [
                 'uri' => $this->router->generate('showroom_component', [
-                    'path' => $storyPath,
+                    'path' => $componentPath,
                 ]),
-                'label' => $story->getName(),
+                'label' => $component->getName(),
                 'extras' => [
-                    'path' => $storyPath,
+                    'path' => $componentPath,
                     'icon' => 'box',
                 ],
             ]);
         }
+        $this->reorder($root);
+    }
+
+    protected function reorder(ItemInterface $parent): void
+    {
+        $children = $parent->getChildren();
+        $order = [];
+        foreach ($children as $child) {
+            if ($child->hasChildren()) {
+                $this->reorder($child);
+            }
+            $abel = iconv('UTF-8', 'ASCII//TRANSLIT', $child->getLabel());
+            $order[$abel] = $child;
+        }
+        ksort($order, SORT_LOCALE_STRING);
+        $parent->reorderChildren(
+            array_map(static function (ItemInterface $item): string {
+                return $item->getName();
+            }, $order)
+        );
     }
 }
