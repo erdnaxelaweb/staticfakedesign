@@ -57,7 +57,7 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Event\Subscriber\ComponentSidebarMenu:
         arguments:
             $router: '@router.default'
-            $storiesFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
+            $componentFinder: '@ErdnaxelaWeb\StaticFakeDesign\Component\ComponentFinder'
         tags:
             - { name: kernel.event_subscriber }
 
