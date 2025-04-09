@@ -40,6 +40,7 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
             ->allowedTypes('string[]');
 
         $optionsResolver->define('excludedContentTypes')
+            ->default([])
             ->allowedTypes('string[]');
 
         $optionsResolver->define('sorts')
