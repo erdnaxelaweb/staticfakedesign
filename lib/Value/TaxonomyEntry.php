@@ -16,10 +16,16 @@ use DateTime;
 
 class TaxonomyEntry extends AbstractContent
 {
+    /**
+     * @param string[]                                                        $languageCodes
+     */
     public function __construct(
         int                            $id,
         string                         $name,
         string                         $type,
+        array                         $languageCodes,
+        string                    $mainLanguageCode,
+        bool                           $alwaysAvailable,
         DateTime                       $creationDate,
         DateTime                       $modificationDate,
         ContentFieldsCollection        $fields,
@@ -27,6 +33,16 @@ class TaxonomyEntry extends AbstractContent
         public readonly int            $level = 0,
         public readonly ?TaxonomyEntry $parent = null,
     ) {
-        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
+        parent::__construct(
+            $id,
+            $name,
+            $type,
+            $languageCodes,
+            $mainLanguageCode,
+            $alwaysAvailable,
+            $creationDate,
+            $modificationDate,
+            $fields
+        );
     }
 }

@@ -16,7 +16,6 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\PagerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
-use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -40,6 +39,7 @@ class PagerGeneratorTest extends TestCase
         return new PagerGenerator(
             $requestStack,
             ContentGeneratorTest::getGenerator(),
+            DocumentGeneratorTest::getGenerator(),
             SearchFormGeneratorTest::getGenerator($requestStack),
             LinkGeneratorTest::getGenerator(),
             DefinitionManagerTest::getManager(),
@@ -50,7 +50,6 @@ class PagerGeneratorTest extends TestCase
     public function testGenerator(): void
     {
         $pager = ($this->generator)('articles_list', 10);
-        self::assertInstanceOf(Pager::class, $pager);
         self::assertInstanceOf(Content::class, $pager->getCurrentPageResults()[0]);
         self::assertEquals(5, $pager->getMaxPerPage());
         self::assertGreaterThanOrEqual(1, $pager->getNbPages());

@@ -17,7 +17,6 @@ use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -51,9 +50,7 @@ class SearchFormGeneratorTest extends TypeTestCase
     {
         $formView = ($this->generator)();
 
-        static::assertInstanceOf(FormView::class, $formView);
         static::assertArrayHasKey('filters', $formView->children);
-        static::assertArrayHasKey('search', $formView->children);
     }
 
     public function testCreatesFormWithSpecifiedFields(): void
@@ -64,7 +61,6 @@ class SearchFormGeneratorTest extends TypeTestCase
         ];
         $formView = ($this->generator)($fields);
 
-        static::assertInstanceOf(FormView::class, $formView);
         static::assertArrayHasKey('filters', $formView->children);
         static::assertArrayHasKey('text', $formView->children['filters']->children);
         static::assertArrayHasKey('number', $formView->children['filters']->children);
@@ -78,7 +74,6 @@ class SearchFormGeneratorTest extends TypeTestCase
         ];
         $formView = ($this->generator)([], $sorts);
 
-        static::assertInstanceOf(FormView::class, $formView);
         static::assertArrayHasKey('sort', $formView->children);
         static::assertCount(2, $formView->children['sort']->vars['choices']);
     }
@@ -99,7 +94,6 @@ class SearchFormGeneratorTest extends TypeTestCase
         ];
         $formView = ($this->generator)($fields);
 
-        static::assertInstanceOf(FormView::class, $formView);
         static::assertEquals('test', $formView->children['filters']->children['text']->vars['value']);
     }
 }

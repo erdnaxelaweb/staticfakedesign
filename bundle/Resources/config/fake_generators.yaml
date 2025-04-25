@@ -115,6 +115,7 @@ services:
         arguments:
             $requestStack: '@request_stack'
             $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
+            $documentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\DocumentGenerator'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
             $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
@@ -147,12 +148,12 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'video'}
 
-    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RecordGenerator:
+    ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\DocumentGenerator:
         lazy: true
         arguments:
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
-            $chainGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\ChainGenerator'
-            $recordBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder'
+            $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
+            $documentBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Document\DocumentBuilder'
         tags:
-            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'record'}
+            - {name: 'erdnaxelaweb.static_fake_design.generator', type: 'document'}

@@ -27,6 +27,9 @@ class FieldsCollection extends Collection
     public function __call(string $name, array $arguments): mixed
     {
         $value = $this->get($name);
+        if ($value === null) {
+            return null;
+        }
         if (is_callable($value)) {
             return call_user_func_array($value, $arguments);
         }
