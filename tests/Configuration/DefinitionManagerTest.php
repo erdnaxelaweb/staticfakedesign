@@ -302,7 +302,7 @@ class DefinitionManagerTest extends TestCase
         $configuration = $this->manager->getDefinition(PagerDefinition::class, 'articles_list');
         self::assertInstanceOf(PagerDefinition::class, $configuration);
         self::assertEquals(5, $configuration->getMaxPerPage());
-        self::assertEquals(['article'], $configuration->getContentTypes());
+        self::assertEquals(['article'], $configuration->getResultTypes());
         self::assertTrue($configuration->hasSort('name'));
         self::assertTrue($configuration->hasFilter('title'));
         self::assertInstanceOf(PagerSortDefinition::class, $configuration->getSort('name'));

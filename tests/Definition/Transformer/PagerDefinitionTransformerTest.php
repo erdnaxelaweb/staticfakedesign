@@ -68,7 +68,7 @@ class PagerDefinitionTransformerTest extends TestCase
 
         static::assertInstanceOf(PagerDefinition::class, $definition);
         static::assertEquals('pager1', $definition->getIdentifier());
-        static::assertEquals(['type1', 'type2'], $definition->getContentTypes());
+        static::assertEquals(['type1', 'type2'], $definition->getResultTypes());
         static::assertEquals(10, $definition->getMaxPerPage());
         static::assertEquals(5, $definition->getHeadlineCount());
         static::assertTrue($definition->hasFilter('filter1'));
