@@ -19,10 +19,16 @@ class AbstractContent
 {
     use LazyGhostTrait;
 
+    /**
+     * @param string[]                                                        $languageCodes
+     */
     public function __construct(
         public readonly int                     $id,
         public readonly string                  $name,
         public readonly string                  $type,
+        public readonly array                  $languageCodes,
+        public readonly string                    $mainLanguageCode,
+        public readonly bool                    $alwaysAvailable,
         public readonly DateTime                $creationDate,
         public readonly DateTime                $modificationDate,
         public readonly ContentFieldsCollection $fields

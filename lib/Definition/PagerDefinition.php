@@ -22,21 +22,22 @@ class PagerDefinition extends AbstractLazyDefinition
     public const DEFINITION_TYPE = 'pager';
 
     /**
-     * @param array<string>                        $contentTypes         Array of content types to include
-     * @param int                                  $maxPerPage           Maximum number of items per page
-     * @param array<string, PagerSortDefinition>   $sorts                Array of sort options
-     * @param array<string, PagerFilterDefinition> $filters              Array of filter options
-     * @param array<string>                        $excludedContentTypes Array of content types to exclude
-     * @param int                                  $headlineCount        Number of headline items
+     * @param array<string>                        $resultTypes         Array of content types to include
+     * @param int                                  $maxPerPage          Maximum number of items per page
+     * @param array<string, PagerSortDefinition>   $sorts               Array of sort options
+     * @param array<string, PagerFilterDefinition> $filters             Array of filter options
+     * @param array<string>                        $excludedResultTypes Array of content types to exclude
+     * @param int                                  $headlineCount       Number of headline items
      */
     public function __construct(
-        string                 $identifier,
-        protected readonly array $contentTypes,
-        protected readonly int   $maxPerPage,
-        protected readonly array $sorts,
-        protected readonly array $filters,
-        protected readonly array $excludedContentTypes,
-        protected readonly int   $headlineCount
+        string                    $identifier,
+        protected readonly array  $resultTypes,
+        protected readonly int    $maxPerPage,
+        protected readonly array  $sorts,
+        protected readonly array  $filters,
+        protected readonly array  $excludedResultTypes,
+        protected readonly int    $headlineCount,
+        protected readonly string $searchType
     ) {
         parent::__construct($identifier);
     }
@@ -46,9 +47,9 @@ class PagerDefinition extends AbstractLazyDefinition
      *
      * @return string[]
      */
-    public function getContentTypes(): array
+    public function getResultTypes(): array
     {
-        return $this->contentTypes;
+        return $this->resultTypes;
     }
 
     /**
@@ -110,9 +111,9 @@ class PagerDefinition extends AbstractLazyDefinition
      *
      * @return string[]
      */
-    public function getExcludedContentTypes(): array
+    public function getExcludedResultTypes(): array
     {
-        return $this->excludedContentTypes;
+        return $this->excludedResultTypes;
     }
 
     /**
@@ -121,5 +122,10 @@ class PagerDefinition extends AbstractLazyDefinition
     public function getHeadlineCount(): int
     {
         return $this->headlineCount;
+    }
+
+    public function getSearchType(): string
+    {
+        return $this->searchType;
     }
 }

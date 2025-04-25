@@ -60,6 +60,6 @@ services:
         tags:
             - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutDefinition::DEFINITION_TYPE }
 
-    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\RecordDefinitionTransformer:
+    ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\DocumentDefinitionTransformer:
         tags:
-            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition::DEFINITION_TYPE }
+            - { name: 'erdnaxelaweb.static_fake_design.definition_transformer', type: !php/const ErdnaxelaWeb\StaticFakeDesign\Definition\DocumentDefinition::DEFINITION_TYPE }

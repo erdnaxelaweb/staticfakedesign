@@ -12,23 +12,22 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
-use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RecordGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\DocumentGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ChainGeneratorTest;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Document\DocumentBuilderTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
-use ErdnaxelaWeb\StaticFakeDesign\Tests\Record\RecordBuilderTest;
 use PHPUnit\Framework\TestCase;
 
-class RecordGeneratorTest extends TestCase
+class DocumentGeneratorTest extends TestCase
 {
     use GeneratorTestTrait;
 
-    public static function getGenerator(): RecordGenerator
+    public static function getGenerator(): DocumentGenerator
     {
-        return new RecordGenerator(
+        return new DocumentGenerator(
             DefinitionManagerTest::getManager(),
-            RecordBuilderTest::getBuilder(),
-            ChainGeneratorTest::getGenerator(),
+            DocumentBuilderTest::getBuilder(),
+            ContentGeneratorTest::getGenerator(),
             self::getFakerGenerator()
         );
     }
@@ -36,11 +35,11 @@ class RecordGeneratorTest extends TestCase
     public function testGenerator(): void
     {
         $generator = self::getGenerator();
-        $record = $generator('article');
+        $document = $generator('article');
 
-        self::assertArrayHasKey('id', $record);
-        self::assertIsInt($record->get('id'));
-        self::assertArrayHasKey('title', $record);
-        self::assertEquals('test article', $record->get('title'));
+        self::assertArrayHasKey('id', $document->fields);
+        self::assertIsInt($document->fields['id']);
+        self::assertArrayHasKey('title', $document->fields);
+        self::assertEquals('test article', $document->fields['title']);
     }
 }

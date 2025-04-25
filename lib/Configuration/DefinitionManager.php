@@ -34,6 +34,9 @@ class DefinitionManager
      */
     public function registerDefinitions(string $type, array $definitions): void
     {
+        if (!isset($this->definitions[$type])) {
+            $this->definitions[$type] = [];
+        }
         foreach ($definitions as $identifier => $definition) {
             $this->registerDefinition($type, $identifier, $definition);
         }

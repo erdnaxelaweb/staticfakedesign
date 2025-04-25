@@ -41,7 +41,7 @@ class PagerDefinitionTransformerTest extends TestCase
         $hash = [
             'identifier' => 'pager1',
             'hash' => [
-                'contentTypes' => ['type1', 'type2'],
+                'resultTypes' => ['type1', 'type2'],
                 'maxPerPage' => 10,
                 'sorts' => [
                     "sort1" => [
@@ -59,16 +59,15 @@ class PagerDefinitionTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                'excludedContentTypes' => ['type3'],
+                'excludedResultTypes' => ['type3'],
                 'headlineCount' => 5,
             ],
         ];
 
         $definition = $this->transformer->fromHash($hash);
 
-        static::assertInstanceOf(PagerDefinition::class, $definition);
         static::assertEquals('pager1', $definition->getIdentifier());
-        static::assertEquals(['type1', 'type2'], $definition->getContentTypes());
+        static::assertEquals(['type1', 'type2'], $definition->getResultTypes());
         static::assertEquals(10, $definition->getMaxPerPage());
         static::assertEquals(5, $definition->getHeadlineCount());
         static::assertTrue($definition->hasFilter('filter1'));
@@ -106,7 +105,8 @@ class PagerDefinitionTransformerTest extends TestCase
                 'filter1' => $filterDefinition,
             ],
             ['type3'],
-            5
+            5,
+            'content'
         );
 
         $hash = $this->transformer->toHash($definition);
@@ -114,7 +114,7 @@ class PagerDefinitionTransformerTest extends TestCase
         static::assertEquals([
             'identifier' => 'pager1',
             'hash' => [
-                'contentTypes' => ['type1', 'type2'],
+                'resultTypes' => ['type1', 'type2'],
                 'maxPerPage' => 10,
                 'sorts' => [
                     "sort1" => [
@@ -132,8 +132,9 @@ class PagerDefinitionTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                'excludedContentTypes' => ['type3'],
+                'excludedResultTypes' => ['type3'],
                 'headlineCount' => 5,
+                'searchType' => 'content',
             ],
         ], $hash);
     }
