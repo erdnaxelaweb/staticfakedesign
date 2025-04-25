@@ -38,6 +38,12 @@ class ExpressionResolver
             $function->getCompiler(),
             $function->getEvaluator()
         );
+        $function = ExpressionFunction::fromPhp('count');
+        $this->expressionLanguage->register(
+            'count',
+            $function->getCompiler(),
+            $function->getEvaluator()
+        );
     }
 
     /**

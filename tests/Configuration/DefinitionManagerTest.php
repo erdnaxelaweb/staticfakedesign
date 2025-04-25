@@ -18,10 +18,10 @@ use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\ContentDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\ContentFieldDefinition;
+use ErdnaxelaWeb\StaticFakeDesign\Definition\DocumentDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerFilterDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\PagerSortDefinition;
-use ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Definition\TaxonomyEntryDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Definition\Transformer\DefinitionTransformerTest;
 use PHPUnit\Framework\TestCase;
@@ -164,7 +164,7 @@ class DefinitionManagerTest extends TestCase
             PagerDefinition::DEFINITION_TYPE,
             [
                 'articles_list' => [
-                    'contentTypes' => ['article'],
+                    'resultTypes' => ['article'],
                     'filters' => [
                         'title' => [
                             'type' => 'text',
@@ -232,13 +232,11 @@ class DefinitionManagerTest extends TestCase
         );
 
         $manager->registerDefinitions(
-            RecordDefinition::DEFINITION_TYPE,
+            DocumentDefinition::DEFINITION_TYPE,
             [
                 'article' => [
-                    'sources' => [
-                        'content' => 'content("article")',
-                    ],
-                    "attributes" => [
+                    'source' => 'article',
+                    "fields" => [
                         'id' => 'content.id',
                         'title' => 'content.fields.title',
                     ],
@@ -302,7 +300,7 @@ class DefinitionManagerTest extends TestCase
         $configuration = $this->manager->getDefinition(PagerDefinition::class, 'articles_list');
         self::assertInstanceOf(PagerDefinition::class, $configuration);
         self::assertEquals(5, $configuration->getMaxPerPage());
-        self::assertEquals(['article'], $configuration->getContentTypes());
+        self::assertEquals(['article'], $configuration->getResultTypes());
         self::assertTrue($configuration->hasSort('name'));
         self::assertTrue($configuration->hasFilter('title'));
         self::assertInstanceOf(PagerSortDefinition::class, $configuration->getSort('name'));
@@ -325,14 +323,13 @@ class DefinitionManagerTest extends TestCase
         self::assertEquals(100, $configuration->getField('title')->getOptions()->get('maxLength'));
     }
 
-    public function testRecordDefinition(): void
+    public function testDocumentDefinition(): void
     {
-        $configuration = $this->manager->getDefinition(RecordDefinition::class, 'article');
-        self::assertInstanceOf(RecordDefinition::class, $configuration);
-        self::assertTrue($configuration->hasSource('content'));
-        self::assertEquals('content("article")', $configuration->getSource('content'));
-        self::assertTrue($configuration->hasAttribute('id'));
-        self::assertTrue($configuration->hasAttribute('title'));
-        self::assertEquals('content.fields.title', $configuration->getAttribute('title'));
+        $configuration = $this->manager->getDefinition(DocumentDefinition::class, 'article');
+        self::assertInstanceOf(DocumentDefinition::class, $configuration);
+        self::assertEquals('article', $configuration->getSource());
+        self::assertTrue($configuration->hasField('id'));
+        self::assertTrue($configuration->hasField('title'));
+        self::assertEquals('content.fields.title', $configuration->getField('title'));
     }
 }

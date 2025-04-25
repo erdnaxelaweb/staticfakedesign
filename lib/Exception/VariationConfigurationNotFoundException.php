@@ -18,6 +18,6 @@ class VariationConfigurationNotFoundException extends Exception
 {
     public function __construct(string $variationName)
     {
-        parent::__construct("Config for variation $variationName not found");
+        parent::__construct("Config for variation '$variationName' not found");
     }
 }

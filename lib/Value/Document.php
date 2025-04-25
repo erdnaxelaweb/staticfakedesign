@@ -12,9 +12,17 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-/**
- * @extends Collection<string, mixed>
- */
-class Record extends Collection
+class Document
 {
+    public string $id;
+    public string $languageCode;
+    public bool $isMainTranslation;
+    public bool $alwaysAvailable;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $fields = [];
+
+    public string $type;
 }

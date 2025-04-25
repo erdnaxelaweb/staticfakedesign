@@ -18,6 +18,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,6 +27,7 @@ class PagerGenerator extends AbstractGenerator
     public function __construct(
         protected RequestStack        $requestStack,
         protected ContentGenerator    $contentGenerator,
+        protected DocumentGenerator   $documentGenerator,
         protected SearchFormGenerator $searchFormGenerator,
         protected LinkGenerator       $linkGenerator,
         protected DefinitionManager   $definitionManager,
@@ -44,26 +46,30 @@ class PagerGenerator extends AbstractGenerator
         $pagerDefinition = $this->definitionManager->getDefinition(PagerDefinition::class, $type);
         $sorts = $pagerDefinition->getSorts();
         $filters = $pagerDefinition->getFilters();
-        $contentTypes = $pagerDefinition->getContentTypes();
+        $resultTypes = $pagerDefinition->getResultTypes();
         $maxPerPage = $pagerDefinition->getMaxPerPage();
         $headlineCount = $pagerDefinition->getHeadlineCount();
         $pagesCount = $pagesCount ?? rand(1, 10);
+        $searchType = $pagerDefinition->getSearchType();
+
+        $resultGenerator = $searchType === 'document' ? $this->documentGenerator : $this->contentGenerator;
+
 
         $adapter = new PagerAdapter(
-            static function () use ($maxPerPage, $pagesCount) {
+            static function () use ($maxPerPage, $pagesCount): int {
                 return $maxPerPage * $pagesCount;
             },
-            function ($offset, $length) use ($contentTypes) {
-                $contents = [];
+            function ($offset, $length) use ($resultGenerator, $resultTypes) {
+                $results = [];
                 for ($i = 0; $i < $length; ++$i) {
-                    $contents[] = ($this->contentGenerator)($this->fakerGenerator->randomElement($contentTypes));
+                    $results[] = ($resultGenerator)($this->fakerGenerator->randomElement($resultTypes));
                 }
-                return $contents;
+                return $results;
             },
-            function () use ($filters, $sorts, $type) {
-                return ($this->searchFormGenerator)($filters, $sorts, $type);
+            function () use ($filters, $sorts, $type): FormInterface {
+                return $this->searchFormGenerator->generateForm($filters, $sorts, $type);
             },
-            function () use ($filters) {
+            function () use ($filters): array {
                 $count = $this->fakerGenerator->numberBetween(0, 10);
                 $links = [];
                 for ($i = 0; $i < $count; ++$i) {
