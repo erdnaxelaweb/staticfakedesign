@@ -115,6 +115,7 @@ services:
         arguments:
             $requestStack: '@request_stack'
             $contentGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator'
+            $recordGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RecordGenerator'
             $fakerGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator'
             $linkGenerator: '@ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\LinkGenerator'
             $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'

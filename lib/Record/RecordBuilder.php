@@ -14,6 +14,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Record;
 
 use ErdnaxelaWeb\StaticFakeDesign\Exception\InvalidArgumentException;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Record;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\PropertyAccess\Exception\InvalidPropertyPathException;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -45,37 +46,7 @@ class RecordBuilder
 
     protected function getSourceValue(mixed $source, string $path): mixed
     {
-        try {
-            if (str_contains($path, '[*]')) {
-                $wildcardPosition = strpos($path, '[*]');
-                $pathBeforeWildCard = substr($path, 0, $wildcardPosition);
-                $pathAfterWildCard = substr($path, $wildcardPosition + 3);
-
-                $values = [];
-                $array = $this->propertyAccessor->getValue($source, $pathBeforeWildCard);
-                if (!is_array($array)) {
-                    throw new InvalidArgumentException(
-                        'The path before the wildcard must be an array in source path : ' . $pathBeforeWildCard
-                    );
-                }
-                foreach ($array as $value) {
-                    if (empty($pathAfterWildCard)) {
-                        $values[] = $value;
-                    } else {
-                        $values[] = $this->getSourceValue($value, ltrim($pathAfterWildCard, '.'));
-                    }
-                }
-                return $values;
-            }
-            return $this->propertyAccessor->getValue($source, $path);
-        } catch (InvalidPropertyPathException  $exception) {
-            throw new InvalidPropertyPathException(sprintf(
-                '[%s] %s',
-                $path,
-                $exception->getMessage()
-            ), $exception->getCode(), $exception);
-        } catch (NoSuchIndexException|NoSuchPropertyException  $exception) {
-            return null;
-        }
+        $expressionLanguage = new ExpressionLanguage();
+        return $expressionLanguage->evaluate($path, $source);
     }
 }

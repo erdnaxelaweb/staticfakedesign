@@ -26,6 +26,7 @@ class PagerGenerator extends AbstractGenerator
     public function __construct(
         protected RequestStack        $requestStack,
         protected ContentGenerator    $contentGenerator,
+        protected RecordGenerator $recordGenerator,
         protected SearchFormGenerator $searchFormGenerator,
         protected LinkGenerator       $linkGenerator,
         protected DefinitionManager   $definitionManager,
@@ -44,21 +45,26 @@ class PagerGenerator extends AbstractGenerator
         $pagerDefinition = $this->definitionManager->getDefinition(PagerDefinition::class, $type);
         $sorts = $pagerDefinition->getSorts();
         $filters = $pagerDefinition->getFilters();
-        $contentTypes = $pagerDefinition->getContentTypes();
+        $resultTypes = $pagerDefinition->getResultTypes();
         $maxPerPage = $pagerDefinition->getMaxPerPage();
         $headlineCount = $pagerDefinition->getHeadlineCount();
         $pagesCount = $pagesCount ?? rand(1, 10);
+        $searchType = $pagerDefinition->getSearchType();
 
         $adapter = new PagerAdapter(
             static function () use ($maxPerPage, $pagesCount) {
                 return $maxPerPage * $pagesCount;
             },
-            function ($offset, $length) use ($contentTypes) {
-                $contents = [];
+            function ($offset, $length) use ( $searchType, $resultTypes) {
+                $results = [];
                 for ($i = 0; $i < $length; ++$i) {
-                    $contents[] = ($this->contentGenerator)($this->fakerGenerator->randomElement($contentTypes));
+                    if($searchType === 'record') {
+                        $results[] = ($this->recordGenerator)($this->fakerGenerator->randomElement($resultTypes));
+                    }else {
+                        $results[] = ($this->contentGenerator)($this->fakerGenerator->randomElement($resultTypes));
+                    }
                 }
-                return $contents;
+                return $results;
             },
             function () use ($filters, $sorts, $type) {
                 return ($this->searchFormGenerator)($filters, $sorts, $type);
