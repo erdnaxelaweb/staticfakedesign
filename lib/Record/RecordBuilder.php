@@ -24,11 +24,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class RecordBuilder
 {
     protected PropertyAccessorInterface $propertyAccessor;
+    protected ExpressionLanguage $expressionLanguage;
 
     public function __construct()
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
             ->getPropertyAccessor();
+
+        $this->expressionLanguage = new ExpressionLanguage();
     }
 
     /**
@@ -44,9 +47,32 @@ class RecordBuilder
         return $record;
     }
 
-    protected function getSourceValue(mixed $source, string $path): mixed
+    protected function getSourceValue(array $source, string $path): mixed
     {
-        $expressionLanguage = new ExpressionLanguage();
-        return $expressionLanguage->evaluate($path, $source);
+        if (str_contains($path, '[*]')) {
+            $wildcardPosition = strpos($path, '[*]');
+            $pathBeforeWildCard = substr($path, 0, $wildcardPosition);
+            $pathAfterWildCard = substr($path, $wildcardPosition + 3);
+
+            $values = [];
+            $array = $this->expressionLanguage->evaluate($pathBeforeWildCard, $source);
+            if (!is_array($array)) {
+                throw new InvalidArgumentException(
+                    'The path before the wildcard must be an array in source path : ' . $pathBeforeWildCard
+                );
+            }
+            foreach ($array as $value) {
+                if (empty($pathAfterWildCard)) {
+                    $values[] = $value;
+                } else {
+                    $newSource = ['source' => $value];
+                    $newPath = sprintf('source.%s', ltrim($pathAfterWildCard, '.'));
+                    $values[] = $this->getSourceValue($newSource, $newPath);
+                }
+            }
+            return $values;
+        }
+
+        return $this->expressionLanguage->evaluate($path, $source);
     }
 }

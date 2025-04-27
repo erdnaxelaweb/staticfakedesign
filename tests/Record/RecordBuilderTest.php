@@ -25,12 +25,13 @@ class RecordBuilderTest extends TestCase
         $builder = new RecordBuilder();
 
         $record = $builder(
-            (object) [
+            [
                 'content' => $contentGenerator('article'),
             ],
             [
                 'id' => 'content.id',
                 'title' => 'content.fields.title',
+                'image' => 'content.fields.image("large").getDefaultSource().getUri()',
                 'tags' => 'content.fields.tags[*].fields.title',
             ]
         );
