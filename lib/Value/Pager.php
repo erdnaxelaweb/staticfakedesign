@@ -25,6 +25,7 @@ use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Exception\OutOfBoundsException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\PagerfantaInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Traversable;
 use function is_array;
@@ -335,6 +336,13 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
     {
         return $this->getAdapter()
             ->getFilters();
+    }
+
+
+    public function getFiltersForm(): FormInterface
+    {
+        return $this->getAdapter()
+            ->getFiltersForm();
     }
 
     private function filterMaxPerPage(int $maxPerPage): int
