@@ -18,6 +18,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Pager;
 use ErdnaxelaWeb\StaticFakeDesign\Value\PagerAdapter;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -66,10 +67,10 @@ class PagerGenerator extends AbstractGenerator
                 }
                 return $results;
             },
-            function () use ($filters, $sorts, $type) {
-                return ($this->searchFormGenerator)($filters, $sorts, $type);
+            function () use ($filters, $sorts, $type): FormInterface {
+                return $this->searchFormGenerator->generateForm($filters, $sorts, $type);
             },
-            function () use ($filters) {
+            function () use ($filters): array {
                 $count = $this->fakerGenerator->numberBetween(0, 10);
                 $links = [];
                 for ($i = 0; $i < $count; ++$i) {

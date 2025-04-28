@@ -26,6 +26,7 @@ use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Exception\OutOfBoundsException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\PagerfantaInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use function is_array;
 
@@ -375,6 +376,13 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
         throw new InvalidArgumentException(
             sprintf('Cannot create iterator with page results of type "%s".', get_debug_type($results))
         );
+    }
+
+
+    public function getFiltersForm(): FormInterface
+    {
+        return $this->getAdapter()
+            ->getFiltersForm();
     }
 
     private function filterMaxPerPage(int $maxPerPage): int
