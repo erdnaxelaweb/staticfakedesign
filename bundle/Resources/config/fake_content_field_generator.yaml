@@ -125,3 +125,8 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'svg'}
 
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\PagerFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'pager'}
+

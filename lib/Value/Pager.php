@@ -17,6 +17,7 @@ use Countable;
 use InvalidArgumentException;
 use Iterator;
 use IteratorAggregate;
+use IteratorIterator;
 use JsonSerializable;
 use Pagerfanta\Exception\LessThan1CurrentPageException;
 use Pagerfanta\Exception\LessThan1MaxPagesException;
@@ -26,14 +27,13 @@ use Pagerfanta\Exception\OutOfBoundsException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\PagerfantaInterface;
 use Symfony\Component\Form\FormView;
-use Traversable;
 use function is_array;
 
 /**
  * @template T
- * @implements \IteratorAggregate<T>
+ * @implements Iterator<int, T>
  */
-class Pager implements Countable, IteratorAggregate, JsonSerializable, PagerfantaInterface
+class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterface
 {
     private PagerAdapterInterface $adapter;
 
@@ -52,9 +52,11 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
     private int $headlineCount = 0;
 
     /**
-     * @var iterable<array-key, T>|null
+     * @var Iterator<int, T>
      */
-    private ?iterable $currentPageResults = null;
+    private Iterator $currentPageResults;
+
+    private bool $disablePagination = false;
 
     public function __construct(PagerAdapterInterface $adapter)
     {
@@ -64,6 +66,12 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
     public function getAdapter(): PagerAdapterInterface
     {
         return $this->adapter;
+    }
+
+
+    public function setDisablePagination(bool $disablePagination): void
+    {
+        $this->disablePagination = $disablePagination;
     }
 
     /**
@@ -147,12 +155,14 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
     }
 
     /**
-     * @return iterable<array-key, T>
+     * @return Iterator<int, T>
      */
-    public function getCurrentPageResults(): iterable
+    public function getCurrentPageResults(): Iterator
     {
-        if (null === $this->currentPageResults) {
-            $this->currentPageResults = $this->getCurrentPageResultsFromAdapter();
+        if (!isset($this->currentPageResults)) {
+            $this->currentPageResults = $this->buildResultsIterator(
+                $this->getCurrentPageResultsFromAdapter()
+            );
         }
 
         return $this->currentPageResults;
@@ -266,28 +276,33 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
         return $this->getNbResults();
     }
 
-    /**
-     * @return \Traversable<array-key, T>
-     */
-    public function getIterator(): Traversable|ArrayIterator
+    public function current(): mixed
     {
-        $results = $this->getCurrentPageResults();
+        return $this->getCurrentPageResults()->current();
+    }
 
-        if ($results instanceof Iterator) {
-            return $results;
+    public function next(): void
+    {
+        $this->getCurrentPageResults()->next();
+        // if pagination is disabled, we automaticaly switch to next page
+        if (!$this->getCurrentPageResults()->valid() && $this->hasNextPage() && $this->disablePagination) {
+            $this->setCurrentPage($this->getNextPage());
         }
+    }
 
-        if ($results instanceof IteratorAggregate) {
-            return $results->getIterator();
-        }
+    public function key(): mixed
+    {
+        return $this->getCurrentPageResults()->key();
+    }
 
-        if (is_array($results)) {
-            return new ArrayIterator($results);
-        }
+    public function valid(): bool
+    {
+        return $this->getCurrentPageResults()->valid();
+    }
 
-        throw new InvalidArgumentException(
-            sprintf('Cannot create iterator with page results of type "%s".', get_debug_type($results))
-        );
+    public function rewind(): void
+    {
+        $this->setCurrentPage(1);
     }
 
     /**
@@ -296,12 +311,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
     public function jsonSerialize(): iterable
     {
         $results = $this->getCurrentPageResults();
-
-        if ($results instanceof Traversable) {
-            return iterator_to_array($results);
-        }
-
-        return $results;
+        return iterator_to_array($results);
     }
 
     /**
@@ -337,6 +347,31 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
             ->getFilters();
     }
 
+    /**
+     * @param iterable<int, T> $results
+     *
+     * @return Iterator<int, T>
+     */
+    protected function buildResultsIterator(iterable $results): Iterator
+    {
+        if ($results instanceof Iterator) {
+            return $results;
+        }
+
+        if ($results instanceof IteratorAggregate) {
+            $iterator = $results->getIterator();
+            return $iterator instanceof Iterator ? $iterator : new IteratorIterator($iterator);
+        }
+
+        if (is_array($results)) {
+            return new ArrayIterator($results);
+        }
+
+        throw new InvalidArgumentException(
+            sprintf('Cannot create iterator with page results of type "%s".', get_debug_type($results))
+        );
+    }
+
     private function filterMaxPerPage(int $maxPerPage): int
     {
         $this->checkMaxPerPage($maxPerPage);
@@ -353,7 +388,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
 
     private function resetForMaxPerPageChange(): void
     {
-        $this->currentPageResults = null;
+        unset($this->currentPageResults);
     }
 
     private function filterCurrentPage(int $currentPage): int
@@ -405,7 +440,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable, Pagerfant
 
     private function resetForCurrentPageChange(): void
     {
-        $this->currentPageResults = null;
+        unset($this->currentPageResults);
     }
 
     /**
