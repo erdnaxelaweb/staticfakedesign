@@ -35,8 +35,6 @@ use function is_array;
  */
 class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterface
 {
-    private PagerAdapterInterface $adapter;
-
     private bool $allowOutOfRangePages = false;
 
     private bool $normalizeOutOfRangePages = false;
@@ -58,9 +56,15 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
 
     private bool $disablePagination = false;
 
-    public function __construct(PagerAdapterInterface $adapter)
+    public function __construct(
+        private string $type,
+        private PagerAdapterInterface $adapter
+    ) {
+    }
+
+    public function getType(): string
     {
-        $this->adapter = $adapter;
+        return $this->type;
     }
 
     public function getAdapter(): PagerAdapterInterface
@@ -284,6 +288,7 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
     public function next(): void
     {
         $this->getCurrentPageResults()->next();
+
         // if pagination is disabled, we automaticaly switch to next page
         if (!$this->getCurrentPageResults()->valid() && $this->hasNextPage() && $this->disablePagination) {
             $this->setCurrentPage($this->getNextPage());

@@ -79,7 +79,7 @@ class PagerGenerator extends AbstractGenerator
             }
         );
 
-        $pager = new Pager($adapter);
+        $pager = new Pager($type, $adapter);
         $pager->setCurrentPage($currentPage);
         $pager->setMaxPerPage($maxPerPage);
         $pager->setHeadlineCount($headlineCount);
