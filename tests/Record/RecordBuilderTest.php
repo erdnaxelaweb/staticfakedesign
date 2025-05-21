@@ -12,20 +12,32 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Record;
 
+use ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver;
 use ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator\ContentGeneratorTest;
-use ErdnaxelaWeb\StaticFakeDesign\Value\Record;
 use PHPUnit\Framework\TestCase;
 
 class RecordBuilderTest extends TestCase
 {
+    protected RecordBuilder $builder;
+
+    public function setUp(): void
+    {
+        $this->builder = self::getBuilder();
+    }
+
+    public static function getBuilder(): RecordBuilder
+    {
+        $expressionResolver = new ExpressionResolver();
+        return new RecordBuilder($expressionResolver);
+    }
+
     public function testBuild(): void
     {
         $contentGenerator = ContentGeneratorTest::getGenerator();
-        $builder = new RecordBuilder();
 
-        $record = $builder(
-            (object) [
+        $record = ($this->builder)(
+            [
                 'content' => $contentGenerator('article'),
             ],
             [
@@ -35,7 +47,6 @@ class RecordBuilderTest extends TestCase
             ]
         );
 
-        self::assertInstanceOf(Record::class, $record);
         self::assertArrayHasKey('id', $record);
         self::assertIsInt($record->get('id'));
         self::assertArrayHasKey('title', $record);

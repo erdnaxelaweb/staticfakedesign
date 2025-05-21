@@ -73,4 +73,8 @@ services:
         arguments:
             $filesystem: '@filesystem'
 
+    ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver:
+
     ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder:
+        arguments:
+            $expressionResolver: '@ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver'

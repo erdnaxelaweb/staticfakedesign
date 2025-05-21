@@ -48,6 +48,6 @@ class RecordGenerator extends AbstractGenerator
             $sources[$sourceName] = $this->chainGenerator->generateFromTypeExpression($sourceType);
         }
 
-        return ($this->recordBuilder)((object) $sources, $configuration->getAttributes());
+        return ($this->recordBuilder)($sources, $configuration->getAttributes());
     }
 }

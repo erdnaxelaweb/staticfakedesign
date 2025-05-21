@@ -13,11 +13,10 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator;
 
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\RecordGenerator;
-use ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Configuration\DefinitionManagerTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\ChainGeneratorTest;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\GeneratorTestTrait;
-use ErdnaxelaWeb\StaticFakeDesign\Value\Record;
+use ErdnaxelaWeb\StaticFakeDesign\Tests\Record\RecordBuilderTest;
 use PHPUnit\Framework\TestCase;
 
 class RecordGeneratorTest extends TestCase
@@ -28,7 +27,7 @@ class RecordGeneratorTest extends TestCase
     {
         return new RecordGenerator(
             DefinitionManagerTest::getManager(),
-            new RecordBuilder(),
+            RecordBuilderTest::getBuilder(),
             ChainGeneratorTest::getGenerator(),
             self::getFakerGenerator()
         );
@@ -39,7 +38,6 @@ class RecordGeneratorTest extends TestCase
         $generator = self::getGenerator();
         $record = $generator('article');
 
-        self::assertInstanceOf(Record::class, $record);
         self::assertArrayHasKey('id', $record);
         self::assertIsInt($record->get('id'));
         self::assertArrayHasKey('title', $record);
