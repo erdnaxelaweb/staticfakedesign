@@ -43,6 +43,11 @@ parameters:
                     type: string
                     options: { }
                     required: false
+                list:
+                    type: pager
+                    options:
+                        type: 'news_list'
+                    required: true
                 page:
                     type: blocks
                     options:
@@ -88,6 +93,11 @@ parameters:
                         type: [ news ]
                         max: 4
                     required: false
+                thematics_names:
+                    type: expression
+                    options:
+                        expression: 'content.fields.thematic[*].name'
+                    required: true
         not_found_page:
             fields:
                 title:

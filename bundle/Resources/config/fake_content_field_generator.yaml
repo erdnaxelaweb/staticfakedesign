@@ -130,3 +130,8 @@ services:
         tags:
             - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'pager'}
 
+    ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\ExpressionFieldGenerator:
+        lazy: true
+        tags:
+            - {name: 'erdnaxelaweb.static_fake_design.generator.content_field', type: 'expression'}
+

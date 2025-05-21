@@ -6,7 +6,6 @@
     name: "Page liste actualité",
     specifications: "",
     properties: {
-        pager: 'pager("news_list")',
         content: 'content("news_list")',
     }
 } %}
@@ -21,6 +20,7 @@
     {{ encore_entry_script_tags('news_list', null, 'site') }}
 {% endblock %}
 
+{% set pager = content.fields.list %}
 {% set searchForm = pager.filters %}
 {% set headlines = pager.getHeadlineResults %}
 {% set results = pager.currentPageResults %}

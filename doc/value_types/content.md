@@ -82,6 +82,10 @@ erdnaxelaweb.static_fake_design.content_definition:
     - max : optional (default 10) - max number of paragraphes to generate
 - time
 - url
+- pager
+  - type : the pager type
+- expression
+  - expression : https://symfony.com/doc/current/reference/formats/expression_language.html
 
 ## Support new field types
 
@@ -546,5 +550,35 @@ erdnaxelaweb.static_fake_design.content_definition:
                 searchable: false
                 translatable: true
                 category: Forms
+
+            pager:
+                name:
+                    eng-GB: 'Related contents'
+                    fre-FR: 'A lire aussi'
+                description:
+                    eng-GB: 'Related content list'
+                    fre-FR: 'Liste de contenu a lire aussi'
+                type: pager
+                options:
+                    type: 'related_content'
+                required: false
+                searchable: false
+                translatable: true
+                category: Pager
+
+            expression:
+                name:
+                    eng-GB: 'Related contents title'
+                    fre-FR: 'A lire aussi'
+                description:
+                    eng-GB: 'Related content list'
+                    fre-FR: 'Liste de contenu a lire aussi'
+                type: expression
+                options:
+                    expression: 'content.fields.pager[*].name'
+                required: false
+                searchable: false
+                translatable: true
+                category: Expression
 ```
 
