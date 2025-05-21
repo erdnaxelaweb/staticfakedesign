@@ -18,6 +18,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarExporter\Instantiator;
 
 class ContentGenerator extends AbstractContentGenerator
 {
@@ -39,18 +40,44 @@ class ContentGenerator extends AbstractContentGenerator
             $type = $this->fakerGenerator->randomElement($type);
         }
         $configuration = $this->definitionManager->getDefinition(ContentDefinition::class, $type);
-        return Content::createLazyGhost(function (Content $instance) use ($type, $configuration) {
-            $instance->__construct(
-                $this->fakerGenerator->randomNumber(),
-                $this->fakerGenerator->sentence(),
-                $type,
-                $this->fakerGenerator->dateTime(),
-                $this->fakerGenerator->dateTime(),
-                $this->generateFieldsValue($configuration->getFields(), $configuration->getModels()),
-                $this->fakerGenerator->url(),
-                ($this->breadcrumbGenerator)()
-            );
-        });
+
+        $baseProperties = [
+            'type' => $type,
+        ];
+        $skippedProperties = array_combine(
+            array_keys($baseProperties),
+            array_fill(0, count($baseProperties), true)
+        );
+        $initializers = [
+            'id' => function () {
+                return $this->fakerGenerator->randomNumber();
+            },
+            'name' => function () {
+                return $this->fakerGenerator->sentence();
+            },
+            'creationDate' => function () {
+                return $this->fakerGenerator->dateTime();
+            },
+            'modificationDate' => function () {
+                return $this->fakerGenerator->dateTime();
+            },
+            'fields' => function (Content $instance) use ($configuration) {
+                return $this->generateFieldsValue(
+                    $instance,
+                    $configuration->getFields(),
+                    $configuration->getModels()
+                );
+            },
+            'url' => function () {
+                return $this->fakerGenerator->url();
+            },
+            'breadcrumb' => function () {
+                return ($this->breadcrumbGenerator)();
+            },
+        ];
+
+        $instance = Instantiator::instantiate(Content::class, $baseProperties);
+        return Content::createLazyGhost($initializers, $skippedProperties, $instance);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void

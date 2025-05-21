@@ -21,8 +21,11 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\BlockAttributesCollection;
+use ErdnaxelaWeb\StaticFakeDesign\Value\LazyValue;
 use InvalidArgumentException;
+use ReflectionClass;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarExporter\Instantiator;
 
 class BlockGenerator extends AbstractGenerator
 {
@@ -39,20 +42,38 @@ class BlockGenerator extends AbstractGenerator
         $configuration = $this->definitionManager->getDefinition(BlockDefinition::class, $type);
         $views = $configuration->getViews();
         $view = $view ?? $this->fakerGenerator->randomElement(array_keys($views));
-        return Block::createLazyGhost(function (Block $instance) use ($type, $configuration, $view) {
-            $instance->__construct(
-                $this->fakerGenerator->randomNumber(),
-                $this->fakerGenerator->sentence(),
-                $type,
-                $view,
-                null,
-                null,
-                null,
-                null,
-                true,
-                $this->generateAttributeValue($configuration->getAttributes(), $configuration->getModels())
-            );
-        });
+
+        $baseProperties = [
+            'type' => $type,
+            'view' => $view,
+            'class' => null,
+            'style' => null,
+            'since' => null,
+            'till' => null,
+            'isVisible' => true,
+        ];
+        $skippedProperties = array_combine(
+            array_keys($baseProperties),
+            array_fill(0, count($baseProperties), true)
+        );
+        $initializers = [
+            'id' => function () {
+                return $this->fakerGenerator->randomNumber();
+            },
+            'name' => function () {
+                return $this->fakerGenerator->sentence();
+            },
+            'attributes' => function (Block $instance) use ($configuration) {
+                return $this->generateAttributeValue(
+                    $instance,
+                    $configuration->getAttributes(),
+                    $configuration->getModels()
+                );
+            },
+        ];
+
+        $instance = Instantiator::instantiate(Block::class, $baseProperties);
+        return Block::createLazyGhost($initializers, $skippedProperties, $instance);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void
@@ -69,6 +90,7 @@ class BlockGenerator extends AbstractGenerator
      * @param array<mixed>                            $models
      */
     protected function generateAttributeValue(
+        Block $block,
         array $attributesDefinitions,
         array $models = []
     ): BlockAttributesCollection {
@@ -76,23 +98,38 @@ class BlockGenerator extends AbstractGenerator
 
         $attributesCollection = new BlockAttributesCollection();
         foreach ($attributesDefinitions as $attributeIdentifier => $attributeDefinition) {
-            $fieldValue = $attributeDefinition->getValue() ?? ($model[$attributeIdentifier] ?? null);
-            $required = $attributeDefinition->isRequired();
-            $type = $attributeDefinition->getType();
-            $options = $attributeDefinition->getOptions();
+            $attributesCollection->set(
+                $attributeIdentifier,
+                new LazyValue(
+                    function () use ($model, $attributeDefinition, $attributeIdentifier, $block) {
+                        try {
+                            $generator = $this->getAttributeGenerator($attributeDefinition->getType());
+                            if (!$attributeDefinition->isRequired() && $this->fakerGenerator->boolean()) {
+                                return null;
+                            }
 
-            try {
-                $generator = $this->getAttributeGenerator($type);
-                if (!$fieldValue && is_callable($generator)) {
-                    $fieldValue = ($required || $this->fakerGenerator->boolean()) ? $generator(...$options) : null;
-                } else {
-                    $fieldValue = $generator->getForcedValue($fieldValue);
-                }
-            } catch (InvalidArgumentException $e) {
-                $fieldValue = $e->getMessage();
-            }
+                            $fieldValue = $attributeDefinition->getValue();
+                            if ($model && array_key_exists($attributeIdentifier, $model)) {
+                                return $generator->getForcedValue($model[$attributeIdentifier]);
+                            }
 
-            $attributesCollection->set($attributeIdentifier, $fieldValue);
+                            if (!$fieldValue && is_callable($generator)) {
+                                $options = $attributeDefinition->getOptions();
+                                $reflectionFunction = new ReflectionClass($generator);
+                                foreach ($reflectionFunction->getMethod('__invoke')->getParameters() as $parameter) {
+                                    if ($parameter->getName() === 'block') {
+                                        $options['block'] = $block;
+                                    }
+                                }
+                                return $generator(...$options);
+                            }
+                            return $generator->getForcedValue($fieldValue);
+                        } catch (InvalidArgumentException $e) {
+                            return $e->getMessage();
+                        }
+                    }
+                )
+            );
         }
         return $attributesCollection;
     }

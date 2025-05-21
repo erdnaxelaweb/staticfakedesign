@@ -32,4 +32,14 @@ class FieldsCollection extends Collection
         }
         throw new BadMethodCallException(sprintf('Method %s does not exist', $name));
     }
+
+    public function get(string|int $key): mixed
+    {
+        $value = parent::get($key);
+        if ($value instanceof LazyValue) {
+            $value = ($value)();
+            $this->set($key, $value);
+        }
+        return $value;
+    }
 }

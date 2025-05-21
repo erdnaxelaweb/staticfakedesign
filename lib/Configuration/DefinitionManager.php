@@ -64,9 +64,26 @@ class DefinitionManager
     /**
      * @return array<string>
      */
-    public function getDefinitionsByType(string $type): array
+    public function getDefinitionsIdentifierByType(string $type): array
     {
         return array_keys($this->definitions[$type]);
+    }
+
+    /**
+     * @template T of DefinitionInterface
+     * @param class-string<T> $definitionClass
+     *
+     * @return array<T>
+     */
+    public function getDefinitionsByType(string $definitionClass): array
+    {
+        $type = constant($definitionClass . '::DEFINITION_TYPE');
+
+        if (!isset($this->definitions[$type])) {
+            throw new DefinitionTypeNotFoundException($type);
+        }
+
+        return $this->definitions[$type];
     }
 
     /**

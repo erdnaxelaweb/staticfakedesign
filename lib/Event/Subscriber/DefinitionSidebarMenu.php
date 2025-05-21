@@ -50,7 +50,7 @@ class DefinitionSidebarMenu implements EventSubscriberInterface
         DefinitionManager $definitionManager,
         ItemInterface     $menu
     ): void {
-        $types = $definitionManager->getDefinitionsByType($definitionType);
+        $types = $definitionManager->getDefinitionsIdentifierByType($definitionType);
         if (empty($types)) {
             return;
         }
