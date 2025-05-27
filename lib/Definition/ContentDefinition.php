@@ -80,4 +80,26 @@ class ContentDefinition extends AbstractLazyDefinition
     {
         return $this->models;
     }
+
+    /**
+     * Return an array of possible relations indexed by field identifier.
+     *
+     * @return array<ContentRelationDefinition>
+     */
+    public function getRelations(): array
+    {
+        $relations = [];
+        foreach ($this->fields as $field) {
+            $fieldRelations = $field->getRelations();
+            foreach ($fieldRelations as $relationType => $sourceContentTypes) {
+                $relations[] = new ContentRelationDefinition(
+                    $this->identifier,
+                    $sourceContentTypes,
+                    $relationType,
+                    $field->getIdentifier(),
+                );
+            }
+        }
+        return $relations;
+    }
 }

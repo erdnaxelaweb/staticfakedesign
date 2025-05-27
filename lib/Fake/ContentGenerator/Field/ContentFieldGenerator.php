@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
+use ErdnaxelaWeb\StaticFakeDesign\Definition\DefinitionOptions;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\Generator\ContentGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ContentRelation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContentFieldGenerator extends AbstractFieldGenerator
@@ -53,5 +55,12 @@ class ContentFieldGenerator extends AbstractFieldGenerator
         $optionsResolver->define('max')
             ->default(1)
             ->allowedTypes('int');
+    }
+
+    public function getRelations(DefinitionOptions $options): array
+    {
+        return [
+            ContentRelation::FIELD => is_array($options['type']) ? $options['type'] : [$options['type']],
+        ];
     }
 }

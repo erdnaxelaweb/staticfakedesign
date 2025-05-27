@@ -19,12 +19,16 @@ class ContentFieldDefinition extends AbstractLazyDefinition
 {
     public const DEFINITION_TYPE = 'content_field';
 
+    /**
+     * @param array<int, string[]>                                                     $relations
+     */
     public function __construct(
         string                             $identifier,
         protected readonly string            $type,
         protected readonly bool              $required,
         protected readonly mixed             $value,
         protected readonly DefinitionOptions $options,
+        protected array $relations
     ) {
         parent::__construct($identifier);
     }
@@ -69,5 +73,15 @@ class ContentFieldDefinition extends AbstractLazyDefinition
     public function getOption(string $option): mixed
     {
         return $this->options->get($option);
+    }
+
+    /**
+     * Return an array where the index is the relation type and the value the possible destination content types
+     *
+     * @return array<int, string[]>
+     */
+    public function getRelations(): array
+    {
+        return $this->relations;
     }
 }

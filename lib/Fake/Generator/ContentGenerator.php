@@ -17,6 +17,8 @@ use ErdnaxelaWeb\StaticFakeDesign\Definition\ContentDefinition;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ContentRelation;
+use ErdnaxelaWeb\StaticFakeDesign\Value\ContentRelationsIterator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\VarExporter\Instantiator;
 
@@ -73,6 +75,32 @@ class ContentGenerator extends AbstractContentGenerator
             },
             'breadcrumb' => function () {
                 return ($this->breadcrumbGenerator)();
+            },
+            'reverseRelations' => function (Content $instance) {
+                $contentDefinitions = $this->definitionManager->getDefinitionsByType(ContentDefinition::class);
+                $possibleRelations = [];
+                foreach ($contentDefinitions as $contentDefinition) {
+                    $relations = $contentDefinition->getRelations();
+                    foreach ($relations as $relationDefinition) {
+                        if (in_array($instance->type, $relationDefinition->getDestinationContentType(), true)) {
+                            $possibleRelations[] = $relationDefinition;
+                        }
+                    }
+                }
+
+                return new ContentRelationsIterator(
+                    function () use ($instance, $possibleRelations): ContentRelation {
+                        /** @var \ErdnaxelaWeb\StaticFakeDesign\Definition\ContentRelationDefinition $relationDefinition */
+                        $relationDefinition = $this->fakerGenerator->randomElement($possibleRelations);
+                        return new ContentRelation(
+                            ($this)($relationDefinition->getSourceContentTypes()),
+                            $instance,
+                            $relationDefinition->getType(),
+                            $relationDefinition->getSourceFieldIdentifier()
+                        );
+                    },
+                    $this->fakerGenerator->numberBetween(1, 10)
+                );
             },
         ];
 

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field;
 
+use ErdnaxelaWeb\StaticFakeDesign\Definition\DefinitionOptions;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 
 abstract class AbstractFieldGenerator extends AbstractGenerator implements FieldGeneratorInterface
@@ -19,5 +20,10 @@ abstract class AbstractFieldGenerator extends AbstractGenerator implements Field
     public function getForcedValue(mixed $value): mixed
     {
         return $value;
+    }
+
+    public function getRelations(DefinitionOptions $options): array
+    {
+        return [];
     }
 }

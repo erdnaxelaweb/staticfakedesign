@@ -25,6 +25,7 @@ class Content extends AbstractContent
         ContentFieldsCollection    $fields,
         public readonly string     $url,
         public readonly Breadcrumb $breadcrumb,
+        public ContentRelationsIteratorInterface $reverseRelations,
     ) {
         parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
     }

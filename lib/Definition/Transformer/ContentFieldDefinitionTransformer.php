@@ -85,6 +85,10 @@ class ContentFieldDefinitionTransformer extends AbstractDefinitionTransformer
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $options['options'] = new DefinitionOptions($options['options']);
+        
+        $fieldGenerator = $this->fieldGeneratorRegistry->getGenerator($options['type']);
+        $options['relations'] = $fieldGenerator->getRelations($options['options']);
+
         return parent::lazyInitialize($instance, $options);
     }
 }
