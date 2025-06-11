@@ -31,6 +31,7 @@ class Content extends AbstractContent implements ContentInterface
         ContentFieldsCollection    $fields,
         public readonly string     $url,
         public readonly Breadcrumb $breadcrumb,
+        public readonly ?Content   $parent
     ) {
         parent::__construct(
             $id,

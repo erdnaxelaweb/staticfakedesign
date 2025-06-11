@@ -77,6 +77,9 @@ class ContentGenerator extends AbstractContentGenerator
             'breadcrumb' => function () {
                 return ($this->breadcrumbGenerator)();
             },
+            'parent' => function () use ($configuration) {
+                return !empty($configuration->getParent()) ? ($this)($configuration->getParent()) : null;
+            },
         ];
 
         $instance = Instantiator::instantiate(Content::class, $baseProperties);

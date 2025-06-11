@@ -33,6 +33,7 @@ use DateTime;
  * @property-read ContentFieldsCollection $fields
  * @property-read string                  $url
  * @property-read Breadcrumb              $breadcrumb
+ * @property-read ?ContentInterface       $parent
  */
 interface ContentInterface
 {
