@@ -4,7 +4,8 @@ parameters:
             blocks: []
             template: 'landing_page/layout/section/default.html.twig'
 
-    erdnaxelaweb.static_fake_design.block_layout_definition:
+static_fake_design:
+    block_layout_definition:
         default:
             template: 'landing_page/layout/default.html.twig'
             zones:
@@ -12,7 +13,7 @@ parameters:
             sections:
                 <<: *block_sections
 
-    erdnaxelaweb.static_fake_design.block_definition:
+    block_definition:
         test:
             views:
                 default: 'landing_page/block/test.html.twig'

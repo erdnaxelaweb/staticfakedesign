@@ -1,5 +1,5 @@
-parameters:
-    erdnaxelaweb.static_fake_design.pager_definition:
+static_fake_design:
+    pager_definition:
         news_list:
             contentTypes: [news]
             filters:

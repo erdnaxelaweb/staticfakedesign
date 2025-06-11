@@ -1,5 +1,5 @@
-parameters:
-    erdnaxelaweb.static_fake_design.document_definition:
+static_fake_design:
+    document_definition:
         news:
             source: news
             attributes:

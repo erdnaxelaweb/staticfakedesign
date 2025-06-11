@@ -19,13 +19,14 @@ document({"type": "product"})
 To generate a document, the following parameters need to be defined:
 
 ```yaml
-erdnaxelaweb.static_fake_design.document_definition:
-    <document type>:
-        source: <content type>
-        fields:
-            id: <property path to id>
-            <field name>: <property path>
-            # Additional fields...
+static_fake_design:
+    document_definition:
+        <document type>:
+            source: <content type>
+            fields:
+                id: <property path to id>
+                <field name>: <property path>
+                # Additional fields...
 ```
 
 ## Fields
@@ -40,23 +41,24 @@ Property paths support:
 ## Example configuration
 
 ```yaml
-erdnaxelaweb.static_fake_design.document_definition:
-    user:
-        sources: user_profile
-        fields:
-            id: content.id
-            username: content.fields.username
-            fullName: content.fields.fullName
-            email: content.fields.email
-            roles: content.fields.roles[*]
-    
-    product:
-        sources: product
-        fields:
-            id: contentid
-            name: contentfields.name
-            price: contentfields.price
-            tags: contentfields.tags[*].name
+static_fake_design:
+    document_definition:
+        user:
+            sources: user_profile
+            fields:
+                id: content.id
+                username: content.fields.username
+                fullName: content.fields.fullName
+                email: content.fields.email
+                roles: content.fields.roles[*]
+        
+        product:
+            sources: product
+            fields:
+                id: contentid
+                name: contentfields.name
+                price: contentfields.price
+                tags: contentfields.tags[*].name
 ```
 
 ## Usage in templates

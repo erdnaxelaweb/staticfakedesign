@@ -1,5 +1,5 @@
-parameters:
-    erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
+static_fake_design:
+    taxonomy_entry_definition:
         thematic_tag:
             models:
                 - name: tag1

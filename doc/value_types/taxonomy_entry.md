@@ -27,15 +27,16 @@ taxonomy_entry(["tag", "category"])
 To generate a taxonomy entry, the following parameter need to be defined :
 
 ```yaml
-erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
-    <taxonomy entry type>:
-        models: []
-        fields:
-            <field identifier>:
-                required: <true|false>
-                type: <field type>
-                value: <optional forced value>
-                options: []
+static_fake_design:
+    taxonomy_entry_definition:
+        <taxonomy entry type>:
+            models: []
+            fields:
+                <field identifier>:
+                    required: <true|false>
+                    type: <field type>
+                    value: <optional forced value>
+                    options: []
 ```
 
 ##  List of available fields types and theirs options
@@ -86,29 +87,30 @@ When generating a content, a random provided model will be used to determine the
 
 Example :
 ```yaml
-erdnaxelaweb.static_fake_design.taxonomy_entry_definition:
-    element:
-        models:
-            -
-                name: 'Fire'
-                logo: 'fire_icon'
-            -
-                name: 'Water'
-                logo: 'water_icon'
-            -
-                name: 'Wind'
-                logo: 'wind_icon'
-            -
-                name: 'Earth'
-                logo: 'earth_icon'
-        fields:
-            name:
-                required: true
-                type: string
-            logo:
-                required: true
-                type: string
-            description:
-                required: true
-                type: text
+static_fake_design:
+    taxonomy_entry_definition:
+        element:
+            models:
+                -
+                    name: 'Fire'
+                    logo: 'fire_icon'
+                -
+                    name: 'Water'
+                    logo: 'water_icon'
+                -
+                    name: 'Wind'
+                    logo: 'wind_icon'
+                -
+                    name: 'Earth'
+                    logo: 'earth_icon'
+            fields:
+                name:
+                    required: true
+                    type: string
+                logo:
+                    required: true
+                    type: string
+                description:
+                    required: true
+                    type: text
 ```
