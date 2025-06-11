@@ -35,41 +35,25 @@ class ImageConfiguration
     protected array $variations = [];
 
     /**
+     * @var array{breakpoints: array<breakpoint>, variations: array<string, variation>}
+     */
+    protected array $configuration;
+
+    /**
      * @param array{breakpoints: array<array{suffix: string, media: string, previewSize?: string, use_webp?: bool|string}>, variations: array<string, variation>} $configuration
      */
     public function __construct(array $configuration)
     {
+        $this->configuration = $configuration;
         $optionsResolver = new OptionsResolver();
         $optionsResolver->setDefault('breakpoints', function (OptionsResolver $breakpointsOptionsResolver): void {
             $breakpointsOptionsResolver->setPrototype(true);
             $this->configureBreakpointsOptions($breakpointsOptionsResolver);
         });
         $optionsResolver->define('variations')
-            ->default([])->allowedTypes('array');
+                        ->default([])->allowedTypes('array');
 
-        $configuration = $optionsResolver->resolve($configuration);
-        $this->breakpoints = $configuration['breakpoints'];
-        $this->variations = $configuration['variations'];
-    }
-
-    /**
-     * Set the breakpoints configuration.
-     *
-     * @param array<breakpoint> $breakpoints
-     */
-    public function setBreakpoints(array $breakpoints): void
-    {
-        $this->breakpoints = $this->resolveBreakPoints($breakpoints);
-    }
-
-    /**
-     * Set the variations configuration.
-     *
-     * @param array<string, variation> $variations
-     */
-    public function setVariations(array $variations): void
-    {
-        $this->variations = $variations;
+        $this->configuration = $optionsResolver->resolve($configuration);
     }
 
     /**
@@ -77,7 +61,23 @@ class ImageConfiguration
      */
     public function getBreakpoints(): array
     {
-        return $this->breakpoints;
+        return $this->configuration['breakpoints'];
+    }
+
+    /**
+     * @return array<string, variation>
+     */
+    public function getVariations(): array
+    {
+        return $this->configuration['variations'];
+    }
+
+    /**
+     * @param array<string, variation> $variations
+     */
+    public function setVariations(array $variations): void
+    {
+        $this->configuration['variations'] = $variations;
     }
 
     /**
@@ -89,14 +89,16 @@ class ImageConfiguration
      */
     public function getVariationConfig(string $variationName): array
     {
-        if (!isset($this->variations[$variationName])) {
+        $variations = $this->getVariations();
+        if (!isset($variations[$variationName])) {
             throw new VariationConfigurationNotFoundException($variationName);
         }
-        $sizes = $this->variations[$variationName];
+        $sizes = $variations[$variationName];
         $config = [];
 
+        $breakpoints = $this->getBreakpoints();
         foreach ($sizes as $i => $size) {
-            $breakpoint = $this->breakpoints[$i];
+            $breakpoint = $breakpoints[$i];
             if ($breakpoint['use_webp'] !== self::FORCE_WEBP) {
                 $config[] = new ImageVariationSourceDefinition(
                     $breakpoint['suffix'],

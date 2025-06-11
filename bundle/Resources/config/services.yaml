@@ -73,6 +73,10 @@ services:
         arguments:
             $filesystem: '@filesystem'
 
+    ErdnaxelaWeb\StaticFakeDesignBundle\Command\DumpDefinitionCommand:
+        arguments:
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
+
     ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver:
 
     ErdnaxelaWeb\StaticFakeDesign\Document\DocumentBuilder:

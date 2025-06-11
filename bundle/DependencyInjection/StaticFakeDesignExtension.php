@@ -26,6 +26,8 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
         $loader->load('showroom.yaml');
@@ -34,6 +36,33 @@ class StaticFakeDesignExtension extends Extension implements PrependExtensionInt
         $loader->load('fake_content_field_generator.yaml');
         $loader->load('fake_block_attribute_generator.yaml');
         $loader->load('definitions.yaml');
+
+        $config = $this->processConfiguration($configuration, $configs);
+
+        if (!empty($config['block_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.block_definition', $config['block_definition']);
+        }
+        if (!empty($config['block_layout_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.block_layout_definition', $config['block_layout_definition']);
+        }
+        if (!empty($config['content_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.content_definition', $config['content_definition']);
+        }
+        if (!empty($config['taxonomy_entry_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.pager_definition', $config['taxonomy_entry_definition']);
+        }
+        if (!empty($config['pager_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.pager_definition', $config['pager_definition']);
+        }
+        if (!empty($config['document_definition'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.document_definition', $config['document_definition']);
+        }
+        if (!empty($config['image']['variations'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.image.variations', $config['image']['variations']);
+        }
+        if (!empty($config['image']['breakpoints'])) {
+            $container->setParameter('erdnaxelaweb.static_fake_design.image.breakpoints', $config['image']['breakpoints']);
+        }
     }
 
     public function prepend(ContainerBuilder $container): void
