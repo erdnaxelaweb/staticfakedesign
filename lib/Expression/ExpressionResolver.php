@@ -61,7 +61,7 @@ class ExpressionResolver
     protected function resolve(string $expression, array $source): mixed
     {
         try {
-            if (preg_match('/^([^.(]+)\(([^)]+)\)$/', $expression, $matches)) {
+            if (preg_match('/^([^.(]+)\((.+)\)$/', $expression, $matches)) {
                 $functionName = $matches[1];
                 $functionArgExpression = $matches[2];
 
