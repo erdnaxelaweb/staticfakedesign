@@ -27,17 +27,18 @@ block(["article", "press_release"], "default")
 To generate a block, the following parameter need to be defined :
 
 ```yaml
-erdnaxelaweb.static_fake_design.block_definition:
-    <block type>:
-        models: []
-        views:
-            <view identifier>: <template path>
-        attributes:
-            <attribute identifier>:
-                required: <true|false>
-                type: <field type>
-                value: <optional forced value>
-                options: []
+static_fake_design:
+    block_definition:
+        <block type>:
+            models: []
+            views:
+                <view identifier>: <template path>
+            attributes:
+                <attribute identifier>:
+                    required: <true|false>
+                    type: <field type>
+                    value: <optional forced value>
+                    options: []
 ```
 ##  List of available fields types and theirs options
 - boolean
@@ -71,7 +72,7 @@ Follow these steps:
 2.  **Register as a Symfony service:**
     *   Define a new service for your generator class.
     *   Tag your service definition with `erdnaxelaweb.static_fake_design.generator.block_field`.
-    *   Add the `type` attribute to the tag, assigning a unique string identifier for your new field type. This identifier is what you will use in the `erdnaxelaweb.static_fake_design.block_definition` YAML configuration within your project.
+    *   Add the `type` attribute to the tag, assigning a unique string identifier for your new field type. This identifier is what you will use in the `static_fake_design.block_definition` YAML configuration within your project.
 
 **Example Service Definition (in `config/services.yaml`):**
 
@@ -91,33 +92,34 @@ When generating a content, a random provided model will be used to determine the
 
 Example :
 ```yaml
-erdnaxelaweb.static_fake_design.block_definition:
-    element:
-        views:
-            default: 'block/elements/default.html.twig'
-        models:
-            -
-                name: 'Fire'
-                logo: 'fire_icon'
-            -
-                name: 'Water'
-                logo: 'water_icon'
-            -
-                name: 'Wind'
-                logo: 'wind_icon'
-            -
-                name: 'Earth'
-                logo: 'earth_icon'
-        attributes:
-            name:
-                required: true
-                type: string
-            logo:
-                required: true
-                type: string
-            description:
-                required: true
-                type: text
+static_fake_design:
+    block_definition:
+        element:
+            views:
+                default: 'block/elements/default.html.twig'
+            models:
+                -
+                    name: 'Fire'
+                    logo: 'fire_icon'
+                -
+                    name: 'Water'
+                    logo: 'water_icon'
+                -
+                    name: 'Wind'
+                    logo: 'wind_icon'
+                -
+                    name: 'Earth'
+                    logo: 'earth_icon'
+            attributes:
+                name:
+                    required: true
+                    type: string
+                logo:
+                    required: true
+                    type: string
+                description:
+                    required: true
+                    type: text
 ```
 
 # Layout definition
@@ -125,17 +127,18 @@ erdnaxelaweb.static_fake_design.block_definition:
 To use the content "blocks" field type you also need to define the following parameter :
 
 ```yaml
-erdnaxelaweb.static_fake_design.block_layout_definition:
-    <layout identifier>:
-        template: <template path>
-        zones:
-            - <zone identifier>
-        sections:
-            <section identifier>:
-                blocks: 
-                    - <block type>
-                    - <block type>/<view type>
-                template: <section template path>
+static_fake_design:
+    block_layout_definition:
+        <layout identifier>:
+            template: <template path>
+            zones:
+                - <zone identifier>
+            sections:
+                <section identifier>:
+                    blocks: 
+                        - <block type>
+                        - <block type>/<view type>
+                    template: <section template path>
 ```
 
 The sections of a layout allow to group block together when they are following each other based on there type and view.\
@@ -146,19 +149,20 @@ In your layout template you can then use the twig filter `group_blocks_by_sectio
 Considering the following layout :
 
 ```yaml
-erdnaxelaweb.static_fake_design.block_layout_definition:
-    default:
-        template: layout/default.html.twig
-        zones:
-            - default
-        sections:
-            default:
-                blocks: []
-                template: layout/section/default.html.twig
-            slider:
-                blocks: 
-                    - article/slider
-                template: layout/section/slider.html.twig
+static_fake_design:
+    block_layout_definition:
+        default:
+            template: layout/default.html.twig
+            zones:
+                - default
+            sections:
+                default:
+                    blocks: []
+                    template: layout/section/default.html.twig
+                slider:
+                    blocks: 
+                        - article/slider
+                    template: layout/section/slider.html.twig
 ```
 
 And having the following array of block in our default zone :

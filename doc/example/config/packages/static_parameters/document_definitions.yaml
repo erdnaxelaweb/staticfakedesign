@@ -1,0 +1,10 @@
+static_fake_design:
+    document_definition:
+        news:
+            source: news
+            attributes:
+                id: content.id
+                title: content.fields.title
+                description: content.fields.description
+                thematics: content.fields.thematic[*].name
+                read_also: content.fields.read_also[*].fields.title

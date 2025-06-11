@@ -24,29 +24,30 @@ pager("articles")
 To generate a content, the following parameter need to be defined :
 
 ```yaml
-erdnaxelaweb.static_fake_design.pager_definition:
-    <pager type>:
-        contentTypes: [<content type identifier>, <content type identifier>]
-        filters:
-            <filter identifier>:
-                type: <filter type>
-                options: []
-        headlineCount: <number of results in headline>
-        maxPerPage: <number of results per page>
-        sorts: 
-            <sort identifier>:
-                type: <sort type>
-                options: []
-
-    articles:
-        contentTypes: [articles]
-        filters:
-            category:
-                type: checkbox
-        maxPerPage: 10
-        sorts:
-            publish_date:
-                type: publish_date
+static_fake_design:
+    pager_definition:
+        <pager type>:
+            contentTypes: [<content type identifier>, <content type identifier>]
+            filters:
+                <filter identifier>:
+                    type: <filter type>
+                    options: []
+            headlineCount: <number of results in headline>
+            maxPerPage: <number of results per page>
+            sorts: 
+                <sort identifier>:
+                    type: <sort type>
+                    options: []
+    
+        articles:
+            contentTypes: [articles]
+            filters:
+                category:
+                    type: checkbox
+            maxPerPage: 10
+            sorts:
+                publish_date:
+                    type: publish_date
 ```
 
 ## Filter definition

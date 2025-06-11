@@ -43,6 +43,9 @@ class ContentGenerator extends AbstractContentGenerator
 
         $baseProperties = [
             'type' => $type,
+            'languageCode' => ['eng-GB', 'fre-FR'],
+            'mainLanguageCode' => 'eng-GB',
+            'alwaysAvailable' => true,
         ];
         $skippedProperties = array_combine(
             array_keys($baseProperties),
@@ -73,6 +76,9 @@ class ContentGenerator extends AbstractContentGenerator
             },
             'breadcrumb' => function () {
                 return ($this->breadcrumbGenerator)();
+            },
+            'parent' => function () use ($configuration) {
+                return !empty($configuration->getParent()) ? ($this)($configuration->getParent()) : null;
             },
         ];
 

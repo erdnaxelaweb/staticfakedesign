@@ -1,5 +1,5 @@
-parameters:
-    erdnaxelaweb.static_fake_design.content_definition:
+static_fake_design:
+    content_definition:
         header_configuration:
             fields:
                 name:

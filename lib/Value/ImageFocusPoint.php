@@ -19,4 +19,15 @@ class ImageFocusPoint
         public readonly float $posY = 0.0
     ) {
     }
+
+    /**
+     * @return array<string, float>
+     */
+    public function toArry(): array
+    {
+        return [
+            'posX' => $this->posX,
+            'posY' => $this->posY,
+        ];
+    }
 }

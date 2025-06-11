@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Expression;
 
 use ErdnaxelaWeb\StaticFakeDesign\Exception\InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\PropertyAccess\Exception\InvalidPropertyPathException;
@@ -38,6 +39,12 @@ class ExpressionResolver
             $function->getCompiler(),
             $function->getEvaluator()
         );
+        $function = ExpressionFunction::fromPhp('count');
+        $this->expressionLanguage->register(
+            'count',
+            $function->getCompiler(),
+            $function->getEvaluator()
+        );
     }
 
     /**
@@ -54,7 +61,7 @@ class ExpressionResolver
     protected function resolve(string $expression, array $source): mixed
     {
         try {
-            if (preg_match('/^([^(]+)\(([^)]+)\)$/', $expression, $matches)) {
+            if (preg_match('/^([^.(]+)\((.+)\)$/', $expression, $matches)) {
                 $functionName = $matches[1];
                 $functionArgExpression = $matches[2];
 
@@ -121,6 +128,8 @@ class ExpressionResolver
                 $exception
             );
         } catch (NoSuchIndexException|NoSuchPropertyException  $exception) {
+            return null;
+        } catch (RuntimeException  $exception) {
             return null;
         }
     }

@@ -26,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -39,67 +40,14 @@ class SearchFormGenerator extends AbstractGenerator
         parent::__construct($fakerGenerator);
     }
 
+
     /**
      * @param array<string, string|array{type: string, options?: array<string, mixed>}|PagerFilterDefinition> $fields
      * @param array<string, string|PagerSortDefinition>                                                       $sorts
      */
     public function __invoke(array $fields = [], array $sorts = [], ?string $name = null): FormView
     {
-        $formTypes = $this->getFormTypes();
-
-        $formOptions = [
-            'method' => 'GET',
-        ];
-
-        if ($this->formFactory->createBuilder()->hasOption('csrf_protection')) {
-            $formOptions['csrf_protection'] = false;
-        }
-
-        $builder = $name ?
-            $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
-            $this->formFactory->createBuilder(FormType::class, null, $formOptions);
-
-        $formFields = $builder->create('filters', FormType::class, [
-            'compound' => true,
-            'block_prefix' => 'filters',
-        ]);
-        if (empty($fields)) {
-            $fields = array_keys($formTypes);
-        }
-        foreach ($fields as $fieldName => $fieldType) {
-            $fieldOptions = [];
-            if (is_array($fieldType)) {
-                ["type" => $fieldType, "options" => $fieldOptions] = $fieldType;
-            }
-            if ($fieldType instanceof PagerFilterDefinition) {
-                $fieldOptions = $fieldType->getOptions();
-                $fieldType = $fieldType->getType();
-            }
-
-            $formType = $formTypes[$fieldType];
-            $formTypeOptions = ($formType['options'] ?? []) + [
-                'label' => "{$this->fakerGenerator->word} ($fieldName)",
-            ];
-            foreach ($formTypeOptions as $formTypeOption => &$formTypeOptionValue) {
-                $formTypeOptionValue = $fieldOptions[$formTypeOption] ?? $formTypeOptionValue;
-            }
-            $formType['options'] = $formTypeOptions;
-            $formType['options']['block_prefix'] = "filter_$fieldName";
-            $formFields->add($fieldName, ...$formType);
-        }
-        $builder->add($formFields);
-        if (count($sorts) > 1) {
-            $builder->add('sort', ChoiceType::class, [
-                'choices' => array_flip($sorts),
-                'block_prefix' => 'sort',
-            ]);
-        }
-        $builder->add('search', SubmitType::class, [
-            'label' => 'search',
-        ]);
-
-        $form = $builder->getForm();
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $form = $this->generateForm($fields, $sorts, $name);
         return $form->createView();
     }
     /**
@@ -152,5 +100,69 @@ class SearchFormGenerator extends AbstractGenerator
                 'type' => CheckboxType::class,
             ],
         ];
+    }
+
+    /**
+     * @param array<string, string|array{type: string, options?: array<string, mixed>}|PagerFilterDefinition> $fields
+     * @param array<string, string|PagerSortDefinition>                                                       $sorts
+     */
+    public function generateForm(array $fields = [], array $sorts = [], ?string $name = null): FormInterface
+    {
+        $formTypes = $this->getFormTypes();
+
+        $formOptions = [
+            'method' => 'GET',
+        ];
+
+        if ($this->formFactory->createBuilder()->hasOption('csrf_protection')) {
+            $formOptions['csrf_protection'] = false;
+        }
+
+        $builder = $name ?
+            $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions) :
+            $this->formFactory->createBuilder(FormType::class, null, $formOptions);
+
+        $formFields = $builder->create('filters', FormType::class, [
+            'compound' => true,
+            'block_prefix' => 'filters',
+        ]);
+        if (empty($fields)) {
+            $fields = array_keys($formTypes);
+        }
+        foreach ($fields as $fieldName => $fieldType) {
+            $fieldOptions = [];
+            if (is_array($fieldType)) {
+                ["type" => $fieldType, "options" => $fieldOptions] = $fieldType;
+            }
+            if ($fieldType instanceof PagerFilterDefinition) {
+                $fieldOptions = $fieldType->getOptions();
+                $fieldType = $fieldType->getType();
+            }
+
+            $formType = $formTypes[$fieldType];
+            $formTypeOptions = ($formType['options'] ?? []) + [
+                'label' => "{$this->fakerGenerator->word} ($fieldName)",
+            ];
+            foreach ($formTypeOptions as $formTypeOption => &$formTypeOptionValue) {
+                $formTypeOptionValue = $fieldOptions[$formTypeOption] ?? $formTypeOptionValue;
+            }
+            $formType['options'] = $formTypeOptions;
+            $formType['options']['block_prefix'] = "filter_$fieldName";
+            $formFields->add($fieldName, ...$formType);
+        }
+        $builder->add($formFields);
+        if (count($sorts) > 1) {
+            $builder->add('sort', ChoiceType::class, [
+                'choices' => array_flip($sorts),
+                'block_prefix' => 'sort',
+            ]);
+        }
+        //        $builder->add( 'search', SubmitType::class, [
+        //            'label' => 'search',
+        //        ] );
+
+        $form = $builder->getForm();
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        return $form;
     }
 }

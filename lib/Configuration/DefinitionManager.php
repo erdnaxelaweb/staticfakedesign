@@ -20,41 +20,42 @@ use ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException;
 class DefinitionManager
 {
     /**
-     * @var array <string, array<string, DefinitionInterface>>
+     * @var array<string, array<string, DefinitionInterface>>
      */
-    protected array $definitions = [];
+    protected array $transformedDefinitions = [];
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $definitions
+     */
     public function __construct(
         protected DefinitionTransformer $definitionTransformer,
+        protected array $definitions = []
     ) {
     }
 
     /**
-     * @param array<string, array<string, mixed>> $definitions
+     * @param array<string, array<string, mixed>> $definitionsHashes
      */
-    public function registerDefinitions(string $type, array $definitions): void
+    public function registerDefinitions(string $type, array $definitionsHashes): void
     {
-        foreach ($definitions as $identifier => $definition) {
-            $this->registerDefinition($type, $identifier, $definition);
+        if (!isset($this->definitions[$type])) {
+            $this->definitions[$type] = [];
+        }
+        foreach ($definitionsHashes as $identifier => $definitionsHash) {
+            $this->registerDefinition($type, $identifier, $definitionsHash);
         }
     }
 
     /**
-     * @param array<string, mixed> $definition
+     * @param array<string, mixed> $definitionHash
      */
-    public function registerDefinition(string $type, string $identifier, array $definition): void
+    public function registerDefinition(string $type, string $identifier, array $definitionHash): void
     {
-        $this->definitions[$type][$identifier] = $this->definitionTransformer->fromHash(
-            $type,
-            [
-                'identifier' => $identifier,
-                'hash' => $definition,
-            ]
-        );
+        $this->definitions[$type][$identifier] = $definitionHash;
     }
 
     /**
-     * @return array<string, array<string, DefinitionInterface>>
+     * @return array<string, array<string, array<string, mixed>>>
      */
     public function getDefinitions(): array
     {
@@ -66,7 +67,7 @@ class DefinitionManager
      */
     public function getDefinitionsIdentifierByType(string $type): array
     {
-        return array_keys($this->definitions[$type]);
+        return array_keys($this->getDefinitionsHashesByType($type));
     }
 
     /**
@@ -74,16 +75,22 @@ class DefinitionManager
      * @param class-string<T> $definitionClass
      *
      * @return array<T>
+     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
      */
     public function getDefinitionsByType(string $definitionClass): array
     {
-        $type = constant($definitionClass . '::DEFINITION_TYPE');
-
-        if (!isset($this->definitions[$type])) {
-            throw new DefinitionTypeNotFoundException($type);
+        if (class_exists($definitionClass)) {
+            $type = constant($definitionClass . '::DEFINITION_TYPE');
+        } else {
+            $type = $definitionClass;
         }
 
-        return $this->definitions[$type];
+        $definitionsHashes = $this->getDefinitionsHashesByType($type);
+        $definitions = [];
+        foreach ($definitionsHashes as $identifier => $definitionsHash) {
+            $definitions[$identifier] = $this->innerGetDefinition($type, $identifier, $definitionsHash);
+        }
+        return $definitions;
     }
 
     /**
@@ -91,19 +98,65 @@ class DefinitionManager
      * @param class-string<T> $definitionClass
      *
      * @return T
+     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
      */
     public function getDefinition(string $definitionClass, string $identifier): DefinitionInterface
     {
-        $type = constant($definitionClass . '::DEFINITION_TYPE');
-
-        if (!isset($this->definitions[$type])) {
-            throw new DefinitionTypeNotFoundException($type);
+        if (class_exists($definitionClass)) {
+            $type = constant($definitionClass . '::DEFINITION_TYPE');
+        } else {
+            $type = $definitionClass;
         }
 
-        if (!isset($this->definitions[$type][$identifier])) {
+        $definitionsHashes = $this->getDefinitionsHashesByType($type);
+        if (!isset($definitionsHashes[$identifier])) {
             throw new DefinitionNotFoundException($type, $identifier);
         }
 
-        return $this->definitions[$type][$identifier];
+        return $this->innerGetDefinition($type, $identifier, $definitionsHashes[$identifier]);
+    }
+
+    /**
+     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
+     * @return array<string, array<string, mixed>>
+     */
+    protected function getDefinitionsHashesByType(mixed $type): array
+    {
+        if (!isset($this->definitions[$type])) {
+            throw new DefinitionTypeNotFoundException($type);
+        }
+        return $this->definitions[$type];
+    }
+
+    /**
+     * @param array<string, mixed>  $definitionHash
+     */
+    protected function innerGetDefinition(string $type, string $identifier, array $definitionHash): DefinitionInterface
+    {
+        $key = $this->getDefinitionCacheKey($type, $identifier);
+        if (!isset($this->transformedDefinitions[$key])) {
+            $transformedDefinition = $this->buildDefinition($type, $identifier, $definitionHash);
+            $this->transformedDefinitions[$key] = $transformedDefinition;
+        }
+        return $this->transformedDefinitions[$key];
+    }
+
+    /**
+     * @param array<string, mixed>  $definitionHash
+     */
+    protected function buildDefinition(string $type, string $identifier, array $definitionHash): DefinitionInterface
+    {
+        return $this->definitionTransformer->fromHash(
+            $type,
+            [
+                'identifier' => $identifier,
+                'hash' => $definitionHash,
+            ]
+        );
+    }
+
+    protected function getDefinitionCacheKey(string $type, string $identifier): string
+    {
+        return sprintf('%s-%s', $type, $identifier);
     }
 }

@@ -19,7 +19,7 @@ parameters:
     erdnaxelaweb.static_fake_design.content_definition: []
     erdnaxelaweb.static_fake_design.taxonomy_entry_definition: []
     erdnaxelaweb.static_fake_design.pager_definition: []
-    erdnaxelaweb.static_fake_design.record_definition: []
+    erdnaxelaweb.static_fake_design.document_definition: []
     erdnaxelaweb.static_fake_design.display_functions_render_template: '@@StaticFakeDesign/static/display_functions.html.twig'
 
 services:
@@ -67,14 +67,18 @@ services:
             - [registerDefinitions, [!php/const ErdnaxelaWeb\StaticFakeDesign\Definition\PagerDefinition::DEFINITION_TYPE, '%erdnaxelaweb.static_fake_design.pager_definition%']]
             - [registerDefinitions, [!php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockDefinition::DEFINITION_TYPE, '%erdnaxelaweb.static_fake_design.block_definition%']]
             - [registerDefinitions, [!php/const ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutDefinition::DEFINITION_TYPE, '%erdnaxelaweb.static_fake_design.block_layout_definition%']]
-            - [registerDefinitions, [!php/const ErdnaxelaWeb\StaticFakeDesign\Definition\RecordDefinition::DEFINITION_TYPE, '%erdnaxelaweb.static_fake_design.record_definition%']]
+            - [registerDefinitions, [!php/const ErdnaxelaWeb\StaticFakeDesign\Definition\DocumentDefinition::DEFINITION_TYPE, '%erdnaxelaweb.static_fake_design.document_definition%']]
 
     ErdnaxelaWeb\StaticFakeDesignBundle\Command\CreateComponentCommand:
         arguments:
             $filesystem: '@filesystem'
 
+    ErdnaxelaWeb\StaticFakeDesignBundle\Command\DumpDefinitionCommand:
+        arguments:
+            $definitionManager: '@ErdnaxelaWeb\StaticFakeDesign\Configuration\DefinitionManager'
+
     ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver:
 
-    ErdnaxelaWeb\StaticFakeDesign\Record\RecordBuilder:
+    ErdnaxelaWeb\StaticFakeDesign\Document\DocumentBuilder:
         arguments:
             $expressionResolver: '@ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver'

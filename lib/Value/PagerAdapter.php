@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use Pagerfanta\Adapter\CallbackAdapter;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
@@ -20,7 +21,7 @@ class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
     /**
      * @param callable(): int                                     $nbResultsCallable
      * @param callable(int, int): iterable<mixed> $sliceCallable
-     * @param callable(): FormView                                $filtersCallback
+     * @param callable(): FormInterface                                $filtersCallback
      * @param callable(): \Knp\Menu\ItemInterface[]               $activeFiltersCallback
      */
     public function __construct(
@@ -33,6 +34,11 @@ class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
     }
 
     public function getFilters(): FormView
+    {
+        return $this->getFiltersForm()->createView();
+    }
+
+    public function getFiltersForm(): FormInterface
     {
         return ($this->filtersCallback)();
     }

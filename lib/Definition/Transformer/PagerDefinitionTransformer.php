@@ -35,11 +35,11 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
     public function configureOptions(OptionsResolver $optionsResolver, array $options): void
     {
         parent::configureOptions($optionsResolver, $options);
-        $optionsResolver->define('contentTypes')
+        $optionsResolver->define('resultTypes')
             ->required()
             ->allowedTypes('string[]');
 
-        $optionsResolver->define('excludedContentTypes')
+        $optionsResolver->define('excludedResultTypes')
             ->default([])
             ->allowedTypes('string[]');
 
@@ -92,6 +92,11 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
                 }
                 return $pagerFilterDefinitionOptions;
             });
+
+        $optionsResolver->define('searchType')
+                        ->default('content')
+                        ->allowedTypes('string')
+                        ->allowedValues('content', 'document');
     }
 
     public function fromHash(array $hash): PagerDefinition
@@ -109,7 +114,7 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
         return [
             'identifier' => $definition->getIdentifier(),
             'hash' => [
-                'contentTypes' => $definition->getContentTypes(),
+                'resultTypes' => $definition->getResultTypes(),
                 'maxPerPage' => $definition->getMaxPerPage(),
                 'sorts' => array_map(function (PagerSortDefinition $sortDefinition) {
                     return $this->pagerSortDefinitionTransformer->toHash($sortDefinition)['hash'];
@@ -117,8 +122,9 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
                 'filters' => array_map(function (PagerFilterDefinition $filterDefinition) {
                     return $this->pagerFilterDefinitionTransformer->toHash($filterDefinition)['hash'];
                 }, $definition->getFilters()),
-                'excludedContentTypes' => $definition->getExcludedContentTypes(),
+                'excludedResultTypes' => $definition->getExcludedResultTypes(),
                 'headlineCount' => $definition->getHeadlineCount(),
+                'searchType' => $definition->getSearchType(),
             ],
         ];
     }

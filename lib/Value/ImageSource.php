@@ -66,6 +66,23 @@ class ImageSource
     }
 
     /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'uris' => $this->uris,
+            'media' => $this->media,
+            'width' => $this->width,
+            'height' => $this->height,
+            'fileSize' => $this->fileSize,
+            'focusPoint' => $this->focusPoint->toArry(),
+            'mimeType' => $this->mimeType,
+            'variation' => $this->variation,
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $attributes
      */
     protected function initiateArrayAttribute(array &$attributes, string $attributeName): void

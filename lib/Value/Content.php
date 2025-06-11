@@ -14,18 +14,35 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use DateTime;
 
-class Content extends AbstractContent
+class Content extends AbstractContent implements ContentInterface
 {
+    /**
+     * @param string[] $languageCodes
+     */
     public function __construct(
         int                        $id,
         string                     $name,
         string                     $type,
+        array                      $languageCodes,
+        string                     $mainLanguageCode,
+        bool                       $alwaysAvailable,
         DateTime                   $creationDate,
         DateTime                   $modificationDate,
         ContentFieldsCollection    $fields,
         public readonly string     $url,
         public readonly Breadcrumb $breadcrumb,
+        public readonly ?Content   $parent
     ) {
-        parent::__construct($id, $name, $type, $creationDate, $modificationDate, $fields);
+        parent::__construct(
+            $id,
+            $name,
+            $type,
+            $languageCodes,
+            $mainLanguageCode,
+            $alwaysAvailable,
+            $creationDate,
+            $modificationDate,
+            $fields
+        );
     }
 }
