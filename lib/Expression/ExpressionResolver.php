@@ -33,11 +33,14 @@ class ExpressionResolver
             $function->getCompiler(),
             $function->getEvaluator()
         );
-        $function = ExpressionFunction::fromPhp('array_unique');
         $this->expressionLanguage->register(
             'unique',
-            $function->getCompiler(),
-            $function->getEvaluator()
+            function (...$args) {
+                return sprintf('\array_values(array_unique(%s))', implode(', ', $args));
+            },
+            function ($p, ...$args) {
+                return array_values(array_unique(...$args));
+            }
         );
         $function = ExpressionFunction::fromPhp('count');
         $this->expressionLanguage->register(
@@ -85,6 +88,9 @@ class ExpressionResolver
 
                 $values = [];
                 $array = $this->expressionLanguage->evaluate($pathBeforeWildCard, $source);
+                if ($array === null) {
+                    return null;
+                }
                 if (!is_iterable($array)) {
                     throw new InvalidArgumentException(
                         'The expression before the wildcard must be an array in source expression : ' . $pathBeforeWildCard
@@ -108,7 +114,7 @@ class ExpressionResolver
                         $value,
                         $expression
                     );
-                    if (is_array($resolvedValue)) {
+                    if (is_array($resolvedValue) && !$this->isAssociative($resolvedValue)) {
                         $values = array_merge($values, $resolvedValue);
                     } else {
                         $values[] = $resolvedValue;
@@ -132,5 +138,18 @@ class ExpressionResolver
         } catch (RuntimeException  $exception) {
             return null;
         }
+    }
+
+    /**
+     * @param mixed[] $array
+     */
+    protected function isAssociative(array $array): bool
+    {
+        foreach (array_keys($array) as $key) {
+            if (!is_int($key)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
