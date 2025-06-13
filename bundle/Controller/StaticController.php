@@ -19,8 +19,10 @@ use ErdnaxelaWeb\StaticFakeDesign\Configuration\ImageConfiguration;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\PagerConfigurationManager;
 use ErdnaxelaWeb\StaticFakeDesign\Configuration\TaxonomyEntryConfigurationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 
 class StaticController extends TemplateController
 {
@@ -37,7 +39,17 @@ class StaticController extends TemplateController
 
     public function viewAction(string $path)
     {
-        return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
+        try {
+            return $this->templateAction(sprintf("static/%s.html.twig", ! empty($path) ? $path : "index"));
+        } catch (LoaderError $exception) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'template "static/%s.html.twig" not found',
+                    ! empty($path) ? $path : "index"
+                ),
+                $exception
+            );
+        }
     }
 
     public function viewExamplesAction(string $path)
