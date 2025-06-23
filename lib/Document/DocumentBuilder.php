@@ -24,7 +24,7 @@ class DocumentBuilder
     }
 
     /**
-     * @param array<string, string> $fieldsMapping
+     * @param array<string, string|string[]> $fieldsMapping
      */
     public function __invoke(string $type, ContentInterface $content, array $fieldsMapping, string $languageCode): Document
     {
@@ -39,16 +39,30 @@ class DocumentBuilder
         $document->alwaysAvailable = $alwaysAvailable;
         $document->type = $type;
         foreach ($fieldsMapping as $field => $path) {
-            $value = $this->resolveFieldValue($content, $path);
-            $document->fields[$field] = $value;
+            if (is_array($path)) {
+                $value = [];
+                foreach ($path as $pathEl) {
+                    $pathElValue = $this->resolveFieldValue($content, $document, $pathEl);
+                    if (is_array($pathElValue)) {
+                        $value[] = implode(',', $pathElValue);
+                    } else {
+                        $value[] = $pathElValue;
+                    }
+                }
+            } else {
+                $value = $this->resolveFieldValue($content, $document, $path);
+            }
+
+            $document->fields->{$field} = $value;
         }
         return $document;
     }
 
-    protected function resolveFieldValue(ContentInterface $content, string $path): mixed
+    protected function resolveFieldValue(ContentInterface $content, Document $document, string $path): mixed
     {
         return ($this->expressionResolver)([
             'content' => $content,
+            'document' => $document,
         ], $path);
     }
 }

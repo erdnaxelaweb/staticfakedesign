@@ -19,11 +19,11 @@ class Document
     public string $languageCode;
     public bool $isMainTranslation;
     public bool $alwaysAvailable;
-
-    /**
-     * @var array<string, mixed>
-     */
-    public array $fields = [];
-
+    public object $fields;
     public string $type;
+
+    public function __construct()
+    {
+        $this->fields = (object) [];
+    }
 }

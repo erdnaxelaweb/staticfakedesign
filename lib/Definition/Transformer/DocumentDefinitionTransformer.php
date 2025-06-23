@@ -30,12 +30,16 @@ class DocumentDefinitionTransformer extends AbstractDefinitionTransformer
 
         $optionsResolver->define('fields')
                         ->required()
-                        ->allowedTypes('string[]')
                         ->normalize(function (Options $options, array $fields): array {
-                            foreach (array_keys($fields) as $key) {
+                            foreach ($fields as $key => $field) {
                                 if (!is_string($key)) {
                                     throw new InvalidOptionsException(
                                         sprintf('[fields] The field identifier "%s" is expected to be a string.', $key)
+                                    );
+                                }
+                                if (!is_string($field) && !is_array($field)) {
+                                    throw new InvalidOptionsException(
+                                        sprintf('[fields] The value of field "%s" is expected to be a string or string[].', $key)
                                     );
                                 }
                             }
