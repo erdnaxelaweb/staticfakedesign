@@ -23,7 +23,7 @@ class ImageFocusPoint
     /**
      * @return array<string, float>
      */
-    public function toArry(): array
+    public function toArray(): array
     {
         return [
             'posX' => $this->posX,

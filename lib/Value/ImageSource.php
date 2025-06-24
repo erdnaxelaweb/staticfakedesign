@@ -76,7 +76,7 @@ class ImageSource
             'width' => $this->width,
             'height' => $this->height,
             'fileSize' => $this->fileSize,
-            'focusPoint' => $this->focusPoint->toArry(),
+            'focusPoint' => $this->focusPoint?->toArray(),
             'mimeType' => $this->mimeType,
             'variation' => $this->variation,
         ];

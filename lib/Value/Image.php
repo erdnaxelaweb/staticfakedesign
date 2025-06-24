@@ -20,9 +20,9 @@ class Image implements MediaInterface, Serializable
      * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ImageSource[] $sources
      */
     public function __construct(
-        public readonly ?string $alt,
-        public readonly ?string $caption,
-        public readonly ?string $credits,
+        public readonly ?string $alt = null,
+        public readonly ?string $caption = null,
+        public readonly ?string $credits = null,
         public readonly array   $sources = []
     ) {
     }
