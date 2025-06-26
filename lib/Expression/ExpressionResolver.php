@@ -36,10 +36,12 @@ class ExpressionResolver
         $this->expressionLanguage->register(
             'unique',
             function (...$args) {
-                return sprintf('\array_values(array_unique(%s))', implode(', ', $args));
+                $array = reset($args);
+                return sprintf('\is_array(%s) ? \array_values(\array_unique(%s)) : null', $array, implode(', ', $args));
             },
             function ($p, ...$args) {
-                return array_values(array_unique(...$args));
+                $array = reset($args);
+                return is_array($array) ? array_values(array_unique(...$args)) : null;
             }
         );
         $function = ExpressionFunction::fromPhp('count');
