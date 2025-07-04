@@ -26,6 +26,7 @@ class Content extends AbstractContent implements ContentInterface
         array                      $languageCodes,
         string                     $mainLanguageCode,
         bool                       $alwaysAvailable,
+        bool                       $hidden,
         DateTime                   $creationDate,
         DateTime                   $modificationDate,
         ContentFieldsCollection    $fields,
@@ -40,6 +41,7 @@ class Content extends AbstractContent implements ContentInterface
             $languageCodes,
             $mainLanguageCode,
             $alwaysAvailable,
+            $hidden,
             $creationDate,
             $modificationDate,
             $fields

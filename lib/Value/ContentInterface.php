@@ -28,6 +28,7 @@ use DateTime;
  * @property-read string[]                $languageCodes
  * @property-read string                  $mainLanguageCode
  * @property-read bool                    $alwaysAvailable
+ * @property-read bool                    $hidden
  * @property-read DateTime                $creationDate
  * @property-read DateTime                $modificationDate
  * @property-read ContentFieldsCollection $fields

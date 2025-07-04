@@ -82,3 +82,4 @@ services:
     ErdnaxelaWeb\StaticFakeDesign\Document\DocumentBuilder:
         arguments:
             $expressionResolver: '@ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver'
+            $eventDispatcher: '@event_dispatcher'

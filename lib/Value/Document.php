@@ -19,6 +19,7 @@ class Document
     public string $languageCode;
     public bool $isMainTranslation;
     public bool $alwaysAvailable;
+    public bool $hidden;
     public object $fields;
     public string $type;
 

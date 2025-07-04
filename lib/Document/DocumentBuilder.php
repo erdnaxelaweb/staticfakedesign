@@ -12,14 +12,17 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Document;
 
+use ErdnaxelaWeb\StaticFakeDesign\Event\BuildDocumentEvent;
 use ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ContentInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Document;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DocumentBuilder
 {
     public function __construct(
-        protected ExpressionResolver $expressionResolver
+        protected ExpressionResolver $expressionResolver,
+        protected EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -32,12 +35,13 @@ class DocumentBuilder
         $alwaysAvailable = ($isMainTranslation && $content->alwaysAvailable);
 
         $document = new Document();
-        $document->id = strtolower("{$type}_{$content->id}_lang_{$languageCode}");
+        $document->id = $this->generateDocumentId($type, $content->id, $languageCode);
         $document->contentId = $content->id;
         $document->languageCode = $languageCode;
         $document->isMainTranslation = $isMainTranslation;
         $document->alwaysAvailable = $alwaysAvailable;
         $document->type = $type;
+        $document->hidden = $content->hidden;
         foreach ($fieldsMapping as $field => $path) {
             if (is_array($path)) {
                 $value = [];
@@ -55,7 +59,25 @@ class DocumentBuilder
 
             $document->fields->{$field} = $value;
         }
+
+        $this->eventDispatcher->dispatch(
+            new BuildDocumentEvent(
+                $type,
+                $content,
+                $fieldsMapping,
+                $languageCode,
+                $document
+            )
+        );
+
         return $document;
+    }
+
+    public function generateDocumentId(string $type, int $contentId, ?string $languageCode = null): string
+    {
+        return $languageCode ?
+            strtolower("{$type}_{$contentId}_lang_{$languageCode}") :
+            strtolower("{$type}_{$contentId}_lang_*");
     }
 
     protected function resolveFieldValue(ContentInterface $content, Document $document, string $path): mixed

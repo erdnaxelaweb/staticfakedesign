@@ -27,11 +27,16 @@ class ExpressionResolver
     public function __construct()
     {
         $this->expressionLanguage = new ExpressionLanguage();
-        $function = ExpressionFunction::fromPhp('array_filter');
         $this->expressionLanguage->register(
             'filter',
-            $function->getCompiler(),
-            $function->getEvaluator()
+            function (...$args) {
+                $array = reset($args);
+                return sprintf('\is_array(%s) ? \array_filter(%s) : null', $array, implode(', ', $args));
+            },
+            function ($p, ...$args) {
+                $array = reset($args);
+                return is_array($array) ? array_filter(...$args) : null;
+            }
         );
         $this->expressionLanguage->register(
             'unique',

@@ -39,6 +39,7 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
             'languageCode' => ['eng-GB', 'fre-FR'],
             'mainLanguageCode' => 'eng-GB',
             'alwaysAvailable' => true,
+            'hidden' => false,
         ];
         $skippedProperties = array_combine(
             array_keys($baseProperties),

@@ -29,6 +29,7 @@ class AbstractContent
         public readonly array                  $languageCodes,
         public readonly string                    $mainLanguageCode,
         public readonly bool                    $alwaysAvailable,
+        public readonly bool                    $hidden,
         public readonly DateTime                $creationDate,
         public readonly DateTime                $modificationDate,
         public readonly ContentFieldsCollection $fields
