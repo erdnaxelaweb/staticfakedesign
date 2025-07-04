@@ -16,6 +16,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Document\DocumentBuilder;
 use ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\Fake\Generator\ContentGeneratorTest;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class DocumentBuilderTest extends TestCase
 {
@@ -28,8 +29,9 @@ class DocumentBuilderTest extends TestCase
 
     public static function getBuilder(): DocumentBuilder
     {
+        $eventDispatcher = new EventDispatcher();
         $expressionResolver = new ExpressionResolver();
-        return new DocumentBuilder($expressionResolver);
+        return new DocumentBuilder($expressionResolver, $eventDispatcher);
     }
 
     public function testBuild(): void
@@ -49,14 +51,14 @@ class DocumentBuilderTest extends TestCase
             $content->mainLanguageCode
         );
 
-        self::assertArrayHasKey('id', $document->fields);
-        self::assertIsInt($document->fields['id']);
-        self::assertArrayHasKey('title', $document->fields);
-        self::assertEquals('test article', $document->fields['title']);
-        self::assertArrayHasKey('tags', $document->fields);
-        self::assertIsArray($document->fields['tags']);
-        self::assertGreaterThanOrEqual(1, count($document->fields['tags']));
-        self::assertEquals('test tag', $document->fields['tags'][0]);
-        self::assertIsString($document->fields['image']);
+        self::assertObjectHasProperty('id', $document->fields);
+        self::assertIsInt($document->fields->id);
+        self::assertObjectHasProperty('title', $document->fields);
+        self::assertEquals('test article', $document->fields->title);
+        self::assertObjectHasProperty('tags', $document->fields);
+        self::assertIsArray($document->fields->tags);
+        self::assertGreaterThanOrEqual(1, count($document->fields->tags));
+        self::assertEquals('test tag', $document->fields->tags[0]);
+        self::assertIsString($document->fields->image);
     }
 }

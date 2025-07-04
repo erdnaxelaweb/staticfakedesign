@@ -37,9 +37,9 @@ class DocumentGeneratorTest extends TestCase
         $generator = self::getGenerator();
         $document = $generator('article');
 
-        self::assertArrayHasKey('id', $document->fields);
-        self::assertIsInt($document->fields['id']);
-        self::assertArrayHasKey('title', $document->fields);
-        self::assertEquals('test article', $document->fields['title']);
+        self::assertObjectHasProperty('id', $document->fields);
+        self::assertIsInt($document->fields->id);
+        self::assertObjectHasProperty('title', $document->fields);
+        self::assertEquals('test article', $document->fields->title);
     }
 }
