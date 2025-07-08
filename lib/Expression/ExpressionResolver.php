@@ -31,11 +31,11 @@ class ExpressionResolver
             'filter',
             function (...$args) {
                 $array = reset($args);
-                return sprintf('\is_array(%s) ? \array_filter(%s) : null', $array, implode(', ', $args));
+                return sprintf('\is_array(%s) ? \array_values(\array_filter(%s)) : null', $array, implode(', ', $args));
             },
             function ($p, ...$args) {
                 $array = reset($args);
-                return is_array($array) ? array_filter(...$args) : null;
+                return is_array($array) ? array_values(array_filter(...$args)) : null;
             }
         );
         $this->expressionLanguage->register(
