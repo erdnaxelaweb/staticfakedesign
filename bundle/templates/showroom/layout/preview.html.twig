@@ -19,7 +19,7 @@
     </head>
     <body class="{{ body_classes|default() }}">
         <div class="component-wrapper">
-            {% block body %}{% endblock %}
+            {% block body %}{% block inner_body %}{% endblock %}{% endblock %}
         </div>
 
         <script src="{{ asset('bundles/staticfakedesign/preview-js.js') }}"></script>
