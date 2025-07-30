@@ -27,4 +27,26 @@ class Document
     {
         $this->fields = (object) [];
     }
+
+    public function cacheTag(): string
+    {
+        $shortType = $this->getShortType();
+        return sprintf('d-%s-%s', $shortType, $this->contentId);
+    }
+
+    protected function getShortType(): string
+    {
+        return implode(
+            '',
+            array_map(
+                function (string $word) {
+                    return substr($word, 0, 1);
+                },
+                explode(
+                    '_',
+                    str_replace('-', '_', $this->type)
+                )
+            )
+        );
+    }
 }
