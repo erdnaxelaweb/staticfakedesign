@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('suffix')->isRequired()->end()
                                 ->scalarNode('media')->isRequired()->end()
                                 ->scalarNode('previewSize')->defaultValue('100%')->end()
-                                ->booleanNode('use_webp')->defaultTrue()->end()
+                                ->scalarNode('use_webp')->defaultTrue()->end()
                             ->end()
                         ->end()
                     ->end()
