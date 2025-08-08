@@ -152,8 +152,12 @@ class SearchFormGenerator extends AbstractGenerator
         }
         $builder->add($formFields);
         if (count($sorts) > 1) {
+            $sortChoices = [];
+            foreach ($sorts as $sort) {
+                $sortChoices[$sort->getIdentifier()] = $sort->getIdentifier();
+            }
             $builder->add('sort', ChoiceType::class, [
-                'choices' => array_flip($sorts),
+                'choices' => array_flip($sortChoices),
                 'block_prefix' => 'sort',
             ]);
         }
