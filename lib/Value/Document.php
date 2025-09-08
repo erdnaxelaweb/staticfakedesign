@@ -34,7 +34,7 @@ class Document
         return sprintf('d-%s-%s', $shortType, $this->contentId);
     }
 
-    protected function getShortType(): string
+    public function getShortType(): string
     {
         return implode(
             '',
