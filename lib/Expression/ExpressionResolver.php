@@ -49,6 +49,19 @@ class ExpressionResolver
                 return is_array($array) ? array_values(array_unique(...$args)) : null;
             }
         );
+        $this->expressionLanguage->register(
+            'map',
+            function (...$args) {
+                [$format, $array] = $args;
+                return sprintf('\is_array(%s) ? \array_map(static function ($value) use ($format){ return \sprintf(%s, $value); }, %s) : \sprintf($format, %s)', $array, $format, $array, $array);
+            },
+            function ($p, ...$args) {
+                [$format, $array] = $args;
+                return is_array($array) ? array_map(static function ($value) use ($format) {
+                    return sprintf($format, $value);
+                }, $array) : sprintf($format, $array);
+            }
+        );
         $function = ExpressionFunction::fromPhp('count');
         $this->expressionLanguage->register(
             'count',
@@ -75,16 +88,20 @@ class ExpressionResolver
                 $functionName = $matches[1];
                 $functionArgExpression = $matches[2];
 
-                $resolvedFunctionArg = ($this)(
-                    $source,
-                    $functionArgExpression
-                );
+                $functionArgExpressions = explode(',', $functionArgExpression);
+                foreach ($functionArgExpressions as $i => $functionArgExpression) {
+                    $resolvedFunctionArgs['arg' . $i] = ($this)(
+                        $source,
+                        $functionArgExpression
+                    );
+                }
 
                 return $this->expressionLanguage->evaluate(
-                    sprintf('%s(arg)', $functionName),
-                    [
-                        'arg' => $resolvedFunctionArg,
-                    ],
+                    sprintf(
+                        '%s(' . implode(',', array_keys($resolvedFunctionArgs)) . ')',
+                        $functionName
+                    ),
+                    $resolvedFunctionArgs,
                 );
             }
 
@@ -104,12 +121,11 @@ class ExpressionResolver
                     );
                 }
 
-                foreach ($array as $value) {
-                    if (empty($pathAfterWildCard)) {
-                        $values[] = $value;
-                        continue;
-                    }
+                if (empty($pathAfterWildCard)) {
+                    return $array;
+                }
 
+                foreach ($array as $value) {
                     $expression = ltrim($pathAfterWildCard, '.');
                     if (!is_array($value)) {
                         $value = [
