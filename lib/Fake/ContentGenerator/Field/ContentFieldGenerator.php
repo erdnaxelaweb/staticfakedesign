@@ -28,7 +28,7 @@ class ContentFieldGenerator extends AbstractFieldGenerator
      *
      * @return Content[]|Content
      */
-    public function __invoke(string|array $type, int $max = 1): array|Content
+    public function __invoke(string|array $type, int $max = 1): Content|array|null
     {
         if ($max === 1) {
             return ($this->contentGenerator)($type);

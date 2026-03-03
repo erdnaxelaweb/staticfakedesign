@@ -65,12 +65,17 @@ abstract class AbstractContentGenerator extends AbstractGenerator
                             if (!$fieldValue && is_callable($generator)) {
                                 $options = $fieldDefinition->getOptions();
                                 $reflectionFunction = new ReflectionClass($generator);
+                                $parameters = [];
                                 foreach ($reflectionFunction->getMethod('__invoke')->getParameters() as $parameter) {
                                     if ($parameter->getName() === 'content') {
-                                        $options['content'] = $content;
+                                        $parameters['content'] = $content;
+                                    }else{
+                                        if(isset($options[$parameter->getName()])) {
+                                            $parameters[$parameter->getName()] = $options[$parameter->getName()];
+                                        }
                                     }
                                 }
-                                return $generator(...$options);
+                                return $generator(...$parameters);
                             }
 
                             return $generator->getForcedValue($fieldValue);

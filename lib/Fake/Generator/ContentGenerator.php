@@ -34,10 +34,13 @@ class ContentGenerator extends AbstractContentGenerator
     /**
      * @param string|string[] $type
      */
-    public function __invoke(array|string $type): Content
+    public function __invoke(array|string $type): Content|null
     {
         if (is_array($type)) {
             $type = $this->fakerGenerator->randomElement($type);
+        }
+        if($type === null) {
+            return null;
         }
         $configuration = $this->definitionManager->getDefinition(ContentDefinition::class, $type);
 
