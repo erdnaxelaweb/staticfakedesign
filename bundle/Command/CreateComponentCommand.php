@@ -19,10 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'static_fake_design:component:create')]
 class CreateComponentCommand extends Command
 {
-    protected static $defaultName = 'static_fake_design:component:create';
-
     public function __construct(
         protected Filesystem $filesystem
     ) {

@@ -127,7 +127,7 @@ class SearchFormGenerator extends AbstractGenerator
             'block_prefix' => 'filters',
         ]);
         if (empty($fields)) {
-            $fields = array_keys($formTypes);
+            $fields = array_combine(array_keys($formTypes), array_keys($formTypes));
         }
         foreach ($fields as $fieldName => $fieldType) {
             $fieldOptions = [];
@@ -154,7 +154,8 @@ class SearchFormGenerator extends AbstractGenerator
         if (count($sorts) > 1) {
             $sortChoices = [];
             foreach ($sorts as $sort) {
-                $sortChoices[$sort->getIdentifier()] = $sort->getIdentifier();
+                $sortIdentifier = $sort instanceof PagerSortDefinition ? $sort->getIdentifier() : $sort;
+                $sortChoices[$sortIdentifier] = $sortIdentifier;
             }
             $builder->add('sort', ChoiceType::class, [
                 'choices' => array_flip($sortChoices),

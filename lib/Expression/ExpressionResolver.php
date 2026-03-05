@@ -57,9 +57,7 @@ class ExpressionResolver
             },
             function ($p, ...$args) {
                 [$format, $array] = $args;
-                return is_array($array) ? array_map(static function ($value) use ($format) {
-                    return sprintf($format, $value);
-                }, $array) : sprintf($format, $array);
+                return is_array($array) ? array_map(static fn ($value) => sprintf($format, $value), $array) : sprintf($format, $array);
             }
         );
         $function = ExpressionFunction::fromPhp('count');
@@ -156,9 +154,7 @@ class ExpressionResolver
                 $exception->getCode(),
                 $exception
             );
-        } catch (NoSuchIndexException|NoSuchPropertyException  $exception) {
-            return null;
-        } catch (RuntimeException  $exception) {
+        } catch (NoSuchIndexException|NoSuchPropertyException|RuntimeException) {
             return null;
         }
     }

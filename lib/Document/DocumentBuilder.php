@@ -16,6 +16,7 @@ use ErdnaxelaWeb\StaticFakeDesign\Event\BuildDocumentEvent;
 use ErdnaxelaWeb\StaticFakeDesign\Expression\ExpressionResolver;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ContentInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Document;
+use Symfony\Component\VarExporter\Instantiator;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DocumentBuilder
@@ -31,17 +32,22 @@ class DocumentBuilder
      */
     public function __invoke(string $type, ContentInterface $content, array $fieldsMapping, string $languageCode): Document
     {
-        $isMainTranslation = ($content->mainLanguageCode === $languageCode);
-        $alwaysAvailable = ($isMainTranslation && $content->alwaysAvailable);
+        $isMainTranslation = ($content->getMainLanguageCode() === $languageCode);
+        $alwaysAvailable = ($isMainTranslation && $content->isAlwaysAvailable());
 
-        $document = new Document();
-        $document->id = $this->generateDocumentId($type, $content->id, $languageCode);
-        $document->contentId = $content->id;
-        $document->languageCode = $languageCode;
-        $document->isMainTranslation = $isMainTranslation;
-        $document->alwaysAvailable = $alwaysAvailable;
-        $document->type = $type;
-        $document->hidden = $content->hidden;
+        $document = Instantiator::instantiate(
+            Document::class,
+            [
+                'id' => $this->generateDocumentId($type, $content->getId(), $languageCode),
+                'contentId' => $content->getId(),
+                'languageCode' => $languageCode,
+                'isMainTranslation' => $isMainTranslation,
+                'alwaysAvailable' => $alwaysAvailable,
+                'type' => $type,
+                'hidden' => $content->isHidden(),
+                'fields' => (object) [],
+            ]
+        );
         foreach ($fieldsMapping as $field => $path) {
             if (is_array($path)) {
                 $value = [];

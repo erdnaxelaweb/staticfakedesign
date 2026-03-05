@@ -19,10 +19,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'static_fake_design:definition:dump')]
 class DumpDefinitionCommand extends Command
 {
-    protected static $defaultName = 'static_fake_design:definition:dump';
-
     public function __construct(
         protected DefinitionManager $definitionManager,
     ) {

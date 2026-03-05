@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-class Coordinates
+class Coordinates implements \Stringable
 {
     public function __construct(
         public readonly float  $latitude,

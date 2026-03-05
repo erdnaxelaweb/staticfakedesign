@@ -14,10 +14,10 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use Serializable;
 
-class Image implements MediaInterface, Serializable
+class Image implements MediaInterface, Serializable, \Stringable
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ImageSource[] $sources
+     * @param ImageSource[] $sources
      */
     public function __construct(
         public readonly ?string $alt = null,
@@ -88,9 +88,7 @@ class Image implements MediaInterface, Serializable
             'alt' => $this->alt,
             'caption' => $this->caption,
             'credits' => $this->credits,
-            'sources' => array_map(function (ImageSource $source) {
-                return $source->toArray();
-            }, $this->sources),
+            'sources' => array_map(fn (ImageSource $source) => $source->toArray(), $this->sources),
         ];
     }
 

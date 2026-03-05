@@ -82,6 +82,7 @@ class ContentFieldDefinitionTransformer extends AbstractDefinitionTransformer
         ];
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $options['options'] = new DefinitionOptions($options['options']);

@@ -31,7 +31,6 @@ class Configuration implements ConfigurationInterface
 
     public static function configureRootNode(NodeBuilder $rootNode): void
     {
-        /* @phpstan-ignore method.notFound */
         $rootNode
             ->arrayNode('pager_definition')
                 ->prototype('variable')->end()

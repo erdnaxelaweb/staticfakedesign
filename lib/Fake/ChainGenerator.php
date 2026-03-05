@@ -62,7 +62,7 @@ class ChainGenerator
      */
     public function generateFakeArray(?int $count, string $type, array $parameters = []): array
     {
-        $count = $count ?? rand(1, 10);
+        $count ??= random_int(1, 10);
         $values = [];
         for ($i = 0; $i < $count; ++$i) {
             $values[] = $this->generateFake($type, $parameters);

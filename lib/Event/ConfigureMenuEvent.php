@@ -20,23 +20,11 @@ class ConfigureMenuEvent extends Event
 {
     public const SHOWROOM_MENU_SIDEBAR = "showroom.menu.sidebar";
 
-    private FactoryInterface $factory;
-
-    private ItemInterface $menu;
-
-    /**
-     * @var array<mixed>
-     */
-    private array $options;
-
     /**
      * @param array<mixed> $options
      */
-    public function __construct(FactoryInterface $factory, ItemInterface $menu, array $options = [])
+    public function __construct(private readonly FactoryInterface $factory, private readonly ItemInterface $menu, private readonly array $options = [])
     {
-        $this->factory = $factory;
-        $this->menu = $menu;
-        $this->options = $options;
     }
 
     public function getFactory(): FactoryInterface
@@ -54,6 +42,6 @@ class ConfigureMenuEvent extends Event
      */
     public function getOptions(): array
     {
-        return $this->options ?? [];
+        return $this->options;
     }
 }

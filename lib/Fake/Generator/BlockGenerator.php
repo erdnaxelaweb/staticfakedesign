@@ -19,13 +19,12 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\Attribute\AttributeGeneratorInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\BlockGenerator\AttributeGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\LazyLoading\LazyValue;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Block;
 use ErdnaxelaWeb\StaticFakeDesign\Value\BlockAttributesCollection;
-use ErdnaxelaWeb\StaticFakeDesign\Value\LazyValue;
 use InvalidArgumentException;
 use ReflectionClass;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\VarExporter\Instantiator;
 
 class BlockGenerator extends AbstractGenerator
 {
@@ -41,7 +40,7 @@ class BlockGenerator extends AbstractGenerator
     {
         $configuration = $this->definitionManager->getDefinition(BlockDefinition::class, $type);
         $views = $configuration->getViews();
-        $view = $view ?? $this->fakerGenerator->randomElement(array_keys($views));
+        $view ??= $this->fakerGenerator->randomElement(array_keys($views));
 
         $baseProperties = [
             'type' => $type,
@@ -52,28 +51,18 @@ class BlockGenerator extends AbstractGenerator
             'till' => null,
             'isVisible' => true,
         ];
-        $skippedProperties = array_combine(
-            array_keys($baseProperties),
-            array_fill(0, count($baseProperties), true)
-        );
+
         $initializers = [
-            'id' => function () {
-                return $this->fakerGenerator->randomNumber();
-            },
-            'name' => function () {
-                return $this->fakerGenerator->sentence();
-            },
-            'attributes' => function (Block $instance) use ($configuration) {
-                return $this->generateAttributeValue(
-                    $instance,
-                    $configuration->getAttributes(),
-                    $configuration->getModels()
-                );
-            },
+            'id' => fn () => $this->fakerGenerator->randomNumber(),
+            'name' => fn () => $this->fakerGenerator->sentence(),
+            'attributes' => fn (Block $instance) => $this->generateAttributeValue(
+                $instance,
+                $configuration->getAttributes(),
+                $configuration->getModels()
+            ),
         ];
 
-        $instance = Instantiator::instantiate(Block::class, $baseProperties);
-        return Block::createLazyGhost($initializers, $skippedProperties, $instance);
+        return Block::instantiate($baseProperties, $initializers);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void

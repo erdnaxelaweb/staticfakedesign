@@ -13,26 +13,79 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use DateTime;
-use Symfony\Component\VarExporter\LazyGhostTrait;
+use ErdnaxelaWeb\StaticFakeDesign\LazyLoading\LazyObjectTrait;
 
-class AbstractContent
+abstract class AbstractContent
 {
-    use LazyGhostTrait;
+    use LazyObjectTrait;
 
     /**
      * @param string[]                                                        $languageCodes
      */
     public function __construct(
-        public readonly int                     $id,
-        public readonly string                  $name,
-        public readonly string                  $type,
-        public readonly array                  $languageCodes,
-        public readonly string                    $mainLanguageCode,
-        public readonly bool                    $alwaysAvailable,
-        public readonly bool                    $hidden,
-        public readonly DateTime                $creationDate,
-        public readonly DateTime                $modificationDate,
-        public readonly ContentFieldsCollection $fields
+        protected readonly int                     $id,
+        protected readonly string                  $name,
+        protected readonly string                  $type,
+        protected readonly array                   $languageCodes,
+        protected readonly string                  $mainLanguageCode,
+        protected readonly bool                    $alwaysAvailable,
+        protected readonly bool                    $hidden,
+        protected readonly DateTime                $creationDate,
+        protected readonly DateTime                $modificationDate,
+        protected readonly ContentFieldsCollection $fields
     ) {
+    }
+
+    public function getId(): int
+    {
+        return $this->getPropertyValue('id');
+    }
+
+    public function getName(): string
+    {
+        return $this->getPropertyValue('name');
+    }
+
+    public function getType(): string
+    {
+        return $this->getPropertyValue('type');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLanguageCodes(): array
+    {
+        return $this->getPropertyValue('languageCodes');
+    }
+
+    public function getMainLanguageCode(): string
+    {
+        return $this->getPropertyValue('mainLanguageCode');
+    }
+
+    public function isAlwaysAvailable(): bool
+    {
+        return $this->getPropertyValue('alwaysAvailable');
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->getPropertyValue('hidden');
+    }
+
+    public function getCreationDate(): DateTime
+    {
+        return $this->getPropertyValue('creationDate');
+    }
+
+    public function getModificationDate(): DateTime
+    {
+        return $this->getPropertyValue('modificationDate');
+    }
+
+    public function getFields(): ContentFieldsCollection
+    {
+        return $this->getPropertyValue('fields');
     }
 }

@@ -30,9 +30,9 @@ class Content extends AbstractContent implements ContentInterface
         DateTime                   $creationDate,
         DateTime                   $modificationDate,
         ContentFieldsCollection    $fields,
-        public readonly string     $url,
-        public readonly Breadcrumb $breadcrumb,
-        public readonly ?Content   $parent
+        protected readonly string     $url,
+        protected readonly Breadcrumb $breadcrumb,
+        protected readonly ?Content   $parent
     ) {
         parent::__construct(
             $id,
@@ -46,5 +46,20 @@ class Content extends AbstractContent implements ContentInterface
             $modificationDate,
             $fields
         );
+    }
+
+    public function getUrl(): string
+    {
+        return $this->getPropertyValue('url');
+    }
+
+    public function getBreadcrumb(): Breadcrumb
+    {
+        return $this->getPropertyValue('breadcrumb');
+    }
+
+    public function getParent(): ?Content
+    {
+        return $this->getPropertyValue('parent');
     }
 }

@@ -24,7 +24,7 @@ class ComponentNodeVisitor implements NodeVisitorInterface
 {
     private bool $inAModule = false;
 
-    private ?ArrayExpression $storyParameters;
+    private ?ArrayExpression $storyParameters = null;
 
     public function enterNode(Node $node, Environment $env): Node
     {

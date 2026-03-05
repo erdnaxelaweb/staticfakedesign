@@ -25,7 +25,7 @@ class TextFieldGenerator extends AbstractFieldGenerator
 
     public function __invoke(int $max = 10): TextFieldValue
     {
-        $count = rand(1, $max);
+        $count = random_int(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
         return new TextFieldValue(implode(PHP_EOL, $paragraphes));

@@ -19,16 +19,10 @@ use ReflectionParameter;
 class FakerGenerator extends BaseGenerator
 {
     /**
-     * @var array<string, mixed>
-     */
-    protected array $imageProviderParameters = [];
-
-    /**
      * @param array<string, mixed> $imageProviderParameters
      */
-    public function __construct(array $imageProviderParameters)
+    public function __construct(protected array $imageProviderParameters)
     {
-        $this->imageProviderParameters = $imageProviderParameters;
         parent::__construct();
     }
 
@@ -43,9 +37,7 @@ class FakerGenerator extends BaseGenerator
         if ($id && !empty(
             array_filter(
                 $method->getParameters(),
-                function (ReflectionParameter $reflectionParameter) {
-                    return $reflectionParameter->getName() === "id";
-                }
+                fn (ReflectionParameter $reflectionParameter) => $reflectionParameter->getName() === "id"
             )
         )) {
             $parameters['id'] = $id;

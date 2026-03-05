@@ -43,7 +43,7 @@ class BlockDefinitionTransformer extends AbstractDefinitionTransformer
                     try {
                         $attributeDefinitionOptions[$attributeDefinitionIdentifier] = $optionsResolver->resolve($attributeDefinitionOption);
                     } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
-                        $exceptionClass = get_class($exception);
+                        $exceptionClass = $exception::class;
                         throw new $exceptionClass(
                             sprintf('[attributes] [%s] %s', $attributeDefinitionIdentifier, $exception->getMessage()),
                             $exception->getCode(),
@@ -96,9 +96,7 @@ class BlockDefinitionTransformer extends AbstractDefinitionTransformer
             'identifier' => $definition->getIdentifier(),
             'hash' => [
                 'attributes' => array_map(
-                    function (BlockAttributeDefinition $definition) {
-                        return $this->blockAttributeDefinitionTransformer->toHash($definition)['hash'];
-                    },
+                    fn (BlockAttributeDefinition $definition) => $this->blockAttributeDefinitionTransformer->toHash($definition)['hash'],
                     $definition->getAttributes()
                 ),
                 'views' => $definition->getViews(),
@@ -107,6 +105,7 @@ class BlockDefinitionTransformer extends AbstractDefinitionTransformer
         ];
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $attributes = [];

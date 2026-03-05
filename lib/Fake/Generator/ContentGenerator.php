@@ -18,7 +18,6 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\Content;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\VarExporter\Instantiator;
 
 class ContentGenerator extends AbstractContentGenerator
 {
@@ -39,7 +38,7 @@ class ContentGenerator extends AbstractContentGenerator
         if (is_array($type)) {
             $type = $this->fakerGenerator->randomElement($type);
         }
-        if($type === null) {
+        if ($type === null) {
             return null;
         }
         $configuration = $this->definitionManager->getDefinition(ContentDefinition::class, $type);
@@ -51,43 +50,23 @@ class ContentGenerator extends AbstractContentGenerator
             'alwaysAvailable' => true,
             'hidden' => false,
         ];
-        $skippedProperties = array_combine(
-            array_keys($baseProperties),
-            array_fill(0, count($baseProperties), true)
-        );
+
         $initializers = [
-            'id' => function () {
-                return $this->fakerGenerator->randomNumber();
-            },
-            'name' => function () {
-                return $this->fakerGenerator->sentence();
-            },
-            'creationDate' => function () {
-                return $this->fakerGenerator->dateTime();
-            },
-            'modificationDate' => function () {
-                return $this->fakerGenerator->dateTime();
-            },
-            'fields' => function (Content $instance) use ($configuration) {
-                return $this->generateFieldsValue(
-                    $instance,
-                    $configuration->getFields(),
-                    $configuration->getModels()
-                );
-            },
-            'url' => function () {
-                return $this->fakerGenerator->url();
-            },
-            'breadcrumb' => function () {
-                return ($this->breadcrumbGenerator)();
-            },
-            'parent' => function () use ($configuration) {
-                return !empty($configuration->getParent()) ? ($this)($configuration->getParent()) : null;
-            },
+            'id' => fn () => $this->fakerGenerator->randomNumber(),
+            'name' => fn () => $this->fakerGenerator->sentence(),
+            'creationDate' => fn () => $this->fakerGenerator->dateTime(),
+            'modificationDate' => fn () => $this->fakerGenerator->dateTime(),
+            'fields' => fn (Content $instance) => $this->generateFieldsValue(
+                $instance,
+                $configuration->getFields(),
+                $configuration->getModels()
+            ),
+            'url' => fn () => $this->fakerGenerator->url(),
+            'breadcrumb' => fn () => ($this->breadcrumbGenerator)(),
+            'parent' => fn () => !empty($configuration->getParent()) ? ($this)($configuration->getParent()) : null,
         ];
 
-        $instance = Instantiator::instantiate(Content::class, $baseProperties);
-        return Content::createLazyGhost($initializers, $skippedProperties, $instance);
+        return Content::instantiate($baseProperties, $initializers);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void

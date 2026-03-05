@@ -17,8 +17,8 @@ use Twig\Template;
 class Component
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[] $parameters
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[] $properties
+     * @param ComponentParameter[] $parameters
+     * @param ComponentParameter[] $properties
      */
     public function __construct(
         protected readonly Template $template,
@@ -47,7 +47,7 @@ class Component
     }
 
     /**
-     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[]
+     * @return ComponentParameter[]
      */
     public function getParameters(): array
     {
@@ -55,7 +55,7 @@ class Component
     }
 
     /**
-     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\ComponentParameter[]
+     * @return ComponentParameter[]
      */
     public function getProperties(): array
     {

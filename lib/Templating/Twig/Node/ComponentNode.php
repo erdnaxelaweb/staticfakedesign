@@ -36,6 +36,7 @@ class ComponentNode extends Node
         parent::__construct($nodes, $attributes, $lineno, $tag);
     }
 
+    #[\Override]
     public function compile(Compiler $compiler): void
     {
         if ($this->hasNode('parameters')) {

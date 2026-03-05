@@ -26,13 +26,14 @@ class BlockExtension extends AbstractExtension
     ) {
     }
 
+    #[\Override]
     public function getFilters(): array
     {
-        return [new TwigFilter('group_blocks_by_section', [$this, 'groupBlocksBySection'])];
+        return [new TwigFilter('group_blocks_by_section', $this->groupBlocksBySection(...))];
     }
 
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\Block[] $blocks
+     * @param Block[] $blocks
      *
      * @return list<array{identifier: string, template: string, blocks: Block[]}>
      */
@@ -77,8 +78,8 @@ class BlockExtension extends AbstractExtension
         if (!$this->inEditorialMode()) {
             foreach ($blockSections as $blockSectionId => $blockSection) {
                 if (
-                    in_array($block->type, $blockSection->getBlocksIdentifier(), true) ||
-                    in_array(sprintf('%s/%s', $block->type, $block->view), $blockSection->getBlocksIdentifier(), true)
+                    in_array($block->getType(), $blockSection->getBlocksIdentifier(), true) ||
+                    in_array(sprintf('%s/%s', $block->getType(), $block->getView()), $blockSection->getBlocksIdentifier(), true)
                 ) {
                     return $this->getNewSection($blockSectionId, $blockSection->getTemplate());
                 }

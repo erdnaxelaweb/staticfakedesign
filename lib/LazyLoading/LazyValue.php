@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license   https://github.com/erdnaxelaweb/staticfakedesign/blob/main/LICENSE
  */
 
-namespace ErdnaxelaWeb\StaticFakeDesign\Value;
+namespace ErdnaxelaWeb\StaticFakeDesign\LazyLoading;
 
 class LazyValue
 {
@@ -22,8 +22,11 @@ class LazyValue
     ) {
     }
 
-    public function __invoke(): mixed
+    /**
+     * @param mixed ...$args
+     */
+    public function __invoke(...$args): mixed
     {
-        return ($this->initializer)();
+        return ($this->initializer)(...$args);
     }
 }

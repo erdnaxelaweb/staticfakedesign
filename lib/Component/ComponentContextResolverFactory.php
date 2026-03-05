@@ -32,9 +32,7 @@ class ComponentContextResolverFactory
             if ($parameter->hasDefaultValue()) {
                 $configurator->default($parameter->getDefaultValue());
             } elseif ($parameter->isRequired()) {
-                $configurator->default(function (Options $options) use ($parameter) {
-                    return $this->fakeGenerator->generateFromType($parameter->getType());
-                });
+                $configurator->default(fn (Options $options) => $this->fakeGenerator->generateFromType($parameter->getType()));
             }
         }
 

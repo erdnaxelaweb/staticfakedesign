@@ -36,14 +36,15 @@ class Extension extends AbstractExtension
     ) {
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return array_merge(
             [
-                new TwigFunction('generateFake', [$this->generator, 'generateFake'], [
+                new TwigFunction('generateFake', $this->generator->generateFake(...), [
                     'is_safe' => ['html'],
                 ]),
-                new TwigFunction('generateFakeArray', [$this->generator, 'generateFakeArray'], [
+                new TwigFunction('generateFakeArray', $this->generator->generateFakeArray(...), [
                     'is_safe' => ['html'],
                 ]),
             ],
@@ -87,11 +88,13 @@ class Extension extends AbstractExtension
         }
     }
 
+    #[\Override]
     public function getNodeVisitors(): array
     {
         return [new DebugNodeVisitor($this->kernelProjectDir), new ComponentNodeVisitor()];
     }
 
+    #[\Override]
     public function getTokenParsers(): array
     {
         return [new ComponentTokenParser()];

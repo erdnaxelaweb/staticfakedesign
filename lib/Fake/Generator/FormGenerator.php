@@ -58,12 +58,10 @@ class FormGenerator extends AbstractGenerator
             'compound' => true,
         ]);
         if (empty($fields)) {
-            $fields = array_map(function (string $type) {
-                return [
-                    'type' => $type,
-                    'options' => [],
-                ];
-            }, $this->getFieldsTypes());
+            $fields = array_map(fn (string $type) => [
+                'type' => $type,
+                'options' => [],
+            ], $this->getFieldsTypes());
         }
         foreach ($fields as $fieldName => $field) {
             $fieldType = $field['type'];

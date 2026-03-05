@@ -36,6 +36,7 @@ class ComponentReferenceNode extends Node
         parent::__construct($nodes, $attributes, $lineno, $tag);
     }
 
+    #[\Override]
     public function compile(Compiler $compiler): void
     {
         $extensionName = Extension::class;

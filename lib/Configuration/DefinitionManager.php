@@ -75,7 +75,7 @@ class DefinitionManager
      * @param class-string<T> $definitionClass
      *
      * @return array<T>
-     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
+     * @throws DefinitionTypeNotFoundException
      */
     public function getDefinitionsByType(string $definitionClass): array
     {
@@ -98,7 +98,7 @@ class DefinitionManager
      * @param class-string<T> $definitionClass
      *
      * @return T
-     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
+     * @throws DefinitionTypeNotFoundException
      */
     public function getDefinition(string $definitionClass, string $identifier): DefinitionInterface
     {
@@ -117,7 +117,7 @@ class DefinitionManager
     }
 
     /**
-     * @throws \ErdnaxelaWeb\StaticFakeDesign\Exception\DefinitionTypeNotFoundException
+     * @throws DefinitionTypeNotFoundException
      * @return array<string, array<string, mixed>>
      */
     protected function getDefinitionsHashesByType(mixed $type): array

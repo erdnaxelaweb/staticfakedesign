@@ -16,7 +16,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 class Video implements MediaInterface
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\VideoSource[] $sources
+     * @param VideoSource[] $sources
      */
     public function __construct(
         public readonly string  $title,

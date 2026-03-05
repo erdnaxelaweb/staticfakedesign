@@ -36,7 +36,7 @@ class ImageGeneratorTest extends TestCase
                 'randomize' => false,
                 'gray' => false,
             ],
-            "\\Smknstd\\FakerPicsumImages\\FakerPicsumImagesProvider",
+            \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider::class,
         );
     }
 

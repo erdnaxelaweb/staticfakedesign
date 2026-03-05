@@ -17,9 +17,9 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\AbstractGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\Field\FieldGeneratorInterface;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
+use ErdnaxelaWeb\StaticFakeDesign\LazyLoading\LazyValue;
 use ErdnaxelaWeb\StaticFakeDesign\Value\AbstractContent;
 use ErdnaxelaWeb\StaticFakeDesign\Value\ContentFieldsCollection;
-use ErdnaxelaWeb\StaticFakeDesign\Value\LazyValue;
 use InvalidArgumentException;
 use ReflectionClass;
 
@@ -69,8 +69,8 @@ abstract class AbstractContentGenerator extends AbstractGenerator
                                 foreach ($reflectionFunction->getMethod('__invoke')->getParameters() as $parameter) {
                                     if ($parameter->getName() === 'content') {
                                         $parameters['content'] = $content;
-                                    }else{
-                                        if(isset($options[$parameter->getName()])) {
+                                    } else {
+                                        if (isset($options[$parameter->getName()])) {
                                             $parameters[$parameter->getName()] = $options[$parameter->getName()];
                                         }
                                     }

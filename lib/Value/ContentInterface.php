@@ -1,4 +1,5 @@
 <?php
+
 /*
  * ibexadesignbundle.
  *
@@ -38,4 +39,26 @@ use DateTime;
  */
 interface ContentInterface
 {
+    public function getId(): int;
+
+    public function getName(): string;
+
+    public function getType(): string;
+
+    /**
+     * @return string[]
+     */
+    public function getLanguageCodes(): array;
+
+    public function getMainLanguageCode(): string;
+
+    public function isAlwaysAvailable(): bool;
+
+    public function isHidden(): bool;
+
+    public function getCreationDate(): DateTime;
+
+    public function getModificationDate(): DateTime;
+
+    public function getFields(): ContentFieldsCollection;
 }

@@ -36,6 +36,7 @@ class GenericFormFieldGenerator extends AbstractFormFieldGenerator
         return $this->formType;
     }
 
+    #[\Override]
     protected function getFormOptions(): array
     {
         return $this->formOptions;

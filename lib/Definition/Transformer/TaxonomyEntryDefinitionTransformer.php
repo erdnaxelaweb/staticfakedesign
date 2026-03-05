@@ -43,7 +43,7 @@ class TaxonomyEntryDefinitionTransformer extends AbstractDefinitionTransformer
                     try {
                         $fieldDefinitionOptions[$fieldDefinitionIdentifier] = $optionsResolver->resolve($fieldDefinitionOption);
                     } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
-                        $exceptionClass = get_class($exception);
+                        $exceptionClass = $exception::class;
                         throw new $exceptionClass(
                             sprintf('[fields] [%s] %s', $fieldDefinitionIdentifier, $exception->getMessage()),
                             $exception->getCode(),
@@ -75,14 +75,13 @@ class TaxonomyEntryDefinitionTransformer extends AbstractDefinitionTransformer
         return [
             'identifier' => $definition->getIdentifier(),
             'hash' => [
-                'fields' => array_map(function (ContentFieldDefinition $definition) {
-                    return $this->contentFieldDefinitionTransformer->toHash($definition)['hash'];
-                }, $definition->getFields()),
+                'fields' => array_map(fn (ContentFieldDefinition $definition) => $this->contentFieldDefinitionTransformer->toHash($definition)['hash'], $definition->getFields()),
                 'models' => $definition->getModels(),
             ],
         ];
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $fields = [];

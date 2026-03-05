@@ -42,7 +42,7 @@ class ComponentSidebarMenu implements EventSubscriberInterface
         $menuItems = [];
         $root = $menu->addChild(/** @Desc('Components') */ 'sidebar.components.root');
         foreach ($components as $componentPath => $component) {
-            $splittedPath = explode('/', $componentPath);
+            $splittedPath = explode('/', (string) $componentPath);
             $templateName = array_pop($splittedPath);
             $parent = $root;
             $path = [];
@@ -87,9 +87,7 @@ class ComponentSidebarMenu implements EventSubscriberInterface
         }
         ksort($order, SORT_LOCALE_STRING);
         $parent->reorderChildren(
-            array_map(static function (ItemInterface $item): string {
-                return $item->getName();
-            }, $order)
+            array_map(static fn (ItemInterface $item): string => $item->getName(), $order)
         );
     }
 }

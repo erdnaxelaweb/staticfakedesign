@@ -33,13 +33,11 @@ class FormFieldGenerator extends AbstractFieldGenerator
     /**
      * @param array<string, array{type: string, options: array<string, mixed>}> $fields
      *
-     * @return \Closure(mixed|null): \Symfony\Component\Form\FormView
+     * @return Closure(mixed|null): \Symfony\Component\Form\FormView
      */
     public function __invoke(array $fields = [], ?string $name = null): Closure
     {
-        return function ($modelData = null) use ($name, $fields) {
-            return ($this->formGenerator)($fields, $name, $modelData);
-        };
+        return fn ($modelData = null) => ($this->formGenerator)($fields, $name, $modelData);
     }
     public function configureOptions(OptionsResolver $optionsResolver): void
     {

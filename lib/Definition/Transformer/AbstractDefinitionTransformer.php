@@ -54,12 +54,12 @@ abstract class AbstractDefinitionTransformer implements DefinitionTransformerInt
                     $options = $this->resolveOptions($hash);
                 } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
                     throw new InvalidOptionsException(
-                        sprintf('[%s] [%s] %s', get_class($lazyInstance), $lazyInstance->getIdentifier(), $exception->getMessage()),
+                        sprintf('[%s] [%s] %s', $lazyInstance::class, $lazyInstance->getIdentifier(), $exception->getMessage()),
                         $exception->getCode(),
                         $exception
                     );
                 }
-                return $this->lazyInitialize($lazyInstance, $options);
+                $this->lazyInitialize($lazyInstance, $options);
             },
             [
                 "\0*\0identifier" => true,

@@ -31,9 +31,8 @@ class PagerFilterDefinitionTransformerTest extends TestCase
 
     public static function getTransformer(): PagerFilterDefinitionTransformer
     {
-        $requestStack = new RequestStack();
         $request = new Request();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         return new PagerFilterDefinitionTransformer(SearchFormGeneratorTest::getGenerator($requestStack));
     }
 

@@ -14,8 +14,8 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Tests\Templating\Twig;
 
 use ErdnaxelaWeb\StaticFakeDesign\Templating\Twig\CommentReplacer;
 use ErdnaxelaWeb\StaticFakeDesign\Tests\MethodInvokerTrait;
-use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertEquals;
+use PHPUnit\Framework\TestCase;
 
 class CommentReplacerTest extends TestCase
 {
@@ -51,9 +51,7 @@ class CommentReplacerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider replaceInStringData
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('replaceInStringData')]
     public function testReplaceInString(string $string, string $expected): void
     {
         $replacer = new CommentReplacer();
@@ -137,9 +135,9 @@ class CommentReplacerTest extends TestCase
     }
 
     /**
-     * @dataProvider matchCommentsData
      * @param array<string, mixed> $expectedResult
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('matchCommentsData')]
     public function testMatchComments(string $comment, array $expectedResult): void
     {
         $replacer = new CommentReplacer();

@@ -29,11 +29,11 @@ class SearchFormGeneratorTest extends TypeTestCase
 
     private RequestStack $requestStack;
 
+    #[\Override]
     protected function setUp(): void
     {
-        $this->requestStack = new RequestStack();
         $request = new Request();
-        $this->requestStack->push($request);
+        $this->requestStack = new RequestStack([$request]);
 
         $this->generator = self::getGenerator($this->requestStack);
     }

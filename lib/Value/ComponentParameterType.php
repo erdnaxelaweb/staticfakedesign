@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-class ComponentParameterType
+class ComponentParameterType implements \Stringable
 {
     /**
      * @param array<string, mixed> $parameters

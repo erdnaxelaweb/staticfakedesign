@@ -28,13 +28,12 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\PagerfantaInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use function is_array;
 
 /**
  * @template T
- * @implements Iterator<int, T>
+ * @implements PagerfantaInterface<T>
  */
-class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterface
+class Pager implements Countable, JsonSerializable, PagerfantaInterface
 {
     private bool $allowOutOfRangePages = false;
 
@@ -57,9 +56,12 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
 
     private bool $disablePagination = false;
 
+    /**
+     * @param PagerAdapterInterface<T> $adapter
+     */
     public function __construct(
-        private string $type,
-        private PagerAdapterInterface $adapter
+        private readonly string $type,
+        private readonly PagerAdapterInterface $adapter
     ) {
     }
 
@@ -68,6 +70,9 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
         return $this->type;
     }
 
+    /**
+     * @return PagerAdapterInterface<T>
+     */
     public function getAdapter(): PagerAdapterInterface
     {
         return $this->adapter;
@@ -361,6 +366,16 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
     }
 
     /**
+     * @return Iterator<int, T>
+     *
+     * @throws \Pagerfanta\Exception\InvalidArgumentException if an iterator cannot be created from the adapter slice
+     */
+    public function getIterator(): Iterator
+    {
+        return $this->getCurrentPageResults();
+    }
+
+    /**
      * @param iterable<int, T> $results
      *
      * @return Iterator<int, T>
@@ -474,9 +489,6 @@ class Pager implements Countable, Iterator, JsonSerializable, PagerfantaInterfac
     private function calculateNbPages(): int
     {
         $maxPerPage = $this->getMaxPerPage();
-        if ($maxPerPage === 0) {
-            return 0;
-        }
         return (int) ceil(($this->getNbResults() - $this->headlineCount) / $maxPerPage);
     }
 

@@ -106,53 +106,17 @@ class RichTextGenerator extends AbstractGenerator
     {
         $tag = $this->fakerGenerator->randomElement(!empty($allowedTags) ? $allowedTags : self::ALLOWED_TAGS);
 
-        switch ($tag) {
-            case 'p':
-                $this->addRandomP($node);
-
-                break;
-
-            case 'a':
-                $this->addRandomA($node);
-
-                break;
-
-            case 'span':
-                $this->addRandomSpan($node);
-
-                break;
-
-            case 'ul':
-                $this->addRandomUL($node);
-
-                break;
-
-            case 'h':
-                $this->addRandomH($node);
-
-                break;
-
-            case 'b':
-                $this->addRandomB($node);
-
-                break;
-
-            case 'i':
-                $this->addRandomI($node);
-
-                break;
-
-            case 'table':
-                $this->addRandomTable($node);
-
-                break;
-
-            case 'text':
-            default:
-                $this->addRandomText($node);
-
-                break;
-        }
+        match ($tag) {
+            'p' => $this->addRandomP($node),
+            'a' => $this->addRandomA($node),
+            'span' => $this->addRandomSpan($node),
+            'ul' => $this->addRandomUL($node),
+            'h' => $this->addRandomH($node),
+            'b' => $this->addRandomB($node),
+            'i' => $this->addRandomI($node),
+            'table' => $this->addRandomTable($node),
+            default => $this->addRandomText($node),
+        };
     }
 
     private function addRandomP(DOMElement $element, int $maxLength = 10): void

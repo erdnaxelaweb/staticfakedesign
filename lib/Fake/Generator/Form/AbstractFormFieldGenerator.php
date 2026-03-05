@@ -35,7 +35,7 @@ abstract class AbstractFormFieldGenerator extends AbstractGenerator
     public function __invoke(string $name, array $options = []): FormBuilderInterface
     {
         $defaultOptions = $this->getFormOptions();
-        $options = $options + $defaultOptions;
+        $options += $defaultOptions;
 
         $type = $this->registry->getType($this->getFormType());
         $optionsResolver = $type->getOptionsResolver();

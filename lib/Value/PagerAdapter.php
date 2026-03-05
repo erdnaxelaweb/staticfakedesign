@@ -16,6 +16,12 @@ use Pagerfanta\Adapter\CallbackAdapter;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+/**
+ * @template T
+ *
+ * @extends CallbackAdapter<T>
+ * @implements PagerAdapterInterface<T>
+ */
 class PagerAdapter extends CallbackAdapter implements PagerAdapterInterface
 {
     /**

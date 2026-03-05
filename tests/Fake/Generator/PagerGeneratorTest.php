@@ -34,8 +34,7 @@ class PagerGeneratorTest extends TestCase
     public static function getGenerator(): PagerGenerator
     {
         $request = new Request();
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         return new PagerGenerator(
             $requestStack,
             ContentGeneratorTest::getGenerator(),

@@ -24,6 +24,7 @@ class LeaveDebugNode extends Node
         ]);
     }
 
+    #[\Override]
     public function compile(Compiler $compiler): void
     {
         $compiler->write(sprintf('echo "<!-- END: %s -->";', $this->getAttribute('template_path')))

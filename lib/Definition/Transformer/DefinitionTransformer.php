@@ -21,7 +21,7 @@ use InvalidArgumentException;
 class DefinitionTransformer
 {
     /**
-     * @var \ErdnaxelaWeb\StaticFakeDesign\Definition\Transformer\DefinitionTransformerInterface[]
+     * @var DefinitionTransformerInterface[]
      */
     protected array $transformers;
 

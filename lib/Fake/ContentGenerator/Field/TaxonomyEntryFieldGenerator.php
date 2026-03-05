@@ -33,7 +33,7 @@ class TaxonomyEntryFieldGenerator extends AbstractFieldGenerator
         }
 
         $tags = [];
-        $count = rand(1, $max);
+        $count = random_int(1, $max);
         for ($i = 0; $i < $count; ++$i) {
             $tags[] = ($this->taxonomyEntryGenerator)($type);
         }

@@ -24,6 +24,7 @@ class EnterDebugNode extends Node
         ]);
     }
 
+    #[\Override]
     public function compile(Compiler $compiler): void
     {
         $compiler->write(sprintf('echo "<!-- START: %s -->";', $this->getAttribute('template_path')))

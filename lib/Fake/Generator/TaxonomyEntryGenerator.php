@@ -18,7 +18,6 @@ use ErdnaxelaWeb\StaticFakeDesign\Fake\ContentGenerator\FieldGeneratorRegistry;
 use ErdnaxelaWeb\StaticFakeDesign\Fake\FakerGenerator;
 use ErdnaxelaWeb\StaticFakeDesign\Value\TaxonomyEntry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\VarExporter\Instantiator;
 
 class TaxonomyEntryGenerator extends AbstractContentGenerator
 {
@@ -41,37 +40,21 @@ class TaxonomyEntryGenerator extends AbstractContentGenerator
             'alwaysAvailable' => true,
             'hidden' => false,
         ];
-        $skippedProperties = array_combine(
-            array_keys($baseProperties),
-            array_fill(0, count($baseProperties), true)
-        );
+
         $initializers = [
-            'id' => function () {
-                return $this->fakerGenerator->randomNumber();
-            },
-            'name' => function () {
-                return $this->fakerGenerator->sentence();
-            },
-            'creationDate' => function () {
-                return $this->fakerGenerator->dateTime();
-            },
-            'modificationDate' => function () {
-                return $this->fakerGenerator->dateTime();
-            },
-            'fields' => function (TaxonomyEntry $instance) use ($configuration) {
-                return $this->generateFieldsValue(
-                    $instance,
-                    $configuration->getFields(),
-                    $configuration->getModels()
-                );
-            },
-            'identifier' => function () {
-                return $this->fakerGenerator->word();
-            },
+            'id' => fn () => $this->fakerGenerator->randomNumber(),
+            'name' => fn () => $this->fakerGenerator->sentence(),
+            'creationDate' => fn () => $this->fakerGenerator->dateTime(),
+            'modificationDate' => fn () => $this->fakerGenerator->dateTime(),
+            'fields' => fn (TaxonomyEntry $instance) => $this->generateFieldsValue(
+                $instance,
+                $configuration->getFields(),
+                $configuration->getModels()
+            ),
+            'identifier' => fn () => $this->fakerGenerator->word(),
         ];
 
-        $instance = Instantiator::instantiate(TaxonomyEntry::class, $baseProperties);
-        return TaxonomyEntry::createLazyGhost($initializers, $skippedProperties, $instance);
+        return TaxonomyEntry::instantiate($baseProperties, $initializers);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void

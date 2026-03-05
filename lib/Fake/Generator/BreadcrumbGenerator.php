@@ -28,8 +28,8 @@ class BreadcrumbGenerator extends AbstractGenerator
 
     public function __invoke(?int $count = null): Breadcrumb
     {
-        return Breadcrumb::createLazyGhost(function (Breadcrumb $instance) use ($count) {
-            $count = $count ?? $this->fakerGenerator->randomDigitNot(0);
+        return Breadcrumb::createLazyGhost(function (Breadcrumb $instance) use ($count): void {
+            $count ??= $this->fakerGenerator->randomDigitNot(0);
             for ($i = 0; $i < $count; ++$i) {
                 $instance->add(($this->linkGenerator)());
             }

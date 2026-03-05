@@ -52,7 +52,7 @@ class ComponentController extends AbstractController
             'previewUrl' => $previewUrl,
             'component' => $component,
             'templateName' => $component->getTemplateName(),
-            'parametersForm' => $parametersForm->createView(),
+            'parametersForm' => $parametersForm,
         ]);
     }
 

@@ -65,7 +65,7 @@ class BlockAttributeDefinitionTransformer extends AbstractDefinitionTransformer
     }
 
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Definition\BlockAttributeDefinition $definition
+     * @param BlockAttributeDefinition $definition
      */
     public function toHash(DefinitionInterface $definition): array
     {
@@ -86,6 +86,7 @@ class BlockAttributeDefinitionTransformer extends AbstractDefinitionTransformer
         return BlockAttributeDefinition::class;
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $options['options'] = new DefinitionOptions($options['options']);

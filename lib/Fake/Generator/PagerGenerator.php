@@ -37,7 +37,7 @@ class PagerGenerator extends AbstractGenerator
     }
 
     /**
-     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Pager<\ErdnaxelaWeb\StaticFakeDesign\Value\Content>
+     * @return Pager<\ErdnaxelaWeb\StaticFakeDesign\Value\Content>
      */
     public function __invoke(string $type, ?int $pagesCount = null): Pager
     {
@@ -49,16 +49,14 @@ class PagerGenerator extends AbstractGenerator
         $resultTypes = $pagerDefinition->getResultTypes();
         $maxPerPage = $pagerDefinition->getMaxPerPage();
         $headlineCount = $pagerDefinition->getHeadlineCount();
-        $pagesCount = $pagesCount ?? rand(1, 10);
+        $pagesCount ??= random_int(1, 10);
         $searchType = $pagerDefinition->getSearchType();
 
         $resultGenerator = $searchType === 'document' ? $this->documentGenerator : $this->contentGenerator;
 
 
         $adapter = new PagerAdapter(
-            static function () use ($maxPerPage, $pagesCount): int {
-                return $maxPerPage * $pagesCount;
-            },
+            static fn (): int => $maxPerPage * $pagesCount,
             function ($offset, $length) use ($resultGenerator, $resultTypes) {
                 $results = [];
                 for ($i = 0; $i < $length; ++$i) {
@@ -66,9 +64,7 @@ class PagerGenerator extends AbstractGenerator
                 }
                 return $results;
             },
-            function () use ($filters, $sorts, $type): FormInterface {
-                return $this->searchFormGenerator->generateForm($filters, $sorts, $type);
-            },
+            fn (): FormInterface => $this->searchFormGenerator->generateForm($filters, $sorts, $type),
             function () use ($filters): array {
                 $count = $this->fakerGenerator->numberBetween(0, 10);
                 $links = [];

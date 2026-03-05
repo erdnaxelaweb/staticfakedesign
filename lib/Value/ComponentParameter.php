@@ -18,7 +18,7 @@ class ComponentParameter implements JsonSerializable
 {
     public function __construct(
         protected readonly string                 $name,
-        protected readonly string                 $label,
+        protected readonly ?string                 $label,
         protected readonly bool                   $required,
         protected readonly ComponentParameterType $type,
         protected readonly bool                   $hasDefaultValue,

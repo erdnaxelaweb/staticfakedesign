@@ -53,7 +53,7 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
                     try {
                         $pagerSortDefinitionOptions[$pagerSortDefinitionIdentifier] = $optionsResolver->resolve($pagerSortDefinitionOption);
                     } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
-                        $exceptionClass = get_class($exception);
+                        $exceptionClass = $exception::class;
                         throw new $exceptionClass(
                             sprintf('[sorts] [%s] %s', $pagerSortDefinitionIdentifier, $exception->getMessage()),
                             $exception->getCode(),
@@ -82,7 +82,7 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
                     try {
                         $pagerFilterDefinitionOptions[$pagerFilterDefinitionIdentifier] = $optionsResolver->resolve($pagerFilterDefinitionOption);
                     } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
-                        $exceptionClass = get_class($exception);
+                        $exceptionClass = $exception::class;
                         throw new $exceptionClass(
                             sprintf('[filters] [%s] %s', $pagerFilterDefinitionIdentifier, $exception->getMessage()),
                             $exception->getCode(),
@@ -116,12 +116,8 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
             'hash' => [
                 'resultTypes' => $definition->getResultTypes(),
                 'maxPerPage' => $definition->getMaxPerPage(),
-                'sorts' => array_map(function (PagerSortDefinition $sortDefinition) {
-                    return $this->pagerSortDefinitionTransformer->toHash($sortDefinition)['hash'];
-                }, $definition->getSorts()),
-                'filters' => array_map(function (PagerFilterDefinition $filterDefinition) {
-                    return $this->pagerFilterDefinitionTransformer->toHash($filterDefinition)['hash'];
-                }, $definition->getFilters()),
+                'sorts' => array_map(fn (PagerSortDefinition $sortDefinition) => $this->pagerSortDefinitionTransformer->toHash($sortDefinition)['hash'], $definition->getSorts()),
+                'filters' => array_map(fn (PagerFilterDefinition $filterDefinition) => $this->pagerFilterDefinitionTransformer->toHash($filterDefinition)['hash'], $definition->getFilters()),
                 'excludedResultTypes' => $definition->getExcludedResultTypes(),
                 'headlineCount' => $definition->getHeadlineCount(),
                 'searchType' => $definition->getSearchType(),
@@ -129,6 +125,7 @@ class PagerDefinitionTransformer extends AbstractDefinitionTransformer
         ];
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $filterDefinitions = [];

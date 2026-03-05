@@ -37,18 +37,16 @@ class AttributeGeneratorRegistryTest extends TestCase
 
     public static function getRegistry(): AttributeGeneratorRegistry
     {
-        return new class(function () {
-            return new AttributeGeneratorRegistry([
-                "boolean" => BooleanAttributeGeneratorTest::getGenerator(),
-                "content" => ContentAttributeGeneratorTest::getGenerator(),
-                "integer" => IntegerAttributeGeneratorTest::getGenerator(),
-                "richtext" => RichTextAttributeGeneratorTest::getGenerator(),
-                "selection" => SelectionAttributeGeneratorTest::getGenerator(),
-                "string" => StringAttributeGeneratorTest::getGenerator(),
-                "text" => TextAttributeGeneratorTest::getGenerator(),
-                "url" => UrlAttributeGeneratorTest::getGenerator(),
-            ]);
-        }) extends AttributeGeneratorRegistry {
+        return new class(fn () => new AttributeGeneratorRegistry([
+            "boolean" => BooleanAttributeGeneratorTest::getGenerator(),
+            "content" => ContentAttributeGeneratorTest::getGenerator(),
+            "integer" => IntegerAttributeGeneratorTest::getGenerator(),
+            "richtext" => RichTextAttributeGeneratorTest::getGenerator(),
+            "selection" => SelectionAttributeGeneratorTest::getGenerator(),
+            "string" => StringAttributeGeneratorTest::getGenerator(),
+            "text" => TextAttributeGeneratorTest::getGenerator(),
+            "url" => UrlAttributeGeneratorTest::getGenerator(),
+        ])) extends AttributeGeneratorRegistry {
             protected ?AttributeGeneratorRegistry $instance = null;
 
             /**

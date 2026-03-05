@@ -120,11 +120,11 @@ class Renderer
         $template = null;
         if ($block instanceof Block) {
             try {
-                $blockDefinition = $this->definitionManager->getDefinition(BlockDefinition::class, $block->type);
-            } catch (DefinitionTypeNotFoundException $e) {
+                $blockDefinition = $this->definitionManager->getDefinition(BlockDefinition::class, $block->getType());
+            } catch (DefinitionTypeNotFoundException) {
                 return 'Not supported';
             }
-            $template = $blockDefinition->getView($block->view);
+            $template = $blockDefinition->getView($block->getView());
         }
         return $this->render($environment, 'display_block', [
             'template' => $template,
@@ -139,11 +139,11 @@ class Renderer
     protected function getDisplayFunctions(): array
     {
         return [
-            'display_component' => [$this, 'displayComponent'],
-            'display_menu_item' => [$this, 'displayMenuItem'],
-            'display_active_filter' => [$this, 'displayActiveFilter'],
-            'display_content' => [$this, 'displayContent'],
-            'display_block' => [$this, 'displayBlock'],
+            'display_component' => $this->displayComponent(...),
+            'display_menu_item' => $this->displayMenuItem(...),
+            'display_active_filter' => $this->displayActiveFilter(...),
+            'display_content' => $this->displayContent(...),
+            'display_block' => $this->displayBlock(...),
         ];
     }
 

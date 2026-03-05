@@ -35,16 +35,10 @@ class ImageConfiguration
     protected array $variations = [];
 
     /**
-     * @var array{breakpoints: array<breakpoint>, variations: array<string, variation>}
-     */
-    protected array $configuration;
-
-    /**
      * @param array{breakpoints: array<array{suffix: string, media: string, previewSize?: string, use_webp?: bool|string}>, variations: array<string, variation>} $configuration
      */
-    public function __construct(array $configuration)
+    public function __construct(protected array $configuration)
     {
-        $this->configuration = $configuration;
         $optionsResolver = new OptionsResolver();
         $optionsResolver->setDefault('breakpoints', function (OptionsResolver $breakpointsOptionsResolver): void {
             $breakpointsOptionsResolver->setPrototype(true);
@@ -53,7 +47,7 @@ class ImageConfiguration
         $optionsResolver->define('variations')
                         ->default([])->allowedTypes('array');
 
-        $this->configuration = $optionsResolver->resolve($configuration);
+        $this->configuration = $optionsResolver->resolve($this->configuration);
     }
 
     /**

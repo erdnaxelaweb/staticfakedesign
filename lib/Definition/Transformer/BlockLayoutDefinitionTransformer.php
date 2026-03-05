@@ -71,9 +71,7 @@ class BlockLayoutDefinitionTransformer extends AbstractDefinitionTransformer
             'hash' => [
                 'template' => $definition->getTemplate(),
                 'zones' => $definition->getZones(),
-                'sections' => array_map(function (BlockLayoutSectionDefinition $section): array {
-                    return $this->blockLayoutSectionConfigurationTransformer->toHash($section)['hash'];
-                }, $definition->getSections()),
+                'sections' => array_map(fn (BlockLayoutSectionDefinition $section): array => $this->blockLayoutSectionConfigurationTransformer->toHash($section)['hash'], $definition->getSections()),
             ],
         ];
     }

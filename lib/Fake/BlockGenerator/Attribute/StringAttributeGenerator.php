@@ -39,6 +39,7 @@ class StringAttributeGenerator extends AbstractAttributeGenerator
     /**
      * @param string|string[] $value
      */
+    #[\Override]
     public function getForcedValue(mixed $value): string
     {
         return is_array($value) ? $this->fakerGenerator->randomElement($value) : $value;

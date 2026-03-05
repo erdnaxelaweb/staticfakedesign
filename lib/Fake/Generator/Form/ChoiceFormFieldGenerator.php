@@ -38,6 +38,7 @@ class ChoiceFormFieldGenerator extends GenericFormFieldGenerator
         );
     }
 
+    #[\Override]
     protected function getFormOptions(): array
     {
         return parent::getFormOptions() + [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use BadMethodCallException;
+use ErdnaxelaWeb\StaticFakeDesign\LazyLoading\LazyValue;
 
 /**
  * @template TKey of array-key
@@ -36,6 +37,7 @@ class FieldsCollection extends Collection
         throw new BadMethodCallException(sprintf('Method %s does not exist', $name));
     }
 
+    #[\Override]
     public function get(string|int $key): mixed
     {
         $value = parent::get($key);

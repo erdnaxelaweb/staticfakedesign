@@ -30,9 +30,9 @@ class TaxonomyEntry extends AbstractContent
         DateTime                       $creationDate,
         DateTime                       $modificationDate,
         ContentFieldsCollection        $fields,
-        public readonly string         $identifier,
-        public readonly int            $level = 0,
-        public readonly ?TaxonomyEntry $parent = null,
+        protected readonly string         $identifier,
+        protected readonly int            $level = 0,
+        protected readonly ?TaxonomyEntry $parent = null,
     ) {
         parent::__construct(
             $id,
@@ -46,5 +46,20 @@ class TaxonomyEntry extends AbstractContent
             $modificationDate,
             $fields
         );
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->getPropertyValue('identifier');
+    }
+
+    public function getLevel(): int
+    {
+        return $this->getPropertyValue('level');
+    }
+
+    public function getParent(): ?TaxonomyEntry
+    {
+        return $this->getPropertyValue('parent');
     }
 }

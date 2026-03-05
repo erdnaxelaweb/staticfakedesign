@@ -48,29 +48,27 @@ class ContentFieldGeneratorRegistryTest extends TestCase
 
     public static function getRegistry(): FieldGeneratorRegistry
     {
-        return new class(function () {
-            return new FieldGeneratorRegistry([
-                "blocks" => BlocksFieldGeneratorTest::getGenerator(),
-                "boolean" => BooleanFieldGeneratorTest::getGenerator(),
-                "content" => ContentFieldGeneratorTest::getGenerator(),
-                "date" => DateFieldGeneratorTest::getGenerator(),
-                "datetime" => DateTimeFieldGeneratorTest::getGenerator(),
-                "email" => EmailFieldGeneratorTest::getGenerator(),
-                "file" => FileFieldGeneratorTest::getGenerator(),
-                "float" => FloatFieldGeneratorTest::getGenerator(),
-                "image" => ImageFieldGeneratorTest::getGenerator(),
-                "integer" => IntegerFieldGeneratorTest::getGenerator(),
-                "location" => LocationFieldGeneratorTest::getGenerator(),
-                "matrix" => MatrixFieldGeneratorTest::getGenerator(),
-                "richtext" => RichTextFieldGeneratorTest::getGenerator(),
-                "selection" => SelectionFieldGeneratorTest::getGenerator(),
-                "string" => StringFieldGeneratorTest::getGenerator(),
-                "svg" => SvgFieldGeneratorTest::getGenerator(),
-                "taxonomy_entry" => TaxonomyEntryFieldGeneratorTest::getGenerator(),
-                "text" => TextFieldGeneratorTest::getGenerator(),
-                "time" => TimeFieldGeneratorTest::getGenerator(),
-            ]);
-        }) extends FieldGeneratorRegistry {
+        return new class(fn () => new FieldGeneratorRegistry([
+            "blocks" => BlocksFieldGeneratorTest::getGenerator(),
+            "boolean" => BooleanFieldGeneratorTest::getGenerator(),
+            "content" => ContentFieldGeneratorTest::getGenerator(),
+            "date" => DateFieldGeneratorTest::getGenerator(),
+            "datetime" => DateTimeFieldGeneratorTest::getGenerator(),
+            "email" => EmailFieldGeneratorTest::getGenerator(),
+            "file" => FileFieldGeneratorTest::getGenerator(),
+            "float" => FloatFieldGeneratorTest::getGenerator(),
+            "image" => ImageFieldGeneratorTest::getGenerator(),
+            "integer" => IntegerFieldGeneratorTest::getGenerator(),
+            "location" => LocationFieldGeneratorTest::getGenerator(),
+            "matrix" => MatrixFieldGeneratorTest::getGenerator(),
+            "richtext" => RichTextFieldGeneratorTest::getGenerator(),
+            "selection" => SelectionFieldGeneratorTest::getGenerator(),
+            "string" => StringFieldGeneratorTest::getGenerator(),
+            "svg" => SvgFieldGeneratorTest::getGenerator(),
+            "taxonomy_entry" => TaxonomyEntryFieldGeneratorTest::getGenerator(),
+            "text" => TextFieldGeneratorTest::getGenerator(),
+            "time" => TimeFieldGeneratorTest::getGenerator(),
+        ])) extends FieldGeneratorRegistry {
             protected ?FieldGeneratorRegistry $instance = null;
 
             /**

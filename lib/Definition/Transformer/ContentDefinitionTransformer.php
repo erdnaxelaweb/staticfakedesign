@@ -43,7 +43,7 @@ class ContentDefinitionTransformer extends AbstractDefinitionTransformer
                     try {
                         $fieldDefinitionOptions[$fieldDefinitionIdentifier] = $optionsResolver->resolve($fieldDefinitionOption);
                     } catch (UndefinedOptionsException|MissingOptionsException|InvalidOptionsException $exception) {
-                        $exceptionClass = get_class($exception);
+                        $exceptionClass = $exception::class;
                         throw new $exceptionClass(
                             sprintf('[fields] [%s] %s', $fieldDefinitionIdentifier, $exception->getMessage()),
                             $exception->getCode(),
@@ -80,15 +80,14 @@ class ContentDefinitionTransformer extends AbstractDefinitionTransformer
         return [
             'identifier' => $definition->getIdentifier(),
             'hash' => [
-                'fields' => array_map(function (ContentFieldDefinition $fieldDefinition): array {
-                    return $this->contentFieldDefinitionTransformer->toHash($fieldDefinition)['hash'];
-                }, $definition->getFields()),
+                'fields' => array_map(fn (ContentFieldDefinition $fieldDefinition): array => $this->contentFieldDefinitionTransformer->toHash($fieldDefinition)['hash'], $definition->getFields()),
                 'parent' => $definition->getParent(),
                 'models' => $definition->getModels(),
             ],
         ];
     }
 
+    #[\Override]
     protected function lazyInitialize(AbstractLazyDefinition $instance, array $options): DefinitionInterface
     {
         $fields = [];

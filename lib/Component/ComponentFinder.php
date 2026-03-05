@@ -26,7 +26,7 @@ class ComponentFinder
     }
 
     /**
-     * @return \ErdnaxelaWeb\StaticFakeDesign\Value\Component[]
+     * @return Component[]
      */
     public function findComponents(): array
     {

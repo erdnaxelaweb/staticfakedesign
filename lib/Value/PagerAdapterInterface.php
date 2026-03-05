@@ -16,6 +16,11 @@ use Pagerfanta\Adapter\AdapterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+/**
+ * @template T
+ *
+ * @extends AdapterInterface<T>
+ */
 interface PagerAdapterInterface extends AdapterInterface
 {
     public function getFilters(): FormView;

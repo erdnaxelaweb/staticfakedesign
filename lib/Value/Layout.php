@@ -14,10 +14,10 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 use ErdnaxelaWeb\StaticFakeDesign\Definition\BlockLayoutSectionDefinition;
 
-class Layout
+class Layout implements \Stringable
 {
     /**
-     * @param \ErdnaxelaWeb\StaticFakeDesign\Value\LayoutZone[] $zones
+     * @param LayoutZone[] $zones
      * @param array<string, BlockLayoutSectionDefinition>       $sections
      */
     public function __construct(

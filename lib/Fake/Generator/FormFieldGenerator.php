@@ -41,10 +41,10 @@ class FormFieldGenerator extends AbstractGenerator
      */
     public function __invoke(string $name = null, ?string $type = null, array $options = []): FormView
     {
-        $type = $type ?? $this->fakerGenerator->randomElement(array_keys($this->generators));
+        $type ??= $this->fakerGenerator->randomElement(array_keys($this->generators));
         $generator = $this->generators[$type];
-        $name = $name ?? $this->fakerGenerator->word();
-        $options = $options + [
+        $name ??= $this->fakerGenerator->word();
+        $options += [
             'label' => "{$this->fakerGenerator->word} ($name)",
         ];
 

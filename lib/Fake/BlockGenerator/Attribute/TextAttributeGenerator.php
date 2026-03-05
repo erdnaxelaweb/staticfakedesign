@@ -24,7 +24,7 @@ class TextAttributeGenerator extends AbstractAttributeGenerator
 
     public function __invoke(int $max = 10): string
     {
-        $count = rand(1, $max);
+        $count = random_int(1, $max);
         $paragraphes = $this->fakerGenerator->paragraphs($count);
 
         return sprintf('<p>%s</p>', implode('<br/>', $paragraphes));

@@ -14,19 +14,35 @@ namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
 class Document
 {
-    public string $id;
-    public int $contentId;
-    public string $languageCode;
-    public bool $isMainTranslation;
-    public bool $alwaysAvailable;
-    public bool $hidden;
-    public object $fields;
-    public string $type;
+    public readonly string $id;
+    public readonly int $contentId;
+    public readonly string $languageCode;
+    public readonly bool $isMainTranslation;
+    public readonly bool $alwaysAvailable;
+    public readonly bool $hidden;
+    public readonly object $fields;
+    public readonly string $type;
 
-    public function __construct()
-    {
-        $this->fields = (object) [];
+    public function __construct(
+        string $id,
+        int    $contentId,
+        string $languageCode,
+        bool   $isMainTranslation,
+        bool   $alwaysAvailable,
+        bool   $hidden,
+        object $fields,
+        string $type
+    ) {
+        $this->id = $id;
+        $this->contentId = $contentId;
+        $this->languageCode = $languageCode;
+        $this->isMainTranslation = $isMainTranslation;
+        $this->alwaysAvailable = $alwaysAvailable;
+        $this->hidden = $hidden;
+        $this->fields = $fields;
+        $this->type = $type;
     }
+
 
     public function cacheTag(): string
     {
@@ -39,9 +55,7 @@ class Document
         return implode(
             '',
             array_map(
-                function (string $word) {
-                    return substr($word, 0, 1);
-                },
+                fn (string $word) => substr($word, 0, 1),
                 explode(
                     '_',
                     str_replace('-', '_', $this->type)
