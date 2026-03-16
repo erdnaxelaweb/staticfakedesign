@@ -15,7 +15,7 @@ namespace ErdnaxelaWeb\StaticFakeDesign\LazyLoading;
 class LazyValue
 {
     /**
-     * @param callable(): mixed $initializer
+     * @param callable(mixed...): mixed $initializer
      */
     public function __construct(
         protected $initializer

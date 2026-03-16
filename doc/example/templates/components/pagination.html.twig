@@ -14,7 +14,7 @@
 } %}
 
 <nav aria-label="{{'pagerfanta.pagination_results'|trans|desc('Pagination résultats de') ~ ' ' ~ content.name }}">
-    {{ pagerfanta(pager, 'custom_twitter_bootstrap', {
+    {{ pagerfanta(pager, 'twitter_bootstrap', {
         'proximity': proximity is defined ? proximity : 3,
         'next_message': 'pagerfanta.next_message'|trans|desc('Next') ~ '<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>',
         'prev_message': '<span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>' ~ 'pagerfanta.prev_message'|trans|desc('Previous'),

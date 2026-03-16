@@ -20,7 +20,12 @@ trait LazyObjectTrait
     /**
      * @var array <string, mixed>
      */
-    private array $properties;
+    public array $nonLazyProperties = [];
+
+    /**
+     * @var array <string, mixed>
+     */
+    private array $properties = [];
 
 
     public function __get(string $name): mixed
@@ -35,18 +40,19 @@ trait LazyObjectTrait
 
     /**
      * @param array<string, mixed>    $properties
-     * @param array<string, callable> $initializers
+     * @param array<string, callable(static): mixed> $initializers
      *
      * @return static
      * @throws \ReflectionException
      */
     public static function instantiate(
         array $properties,
-        array $initializers
+        array $initializers = []
     ): object {
         $reflector = Registry::$reflectors[static::class] ??= Registry::getClassReflector(static::class);
         $instance = $reflector->newInstanceWithoutConstructor();
 
+        $instance->nonLazyProperties = array_keys($properties);
         $instance->properties = $properties;
         foreach ($initializers as $property => $initializer) {
             $instance->properties[$property] = new LazyValue($initializer);

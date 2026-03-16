@@ -286,7 +286,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ```
 composer create-project symfony/skeleton:"7.4.*" web
 cd web
-composer config repositories.staticfakedesign '{"type": "path", "url": "../src", "options": {"symlink": true}}' --json
+composer config repositories.staticfakedesign '{"type": "path", "url": "../", "options": {"symlink": true}}' --json
 composer require erdnaxelaweb/staticfakedesign:dev-main
 yarn install --cwd ../
 cp ../doc/example/* ./ -R

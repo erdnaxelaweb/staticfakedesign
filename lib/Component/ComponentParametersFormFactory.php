@@ -39,10 +39,14 @@ class ComponentParametersFormFactory
     {
         $data = ($this->componentContextResolverFactory)($component)
             ->resolve($values);
-        $form = $this->formFactory->createNamedBuilder('component_parameters', FormType::class, $data, [
-            'csrf_protection' => null,
+
+        $formOptions = [
             'method' => 'GET',
-        ]);
+        ];
+        if ($this->formFactory->createBuilder()->hasOption('csrf_protection')) {
+            $formOptions['csrf_protection'] = false;
+        }
+        $form = $this->formFactory->createNamedBuilder('component_parameters', FormType::class, $data, $formOptions);
 
         foreach ($component->getParameters() as $parameter) {
             $value = $data[$parameter->getName()] ?? null;

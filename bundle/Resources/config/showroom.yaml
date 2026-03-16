@@ -19,6 +19,7 @@ services:
         public: true
         arguments:
             $sidebarMenuBuilder: '@ErdnaxelaWeb\StaticFakeDesign\Showroom\Menu\SidebarMenuBuilder'
+            $twig: '@twig'
         calls:
             - ['setContainer', ['@service_container']]
 

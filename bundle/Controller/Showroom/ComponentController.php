@@ -37,7 +37,9 @@ class ComponentController extends AbstractController
 
     public function viewHome(): Response
     {
-        return $this->render('@StaticFakeDesign/showroom/component-home.html.twig', []);
+        return new Response(
+            $this->twig->render('@StaticFakeDesign/showroom/component-home.html.twig', [])
+        );
     }
 
     public function view(string $path = null): Response
@@ -47,13 +49,15 @@ class ComponentController extends AbstractController
         $previewUrl = $this->router->generate('showroom_component_preview', [
             'path' => $path,
         ]);
-        return $this->render('@StaticFakeDesign/showroom/component.html.twig', [
-            'path' => $path,
-            'previewUrl' => $previewUrl,
-            'component' => $component,
-            'templateName' => $component->getTemplateName(),
-            'parametersForm' => $parametersForm,
-        ]);
+        return new Response(
+            $this->twig->render('@StaticFakeDesign/showroom/component.html.twig', [
+                'path' => $path,
+                'previewUrl' => $previewUrl,
+                'component' => $component,
+                'templateName' => $component->getTemplateName(),
+                'parametersForm' => $parametersForm->createView(),
+            ])
+        );
     }
 
     public function preview(string $path, Request $request): Response
@@ -80,7 +84,9 @@ class ComponentController extends AbstractController
             $templateParameters['templateParameters'] = $context;
         }
 
-        return $this->render($templatePath, $templateParameters);
+        return new Response(
+            $this->twig->render($templatePath, $templateParameters)
+        );
     }
 
     protected function isFullTemplate(Template $template): bool

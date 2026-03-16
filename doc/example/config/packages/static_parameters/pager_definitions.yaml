@@ -32,4 +32,4 @@ static_fake_design:
                     type: custom_field
                     options:
                         field: news_news_date_value_dt
-                        sortDirection: !php/const Ibexa\Contracts\Core\Repository\Values\Content\Query::SORT_DESC
+                        sortDirection: 'desc'
