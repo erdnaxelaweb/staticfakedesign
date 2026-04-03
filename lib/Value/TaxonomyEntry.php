@@ -30,7 +30,7 @@ class TaxonomyEntry
         public readonly DateTime $creationDate,
         public readonly DateTime $modificationDate,
         public readonly ContentFieldsCollection  $fields,
-        public readonly int $level
+        public readonly int $level = 0
     ) {
     }
 }
