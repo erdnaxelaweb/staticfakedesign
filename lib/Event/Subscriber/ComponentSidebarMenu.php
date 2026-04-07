@@ -78,12 +78,16 @@ class ComponentSidebarMenu implements EventSubscriberInterface
     {
         $children = $parent->getChildren();
         $order = [];
-        foreach ($children as $child) {
+        foreach ($children as $templateName => $child) {
             if ($child->hasChildren()) {
                 $this->reorder($child);
             }
-            $abel = iconv('UTF-8', 'ASCII//TRANSLIT', $child->getLabel());
-            $order[$abel] = $child;
+            $label = iconv('UTF-8', 'ASCII//TRANSLIT', $child->getLabel());
+            if (isset($order[$label])) {
+                $label = $templateName;
+                $child->setLabel($label);
+            }
+            $order[$label] = $child;
         }
         ksort($order, SORT_LOCALE_STRING);
         $parent->reorderChildren(

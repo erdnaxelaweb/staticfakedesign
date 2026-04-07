@@ -12,12 +12,8 @@ declare(strict_types=1);
 
 namespace ErdnaxelaWeb\StaticFakeDesign\Value;
 
-use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
-use Iterator;
-use IteratorAggregate;
-use IteratorIterator;
 use JsonSerializable;
 use Pagerfanta\Exception\LessThan1CurrentPageException;
 use Pagerfanta\Exception\LessThan1MaxPagesException;
@@ -50,9 +46,9 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
     private int $headlineCount = 0;
 
     /**
-     * @var Iterator<int, T>
+     * @phpstan-var iterable<int, T>|null
      */
-    private Iterator $currentPageResults;
+    private ?iterable $currentPageResults = null;
 
     private bool $disablePagination = false;
 
@@ -68,6 +64,20 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * @param PagerAdapterInterface<T> $adapter
+     *
+     * @return self<T>
+     */
+    public static function createForCurrentPageWithMaxPerPage(string $type, PagerAdapterInterface $adapter, int $currentPage, int $maxPerPage): self
+    {
+        $pagerfanta = new self($type, $adapter);
+        $pagerfanta->setMaxPerPage($maxPerPage);
+        $pagerfanta->setCurrentPage($currentPage);
+
+        return $pagerfanta;
     }
 
     /**
@@ -89,7 +99,7 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
      */
     public function setAllowOutOfRangePages(bool $allowOutOfRangePages): static
     {
-        $this->allowOutOfRangePages = $this->filterBoolean($allowOutOfRangePages);
+        $this->allowOutOfRangePages = $allowOutOfRangePages;
 
         return $this;
     }
@@ -104,7 +114,7 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
      */
     public function setNormalizeOutOfRangePages(bool $normalizeOutOfRangePages): static
     {
-        $this->normalizeOutOfRangePages = $this->filterBoolean($normalizeOutOfRangePages);
+        $this->normalizeOutOfRangePages = $normalizeOutOfRangePages;
 
         return $this;
     }
@@ -115,16 +125,17 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
     }
 
     /**
-     * Sets the maximum number of items per page.
-     *
-     * Tries to convert from string and float.
-     *
      * @return $this
+     *
+     * @throws LessThan1MaxPerPageException if the page is less than 1
      */
-    public function setMaxPerPage(int $maxPerPage): static
+    public function setMaxPerPage(int $maxPerPage): PagerfantaInterface
     {
-        $this->maxPerPage = $maxPerPage === 0 ? $maxPerPage : $this->filterMaxPerPage($maxPerPage);
+        $this->filterMaxPerPage($maxPerPage);
+
+        $this->maxPerPage = $maxPerPage;
         $this->resetForMaxPerPageChange();
+        $this->filterOutOfRangeCurrentPage($this->currentPage);
 
         return $this;
     }
@@ -139,19 +150,21 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return !$this->hasPreviousPage();
     }
 
+    /**
+     * @phpstan-return positive-int
+     */
     public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
 
     /**
-     * Sets the current page.
-     *
-     * Tries to convert from string and float.
-     *
      * @return $this
+     *
+     * @throws LessThan1CurrentPageException  if the current page is less than 1
+     * @throws OutOfRangeCurrentPageException if It is not allowed out of range pages and they are not normalized
      */
-    public function setCurrentPage(int $currentPage): static
+    public function setCurrentPage(int $currentPage): PagerfantaInterface
     {
         $this->currentPage = $this->filterCurrentPage($currentPage);
         $this->resetForCurrentPageChange();
@@ -159,27 +172,28 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $this;
     }
 
+    /**
+     * @phpstan-return positive-int
+     */
     public function getCurrentPage(): int
     {
         return $this->currentPage;
     }
 
     /**
-     * @return Iterator<int, T>
+     * @return iterable<int, T>
      */
-    public function getCurrentPageResults(): Iterator
+    public function getCurrentPageResults(): iterable
     {
         if (!isset($this->currentPageResults)) {
-            $this->currentPageResults = $this->buildResultsIterator(
-                $this->getCurrentPageResultsFromAdapter()
-            );
+            $this->currentPageResults = $this->getCurrentPageResultsFromAdapter();
         }
 
         return $this->currentPageResults;
     }
 
     /**
-     * @return iterable<array-key, T>
+     * @return iterable<int, T>
      */
     public function getHeadlineResults(): iterable
     {
@@ -190,31 +204,36 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
     }
 
     /**
-     * Calculates the current page offset start.
+     * @phpstan-return int<0, max>
      */
     public function getCurrentPageOffsetStart(): int
     {
-        return $this->getNbResults() ? $this->calculateOffsetForCurrentPageResults() + 1 : 0;
+        return 0 !== $this->getNbResults() ? $this->calculateOffsetForCurrentPageResults() + 1 : 0;
     }
 
     /**
-     * Calculates the current page offset end.
+     * @phpstan-return int<0, max>
      */
     public function getCurrentPageOffsetEnd(): int
     {
         return $this->hasNextPage() ? $this->getCurrentPage() * $this->getMaxPerPage() : $this->getNbResults();
     }
 
+    /**
+     * @phpstan-return int<0, max>
+     */
     public function getNbResults(): int
     {
         if (null === $this->nbResults) {
-            $this->nbResults = $this->getAdapter()
-                ->getNbResults();
+            $this->nbResults = $this->getAdapter()->getNbResults();
         }
 
         return $this->nbResults;
     }
 
+    /**
+     * @phpstan-return positive-int
+     */
     public function getNbPages(): int
     {
         $nbPages = $this->calculateNbPages();
@@ -230,7 +249,12 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $nbPages;
     }
 
-    public function setMaxNbPages(int $maxNbPages): static
+    /**
+     * @return $this
+     *
+     * @throws LessThan1MaxPagesException if the max number of pages is less than 1
+     */
+    public function setMaxNbPages(int $maxNbPages): PagerfantaInterface
     {
         if ($maxNbPages < 1) {
             throw new LessThan1MaxPagesException();
@@ -241,7 +265,10 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $this;
     }
 
-    public function resetMaxNbPages(): static
+    /**
+     * @return $this
+     */
+    public function resetMaxNbPages(): PagerfantaInterface
     {
         $this->maxNbPages = null;
 
@@ -258,6 +285,11 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $this->currentPage > 1;
     }
 
+    /**
+     * @phpstan-return positive-int
+     *
+     * @throws LogicException if there is no previous page
+     */
     public function getPreviousPage(): int
     {
         if (!$this->hasPreviousPage()) {
@@ -272,6 +304,11 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $this->currentPage < $this->getNbPages();
     }
 
+    /**
+     * @phpstan-return positive-int
+     *
+     * @throws LogicException if there is no next page
+     */
     public function getNextPage(): int
     {
         if (!$this->hasNextPage()) {
@@ -281,52 +318,36 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $this->currentPage + 1;
     }
 
+    /**
+     * @phpstan-return int<0, max>
+     */
     public function count(): int
     {
         return $this->getNbResults();
     }
 
-    public function current(): mixed
-    {
-        return $this->getCurrentPageResults()->current();
-    }
-
-    public function next(): void
-    {
-        $this->getCurrentPageResults()->next();
-
-        // if pagination is disabled, we automaticaly switch to next page
-        if (!$this->getCurrentPageResults()->valid() && $this->hasNextPage() && $this->disablePagination) {
-            $this->setCurrentPage($this->getNextPage());
-        }
-    }
-
-    public function key(): mixed
-    {
-        return $this->getCurrentPageResults()->key();
-    }
-
-    public function valid(): bool
-    {
-        return $this->getCurrentPageResults()->valid();
-    }
-
-    public function rewind(): void
-    {
-        $this->setCurrentPage(1);
-    }
-
     /**
-     * @return iterable<array-key, T>
+     * @return array<int, T>
      */
-    public function jsonSerialize(): iterable
+    public function jsonSerialize(): array
     {
         $results = $this->getCurrentPageResults();
-        return iterator_to_array($results);
+
+        if ($results instanceof \Traversable) {
+            return iterator_to_array($results);
+        }
+
+        return $results;
     }
 
     /**
      * Get page number of the item at specified position (1-based index).
+     *
+     * @phpstan-param positive-int $position
+     *
+     * @phpstan-return positive-int
+     *
+     * @throws OutOfBoundsException if the item is outside the result set
      */
     public function getPageNumberForItemAtPosition(int $position): int
     {
@@ -365,48 +386,65 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
             ->getFiltersForm();
     }
 
+
+
     /**
-     * @return Iterator<int, T>
-     *
-     * @throws \Pagerfanta\Exception\InvalidArgumentException if an iterator cannot be created from the adapter slice
+     * @return \Traversable<int, T>
      */
-    public function getIterator(): Iterator
+    public function getIterator(): \Traversable
     {
-        return $this->getCurrentPageResults();
+        do {
+            yield from $this->yieldCurrentPageResults();
+
+            if ($this->disablePagination && $this->hasNextPage()) {
+                $this->setCurrentPage($this->getNextPage());
+            } else {
+                break;
+            }
+        } while (true);
     }
 
     /**
      * @param iterable<int, T> $results
      *
-     * @return Iterator<int, T>
+     * @return \Iterator<int, T>
      */
-    protected function buildResultsIterator(iterable $results): Iterator
+    protected function buildInnerIterator(iterable $results): \Iterator
     {
-        if ($results instanceof Iterator) {
+        if ($results instanceof \Iterator) {
             return $results;
         }
 
-        if ($results instanceof IteratorAggregate) {
-            $iterator = $results->getIterator();
-            return $iterator instanceof Iterator ? $iterator : new IteratorIterator($iterator);
+        if ($results instanceof \IteratorAggregate) {
+            return $results->getIterator();
         }
 
-        if (is_array($results)) {
-            return new ArrayIterator($results);
+        if (\is_array($results)) {
+            return new \ArrayIterator($results);
         }
 
-        throw new InvalidArgumentException(
-            sprintf('Cannot create iterator with page results of type "%s".', get_debug_type($results))
-        );
+        throw new InvalidArgumentException(sprintf('Cannot create iterator with page results of type "%s".', get_debug_type($results)));
     }
 
-    private function filterMaxPerPage(int $maxPerPage): int
+    private function yieldCurrentPageResults(): \Generator
+    {
+        $results = $this->getCurrentPageResults();
+        $iterator = $this->buildInnerIterator($results);
+
+        while ($iterator->valid()) {
+            yield $iterator->key() => $iterator->current();
+            $iterator->next();
+        }
+    }
+
+    private function filterMaxPerPage(int $maxPerPage): void
     {
         $this->checkMaxPerPage($maxPerPage);
-
-        return $maxPerPage;
     }
 
+    /**
+     * @throws LessThan1MaxPerPageException if the page is less than 1
+     */
     private function checkMaxPerPage(int $maxPerPage): void
     {
         if ($maxPerPage < 1) {
@@ -416,15 +454,23 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
 
     private function resetForMaxPerPageChange(): void
     {
-        unset($this->currentPageResults);
+        $this->currentPageResults = null;
     }
 
+
+    /**
+     * @phpstan-return positive-int
+     */
     private function filterCurrentPage(int $currentPage): int
     {
         $this->checkCurrentPage($currentPage);
+
         return $this->filterOutOfRangeCurrentPage($currentPage);
     }
 
+    /**
+     * @throws LessThan1CurrentPageException if the current page is less than 1
+     */
     private function checkCurrentPage(int $currentPage): void
     {
         if ($currentPage < 1) {
@@ -432,6 +478,9 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         }
     }
 
+    /**
+     * @phpstan-return positive-int
+     */
     private function filterOutOfRangeCurrentPage(int $currentPage): int
     {
         if ($this->notAllowedCurrentPageOutOfRange($currentPage)) {
@@ -451,6 +500,11 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return $currentPage > 1 && $currentPage > $this->getNbPages();
     }
 
+    /**
+     * @phpstan-return positive-int
+     *
+     * @throws OutOfRangeCurrentPageException if the page should not be normalized
+     */
     private function normalizeOutOfRangeCurrentPage(int $currentPage): int
     {
         if ($this->getNormalizeOutOfRangePages()) {
@@ -468,17 +522,18 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
 
     private function resetForCurrentPageChange(): void
     {
-        unset($this->currentPageResults);
+        $this->currentPageResults = null;
     }
 
     /**
-     * @return iterable<array-key, T>
+     * @return iterable<int, T>
      */
     private function getCurrentPageResultsFromAdapter(): iterable
     {
         $offset = $this->calculateOffsetForCurrentPageResults();
         $length = $this->getMaxPerPage();
-        return $this->adapter->getSlice($offset, $length);
+
+        return $this->getAdapter()->getSlice($offset, $length);
     }
 
     private function calculateOffsetForCurrentPageResults(): int
@@ -486,19 +541,20 @@ class Pager implements Countable, JsonSerializable, PagerfantaInterface
         return (($this->getCurrentPage() - 1) * $this->getMaxPerPage()) + $this->headlineCount;
     }
 
+    /**
+     * @phpstan-return int<0, max>
+     */
     private function calculateNbPages(): int
     {
         $maxPerPage = $this->getMaxPerPage();
         return (int) ceil(($this->getNbResults() - $this->headlineCount) / $maxPerPage);
     }
 
+    /**
+     * @phpstan-return positive-int
+     */
     private function minimumNbPages(): int
     {
         return 1;
-    }
-
-    private function filterBoolean(bool $value): bool
-    {
-        return $value;
     }
 }
