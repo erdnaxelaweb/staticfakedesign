@@ -77,21 +77,22 @@ class ComponentSidebarMenu implements EventSubscriberInterface
     protected function reorder(ItemInterface $parent): void
     {
         $children = $parent->getChildren();
-        $order = [];
-        foreach ($children as $templateName => $child) {
+        if (empty($children)) {
+            return;
+        }
+        foreach ($children as $child) {
             if ($child->hasChildren()) {
                 $this->reorder($child);
             }
-            $label = iconv('UTF-8', 'ASCII//TRANSLIT', $child->getLabel());
-            if (isset($order[$label])) {
-                $label = $templateName;
-                $child->setLabel($label);
-            }
-            $order[$label] = $child;
         }
-        ksort($order, SORT_LOCALE_STRING);
+        $childrenArray = array_values($children);
+        usort($childrenArray, static function (ItemInterface $a, ItemInterface $b): int {
+            $labelA = iconv('UTF-8', 'ASCII//TRANSLIT', $a->getLabel()) ?: $a->getName();
+            $labelB = iconv('UTF-8', 'ASCII//TRANSLIT', $b->getLabel()) ?: $b->getName();
+            return strcasecmp($labelA, $labelB);
+        });
         $parent->reorderChildren(
-            array_map(static fn (ItemInterface $item): string => $item->getName(), $order)
+            array_map(static fn (ItemInterface $item): string => $item->getName(), $childrenArray)
         );
     }
 }
